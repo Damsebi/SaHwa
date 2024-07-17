@@ -105,7 +105,7 @@ public class SkillAnimationTest0716 : MonoBehaviour
         {
             AxeAnimation7();
         }
-        else if (Input.GetKeyDown(KeyCode.K))
+        else if (Input.GetKeyDown(KeyCode.Alpha9))
         {
             AxeAnimation8();
         }
