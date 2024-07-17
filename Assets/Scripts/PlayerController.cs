@@ -10,11 +10,12 @@ public class PlayerController : MonoBehaviour
 
     float hori;
     float verti;
-    [SerializeField] float playerRotateSpeed;
     Vector3 movement;
     float moveAmount;
     Quaternion targetRotation;
 
+    [Tooltip("플레이어의 회전 스피드. 값이 클수록 빠르게 회전한다")]
+    [SerializeField] float playerRotateSpeed;
     private void Awake()
     {
         animator = GetComponent<Animator>();    
