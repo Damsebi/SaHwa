@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 
-public class SkillAnimationTest0716 : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     Animator animator;
     Rigidbody rigidbody;
