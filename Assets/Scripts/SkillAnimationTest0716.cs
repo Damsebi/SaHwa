@@ -8,11 +8,12 @@ public class SkillAnimationTest0716 : MonoBehaviour
     Animator animator;
     Rigidbody rigidbody;
 
-    [SerializeField] float hori;
-    [SerializeField] float verti;
-    [SerializeField] Vector3 movement;
-    [SerializeField] float moveAmount;
-    [SerializeField] Quaternion targetRotation;
+    float hori;
+    float verti;
+    [SerializeField] float playerRotateSpeed;
+    Vector3 movement;
+    float moveAmount;
+    Quaternion targetRotation;
 
     private void Awake()
     {
@@ -182,6 +183,8 @@ public class SkillAnimationTest0716 : MonoBehaviour
     #region È¸Àü
     void Rotation()
     {
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, playerRotateSpeed);
+
         if (moveAmount > 0f)
         {
             Vector3 cam = Camera.main.transform.forward;
