@@ -177,6 +177,15 @@ public class SkillAnimationTest0716 : MonoBehaviour
         movement = new Vector3(hori, 0f, verti);
         moveAmount = Mathf.Clamp01(Mathf.Abs(movement.x) + Mathf.Abs(movement.z));
         movement.Normalize();
+
+        if (moveAmount > 0f)
+        {
+            animator.SetBool("isMove", true);
+        }
+        else
+        {
+            animator.SetBool("isMove", false);
+        }
     }
     #endregion
 
