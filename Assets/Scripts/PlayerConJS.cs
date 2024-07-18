@@ -18,14 +18,14 @@ public class PlayerConJS : MonoBehaviour
     private Quaternion targetRotation;
     [SerializeField] float playerRotateSpeed;
 
-    private Dictionary<string, string> animationMapping;
+    private Dictionary<string, string> animationMappings;
     #endregion
 
     #region Start()
 
     void Start()
     {
-        animationMapping = new Dictionary<string, string>
+        animationMappings = new Dictionary<string, string>
         {
             { "PlayAni1", "Ani1" },
             { "PlayAni1", "Ani1" },
@@ -48,7 +48,7 @@ public class PlayerConJS : MonoBehaviour
 
     private void InputKey()
     {
-        foreach(/*KeyValuePair<string, string>*/var mapping in animationMapping)
+        foreach(/*KeyValuePair<string, string>*/var mapping in animationMappings)
         {
             if(Input.GetButtonDown(mapping.Key))
             {
