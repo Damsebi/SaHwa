@@ -109,9 +109,9 @@ public class PlayerConJS : MonoBehaviour
 
     private void SetDefaultMappings()
     {
-        mappingDictionary.Add(0, ""); // Q 키에 대한 기본 애니메이션 이름
-        mappingDictionary.Add(1, ""); // W 키에 대한 기본 애니메이션 이름
-        mappingDictionary.Add(2, ""); // E 키에 대한 기본 애니메이션 이름
-        mappingDictionary.Add(3, ""); // R 키에 대한 기본 애니메이션 이름
+        mappingDictionary.Add(0, "");
+        mappingDictionary.Add(1, ""); 
+        mappingDictionary.Add(2, ""); 
+        mappingDictionary.Add(3, "");
     }
 }
