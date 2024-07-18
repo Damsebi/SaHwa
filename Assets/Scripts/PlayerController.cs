@@ -126,6 +126,8 @@ public class PlayerController : MonoBehaviour
         {
             AxeAnimation12();
         }
+
+
         #endregion
 
         #region 메이지 애니
