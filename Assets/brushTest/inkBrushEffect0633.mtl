@@ -1,0 +1,12 @@
+# Blender 4.1.0 MTL File: 'inkBrushEffect - 복사본.blend'
+# www.blender.org
+
+newmtl ink
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 1.000000 1.000000 1.000000
+Ni 1.000000
+illum 1
+map_Kd InkBrushImage0d0.png
+map_d InkBrushImage0d0.png
