@@ -16,6 +16,7 @@ public class PlayerConJS : MonoBehaviour
     private Vector3 movement;
     private float moveAmount;
     private Quaternion targetRotation;
+    [SerializeField] float playerRotateSpeed;
 
     private Dictionary<string, string> animationMapping;
     #endregion
