@@ -5935,8 +5935,16 @@ MonoBehaviour:
   - {fileID: 1534313354}
   - {fileID: 396821039}
   mappingList:
+  - dropdownOption: ======
+    animationName: ======
   - dropdownOption: axeSwing1
-    animationName: axe Swing 1
+    animationName: axeSwing1
+  - dropdownOption: axeSwing2
+    animationName: axeSwing2
+  - dropdownOption: axeSwing3
+    animationName: axeSwing3
+  - dropdownOption: axeSwing4
+    animationName: axeSwing4
 --- !u!1 &1786679350
 GameObject:
   m_ObjectHideFlags: 0

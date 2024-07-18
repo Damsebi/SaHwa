@@ -1,8 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerConJS : MonoBehaviour
+public class PlayerConJS_BackUp : MonoBehaviour
 {
     #region 선언
 
@@ -17,11 +16,6 @@ public class PlayerConJS : MonoBehaviour
     [SerializeField] float playerRotateSpeed;
 
     private static Dictionary<int, string> mappingDictionary = new Dictionary<int, string>();
-
-    private bool isAnimationPlaying = false;
-    private string currentAnimation = "";
-    private Coroutine animationCheckCoroutine;
-
     #endregion
 
     #region Start()
@@ -34,26 +28,21 @@ public class PlayerConJS : MonoBehaviour
     #region Update()
     void Update()
     {
-        Movement();  
-
-        if (!isAnimationPlaying)
+        if (Input.GetButtonDown("Q"))
         {
-            if (Input.GetMouseButtonDown(0))
-            {
-                PlayAnimation(0);
-            }
-            else if (Input.GetMouseButtonDown(1))
-            {
-                PlayAnimation(1);
-            }
-            else if (Input.GetButtonDown("E"))
-            {
-                PlayAnimation(2);
-            }
-            else if (Input.GetButtonDown("R"))
-            {
-                PlayAnimation(3);
-            }
+            PlayAnimation(0);
+        }
+        else if (Input.GetButtonDown("W"))
+        {
+            PlayAnimation(1);
+        }
+        else if (Input.GetButtonDown("E"))
+        {
+            PlayAnimation(2);
+        }
+        else if (Input.GetButtonDown("R"))
+        {
+            PlayAnimation(3);
         }
     }
     #endregion
@@ -71,34 +60,8 @@ public class PlayerConJS : MonoBehaviour
     {
         if (mappingDictionary.TryGetValue(index, out string animationName) && !string.IsNullOrEmpty(animationName))
         {
-            if (currentAnimation != animationName)
-            {
-                if (animationCheckCoroutine != null)
-                {
-                    StopCoroutine(animationCheckCoroutine);
-                }
-
-                isAnimationPlaying = true;
-                currentAnimation = animationName;
-                animator.Play(animationName);
-                animationCheckCoroutine = StartCoroutine(CheckAnimationFinished());
-            }
+            animator.Play(animationName);
         }
-    }
-
-    private IEnumerator CheckAnimationFinished()
-    {
-        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-
-        // Wait until the current animation state is done
-        while (stateInfo.IsName(currentAnimation) && !animator.IsInTransition(0))
-        {
-            yield return null;
-        }
-
-        // Ensure that the animation is complete before resetting the flag
-        isAnimationPlaying = false;
-        currentAnimation = "";
     }
     #endregion
 
@@ -106,7 +69,7 @@ public class PlayerConJS : MonoBehaviour
     private void FixedUpdate()
     {
         Rotation();
-        rigidbody.MovePosition(transform.position + movement * 6 * Time.deltaTime);
+        GetComponent<Rigidbody>().MovePosition(this.gameObject.transform.position + movement * 6 * Time.deltaTime);
     }
     #endregion
 
@@ -119,7 +82,14 @@ public class PlayerConJS : MonoBehaviour
         moveAmount = Mathf.Clamp01(Mathf.Abs(movement.x) + Mathf.Abs(movement.z));
         movement.Normalize();
 
-        animator.SetBool("isMove", moveAmount > 0f);
+        if (moveAmount > 0f)
+        {
+            animator.SetBool("isMove", true);
+        }
+        else
+        {
+            animator.SetBool("isMove", false);
+        }
     }
     #endregion
 
@@ -139,9 +109,9 @@ public class PlayerConJS : MonoBehaviour
 
     private void SetDefaultMappings()
     {
-        mappingDictionary.Add(0, "Animation_평타");
-        mappingDictionary.Add(1, "Animation_강공격");
-        mappingDictionary.Add(2, "Animation_스킬 1");
-        mappingDictionary.Add(3, "Animation_스킬 2");
+        mappingDictionary.Add(0, "");
+        mappingDictionary.Add(1, ""); 
+        mappingDictionary.Add(2, ""); 
+        mappingDictionary.Add(3, "");
     }
 }
