@@ -6,10 +6,21 @@ using UnityEngine.UIElements;
 
 public class PlayerConJS : MonoBehaviour
 {
+    #region 선언
+
     public Animator animator;
+    public Rigidbody rigidbody;
+
+    private float hori;
+    private float verti;
+    private Vector3 movement;
+    private float moveAmount;
+    private Quaternion targetRotation;
 
     private Dictionary<string, string> animationMapping;
+    #endregion
 
+    #region Start()
 
     void Start()
     {
@@ -21,12 +32,18 @@ public class PlayerConJS : MonoBehaviour
             { "PlayAni1", "Ani1" }
         };
     }
+    #endregion
+
+    #region Update()
 
     // Update is called once per frame
     void Update()
     {
         InputKey();
     }
+    #endregion
+
+    #region 매핑
 
     private void InputKey()
     {
@@ -43,13 +60,18 @@ public class PlayerConJS : MonoBehaviour
     {
         animator.Play(animationName);
     }
+    #endregion
 
+    #region FixedUpdate()
+  
     private void FixedUpdate()
     {
         Rotation();
         GetComponent<Rigidbody>().MovePosition(this.gameObject.transform.position + movement * 6 * Time.deltaTime);
-    }
-    #region �̵�
+    } 
+    #endregion
+
+    #region 이동
     void Movement()
     {
         hori = Input.GetAxis("Horizontal");
@@ -69,7 +91,7 @@ public class PlayerConJS : MonoBehaviour
     }
     #endregion
 
-    #region ȸ��
+    #region 회전
     void Rotation()
     {
         transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, playerRotateSpeed);
