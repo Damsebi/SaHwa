@@ -800,9 +800,6 @@ RectTransform:
   m_Children:
   - {fileID: 1887153645}
   - {fileID: 1725706206}
-  - {fileID: 802565608}
-  - {fileID: 1534313353}
-  - {fileID: 396821038}
   m_Father: {fileID: 293769430}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1194,7 +1191,7 @@ GameObject:
   - component: {fileID: 364568886}
   - component: {fileID: 364568885}
   m_Layer: 0
-  m_Name: Dropdown (Skill 1)
+  m_Name: Skill 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1407,7 +1404,7 @@ GameObject:
   - component: {fileID: 396821040}
   - component: {fileID: 396821039}
   m_Layer: 0
-  m_Name: Dropdown (Skill 4)
+  m_Name: Skill 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1421,18 +1418,18 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 396821037}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 178.62056}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 735779100}
   - {fileID: 49688377}
   - {fileID: 1702821393}
-  m_Father: {fileID: 148917454}
+  m_Father: {fileID: 1725706206}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -80, y: -105}
+  m_AnchoredPosition: {x: 189.6554, y: -48.87854}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &396821039
@@ -2398,7 +2395,7 @@ GameObject:
   - component: {fileID: 802565610}
   - component: {fileID: 802565609}
   m_Layer: 0
-  m_Name: Dropdown (Skill 2)
+  m_Name: Skill 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2412,18 +2409,18 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 802565607}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 178.62056}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1172185027}
   - {fileID: 1216812589}
   - {fileID: 1457775621}
-  m_Father: {fileID: 148917454}
+  m_Father: {fileID: 1725706206}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -80, y: -45}
+  m_AnchoredPosition: {x: 189.6554, y: 11.12146}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &802565609
@@ -3011,6 +3008,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1793339999}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9d995b5379077b649b94d12b91a06947,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1793340005}
   m_SourcePrefab: {fileID: 100100000, guid: 9d995b5379077b649b94d12b91a06947, type: 3}
 --- !u!1 &872998047
 GameObject:
@@ -5408,7 +5409,7 @@ GameObject:
   - component: {fileID: 1534313355}
   - component: {fileID: 1534313354}
   m_Layer: 0
-  m_Name: Dropdown (Skill 3)
+  m_Name: Skill 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5422,18 +5423,18 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1534313352}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 178.62056}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 413261406}
   - {fileID: 872998048}
   - {fileID: 141413038}
-  m_Father: {fileID: 148917454}
+  m_Father: {fileID: 1725706206}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -80, y: -75}
+  m_AnchoredPosition: {x: 189.6554, y: -18.87854}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1534313354
@@ -5890,7 +5891,7 @@ GameObject:
   - component: {fileID: 1725706206}
   - component: {fileID: 1725706207}
   m_Layer: 0
-  m_Name: Skill 1
+  m_Name: DropDown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5910,6 +5911,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 364568888}
+  - {fileID: 802565608}
+  - {fileID: 1534313353}
+  - {fileID: 396821038}
   m_Father: {fileID: 148917454}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1725706207
@@ -5924,10 +5928,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5b49ddc46999fe4c98f57bc8b7afd08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 0}
-  dropdown: {fileID: 364568885}
-  options:
-  - a
+  animator: {fileID: 1793340004}
+  dropdowns:
+  - {fileID: 364568885}
+  - {fileID: 802565609}
+  - {fileID: 1534313354}
+  - {fileID: 396821039}
+  mappingList:
+  - dropdownOption: axeSwing1
+    animationName: axe Swing 1
 --- !u!1 &1786679350
 GameObject:
   m_ObjectHideFlags: 0
@@ -6020,7 +6029,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1793339998}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b430a6fe9c2c2654288c931dca87c6d1, type: 3}
   m_Name: 
@@ -6080,6 +6089,27 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!95 &1793340004 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 9d995b5379077b649b94d12b91a06947,
+    type: 3}
+  m_PrefabInstance: {fileID: 872748812}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1793340005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1793339998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0ff189aee9b8494d8d2a060caef7d28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 1793340004}
+  rigidbody: {fileID: 1793340003}
+  playerRotateSpeed: 25
 --- !u!1 &1796150560
 GameObject:
   m_ObjectHideFlags: 0

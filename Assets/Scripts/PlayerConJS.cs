@@ -1,8 +1,5 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class PlayerConJS : MonoBehaviour
 {
@@ -18,58 +15,62 @@ public class PlayerConJS : MonoBehaviour
     private Quaternion targetRotation;
     [SerializeField] float playerRotateSpeed;
 
-    private Dictionary<string, string> animationMappings;
+    private static Dictionary<int, string> mappingDictionary = new Dictionary<int, string>();
     #endregion
 
     #region Start()
-
     void Start()
     {
-        animationMappings = new Dictionary<string, string>
-        {
-            { "PlayAni1", "Ani1" },
-            { "PlayAni1", "Ani1" },
-            { "PlayAni1", "Ani1" },
-            { "PlayAni1", "Ani1" }
-        };
+        SetDefaultMappings();
     }
     #endregion
 
     #region Update()
-
-    // Update is called once per frame
     void Update()
     {
-        InputKey();
+        if (Input.GetButtonDown("Q"))
+        {
+            PlayAnimation(0);
+        }
+        else if (Input.GetButtonDown("W"))
+        {
+            PlayAnimation(1);
+        }
+        else if (Input.GetButtonDown("E"))
+        {
+            PlayAnimation(2);
+        }
+        else if (Input.GetButtonDown("R"))
+        {
+            PlayAnimation(3);
+        }
     }
     #endregion
 
-    #region 매핑
-
-    private void InputKey()
+    #region 애니메이션 설정
+    public static void SetAnimation(int index, string animationName)
     {
-        foreach(/*KeyValuePair<string, string>*/var mapping in animationMappings)
+        if (mappingDictionary.ContainsKey(index))
         {
-            if(Input.GetButtonDown(mapping.Key))
-            {
-                PlayAnimation(mapping.Value);
-            }
+            mappingDictionary[index] = animationName;
         }
     }
 
-    private void PlayAnimation(string animationName)
+    private void PlayAnimation(int index)
     {
-        animator.Play(animationName);
+        if (mappingDictionary.TryGetValue(index, out string animationName) && !string.IsNullOrEmpty(animationName))
+        {
+            animator.Play(animationName);
+        }
     }
     #endregion
 
     #region FixedUpdate()
-  
     private void FixedUpdate()
     {
         Rotation();
         GetComponent<Rigidbody>().MovePosition(this.gameObject.transform.position + movement * 6 * Time.deltaTime);
-    } 
+    }
     #endregion
 
     #region 이동
@@ -106,4 +107,11 @@ public class PlayerConJS : MonoBehaviour
     }
     #endregion
 
+    private void SetDefaultMappings()
+    {
+        mappingDictionary.Add(0, "axeSwing3"); // Q 키에 대한 기본 애니메이션 이름
+        mappingDictionary.Add(1, ""); // W 키에 대한 기본 애니메이션 이름
+        mappingDictionary.Add(2, ""); // E 키에 대한 기본 애니메이션 이름
+        mappingDictionary.Add(3, ""); // R 키에 대한 기본 애니메이션 이름
+    }
 }

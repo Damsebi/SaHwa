@@ -8,7 +8,7 @@ public class UIDropdownHandler : MonoBehaviour
 {
     #region 선언
     public Animator animator;
-    public Dropdown dropdown;
+    public Dropdown[] dropdowns;
 
     [SerializeField]
     List<AnimationMapping> mappingList;
@@ -19,8 +19,11 @@ public class UIDropdownHandler : MonoBehaviour
     void Start()
     {
         initializeDropdownOptions();
-
-        dropdown.onValueChanged.AddListener(value => { DropdownValueChange(dropdown); });
+        for (int i = 0; i < dropdowns.Length; i++)
+        {
+            int index = i;
+            dropdowns[i].onValueChanged.AddListener(value => { DropdownValueChange(index, value); });
+        }
     }
     #endregion
 
@@ -28,33 +31,50 @@ public class UIDropdownHandler : MonoBehaviour
     private void initializeDropdownOptions()
     {
         mappingDictionary = new Dictionary<int, string>();
-        List<string> options = new List<string>();
 
-        dropdown.ClearOptions();
-
-        for(int i = 0; i < mappingList.Count; i++)
+        foreach (var mapping in mappingList)
         {
-            options.Add(mappingList[i].dropdownOption);
-            mappingDictionary.Add(i, mappingList[i].animationName);
+            int index = mappingList.IndexOf(mapping);
+            mappingDictionary.Add(index, mapping.animationName);
+
+            if (index < dropdowns.Length)
+            {
+                Dropdown dropdown = dropdowns[index];
+                dropdown.ClearOptions();
+                List<string> options = new List<string> { mapping.dropdownOption };
+                dropdown.AddOptions(options);
+            }
         }
-        dropdown.AddOptions(options);
+
+        #region 
+        //List<string> options = new List<string>();
+
+        //dropdown.ClearOptions();
+
+        //for(int i = 0; i < mappingList.Count; i++)
+        //{
+        //    options.Add(mappingList[i].dropdownOption);
+        //    mappingDictionary.Add(i, mappingList[i].animationName);
+        //}
+        //dropdown.AddOptions(options);
+        #endregion
     }
     #endregion
 
-    #region 애니메이션 값 변경
-    void DropdownValueChange(Dropdown change)
+    #region 인덱스 확인
+    void DropdownValueChange(int index, int value)
     {
-        if(mappingDictionary.TryGetValue(change.value, out string animationName))
+        if (mappingDictionary.TryGetValue(index, out string animationName) && !string.IsNullOrEmpty(animationName))
         {
-            PlayAnimation(animationName);
+            PlayerConJS.SetAnimation(index, animationName);
         }
     }
     #endregion
 
-    #region 애니메이션 재생
-    private void PlayAnimation(string animationName)
-    {
-        animator.Play(animationName);
-    }
+    #region
+    //private void PlayAnimation(string animationName)
+    //{
+    //    animator.Play(animationName);
+    //}
     #endregion
 }
