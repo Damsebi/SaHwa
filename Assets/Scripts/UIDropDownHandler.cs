@@ -11,8 +11,8 @@ public class UIDropdownHandler : MonoBehaviour
     public Dropdown dropdown;
 
     [SerializeField]
-    List<string> options;
-    private Dictionary<int, string> animationsMappings;
+    List<AnimationMapping> mappingList;
+    private Dictionary<int, string> mappingDictionary;
     #endregion
 
     #region Start()
@@ -21,38 +21,30 @@ public class UIDropdownHandler : MonoBehaviour
         initializeDropdownOptions();
 
         dropdown.onValueChanged.AddListener(value => { DropdownValueChange(dropdown); });
-
-
     }
     #endregion
-
-    #region Update()
-    void Update()
-    {
-
-    }
-    #endregion
-
 
     #region 드롭다운, 맵핑 초기화
     private void initializeDropdownOptions()
     {
-        animationsMappings = new Dictionary<int, string>();
+        mappingDictionary = new Dictionary<int, string>();
+        List<string> options = new List<string>();
 
         dropdown.ClearOptions();
-        dropdown.AddOptions(options);
 
-        for(int i = 0; i < options.Count; i++)
+        for(int i = 0; i < mappingList.Count; i++)
         {
-            animationsMappings.Add(i, options[i]);
+            options.Add(mappingList[i].dropdownOption);
+            mappingDictionary.Add(i, mappingList[i].animationName);
         }
+        dropdown.AddOptions(options);
     }
     #endregion
 
     #region 애니메이션 값 변경
     void DropdownValueChange(Dropdown change)
     {
-        if(animationsMappings.TryGetValue(change.value, out string animationName))
+        if(mappingDictionary.TryGetValue(change.value, out string animationName))
         {
             PlayAnimation(animationName);
         }
