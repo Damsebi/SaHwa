@@ -192,13 +192,14 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "\uC774\uB3D9 \uBC0F \uD68C\uC804: WASD, \uB9C8\uC6B0\uC2A4\n\n\uC88C\uD45C
-    \uC774\uB3D9\uD0A4: 1~0, Z, X, Space\n\n\uC88C\uD45C \uD074\uB9AD\uC73C\uB85C
+  m_Text: "\uC774\uB3D9 \uBC0F \uD68C\uC804: WASD, \uB9C8\uC6B0\uC2A4\n\uBE60\uB978
+    \uC774\uB3D9 : Left Shift\n\n\uC88C\uD45C \uC774\uB3D9\uD0A4: 1~0, Z, X\n\uC704\uC5D0\uC11C
+    \uC804\uCCB4 \uB9F5 \uBCF4\uAE30:  Space\n\n\uC88C\uD45C \uD074\uB9AD\uC73C\uB85C
     \uC774\uB3D9: \nAlt(\uB204\uB974\uAE30 \uC720\uC9C0) + \uB9C8\uC6B0\uC2A4 \uC67C\uD074\uB9AD
     : \uD074\uB9AD\uD55C \uC704\uCE58\uB85C \uC774\uB3D9\n(\uC870\uAC74: Space \uB20C\uB800\uC744
-    \uB54C\uC758 \uC704\uCE58\uC5D0\uC11C \uC2E4\uD589\uD558\uB294 \uAC83\uC744 \uCD94\uCC9C\u314E\u314E.
-    \uC544\uC9C1 \uBC14\uB2E5\uACFC \uBCBD\uC744 \uC778\uC2DD\uD558\uC9C0 \uBABB\uD574\uC11C
-    \uC0DD\uAE34 \uBB38\uC81C)\n\nESC: \uC124\uBA85 \uBC0F \uB098\uAC00\uAE30\n\n"
+    \uB54C\uC758 \uC704\uCE58\uC5D0\uC11C \uC2E4\uD589\uD558\uAE30. \n=>\uC544\uC9C1
+    \uBC14\uB2E5\uACFC \uBCBD\uC744 \uC778\uC2DD\uD558\uC9C0 \uBABB\uD574\uC11C \uC0DD\uAE34
+    \uBB38\uC81C)\n\nESC: \uC124\uBA85 \uBC0F \uB098\uAC00\uAE30\n\n"
 --- !u!222 &253387392
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -833,8 +834,8 @@ MonoBehaviour:
   rotateSpeed: 1
   angleRangeX: {x: -89, y: 89}
   settingUI: {fileID: 1183660066}
-  openSetting: 0
-  cursorVisible: 0
+  openSetting: 1
+  cursorVisible: 1
 --- !u!114 &726464827
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1128,6 +1129,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 724680253686080917, guid: 943b2816d52016b44a30dc476434b83e,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 726464826}
+    - target: {fileID: 724680253686080917, guid: 943b2816d52016b44a30dc476434b83e,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Quit
+      objectReference: {fileID: 0}
     - target: {fileID: 1395756336982656390, guid: 943b2816d52016b44a30dc476434b83e,
         type: 3}
       propertyPath: m_Name
@@ -1141,7 +1152,17 @@ PrefabInstance:
     - target: {fileID: 4249321036261581336, guid: 943b2816d52016b44a30dc476434b83e,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4327044710420989858, guid: 943b2816d52016b44a30dc476434b83e,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4327044710420989858, guid: 943b2816d52016b44a30dc476434b83e,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4327044710420989858, guid: 943b2816d52016b44a30dc476434b83e,
         type: 3}
