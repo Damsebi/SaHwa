@@ -26,15 +26,23 @@ public class PlayerController : MonoBehaviour
     {
         Movement();
 
+        #region 활 애니
+        if (Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            ShootArrowAnimation1();
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            ShootArrowAnimation2();
+        }
+        #endregion
+
         #region 검 애니
         if (Input.GetKeyDown(KeyCode.Q))
         {
             SwordAnimation1();
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha5))
-        {
-            SwordAnimation2();
-        }
+  
         else if (Input.GetKeyDown(KeyCode.E))
         {
             SwordAnimation3();
@@ -172,6 +180,7 @@ public class PlayerController : MonoBehaviour
         Rotation();
         rigidbody.MovePosition(this.gameObject.transform.position + movement * 6 * Time.deltaTime);
     }
+
     #region 이동
     void Movement()
     {
@@ -206,15 +215,23 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
+    #region 활 애니
+    private void ShootArrowAnimation1()
+    {
+        animator.CrossFade("shootingArrow", .2f);
+    }
+    private void ShootArrowAnimation2()
+    {
+        animator.CrossFade("Standing Draw Arrow", .2f);
+    }
+    #endregion
+
     #region 검 애니
     private void SwordAnimation1()
     {
         animator.CrossFade("2Hand-Sword-Attack1", .2f);
     }
-    private void SwordAnimation2()
-    {
-        animator.CrossFade("2Hand-Sword-Attack2", .2f);
-    }
+    
     private void SwordAnimation3()
     {
         animator.CrossFade("2Hand-Sword-Attack3", .2f);
@@ -343,5 +360,4 @@ public class PlayerController : MonoBehaviour
         animator.CrossFade("Frank_RPG_Mage_Skill04_Demo", .2f);
     }
     #endregion
-
 }

@@ -2908,7 +2908,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 858112272}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.112804696, y: 0.24680021, z: -0.30756506, w: 0.9120135}
+  m_LocalRotation: {x: 0.112804696, y: -0.24680023, z: 0.30756503, w: -0.9120135}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3159,7 +3159,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 898095360}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.096240856, y: -0.24117988, z: 0.31199172, w: -0.9139098}
+  m_LocalRotation: {x: 0.09624083, y: -0.24117994, z: 0.31199172, w: -0.91390985}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -6037,7 +6037,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1793339998}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b430a6fe9c2c2654288c931dca87c6d1, type: 3}
   m_Name: 
@@ -6110,7 +6110,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1793339998}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8b8cd78e457b31c4c98111595cbb6059, type: 3}
   m_Name: 
@@ -6512,7 +6512,7 @@ CapsuleCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
