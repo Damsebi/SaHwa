@@ -169,17 +169,17 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 9d995b5379077b649b94d12b91a06947,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9d995b5379077b649b94d12b91a06947,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9d995b5379077b649b94d12b91a06947,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9d995b5379077b649b94d12b91a06947,
         type: 3}
@@ -234,7 +234,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9d995b5379077b649b94d12b91a06947,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 8354354311733667402}
+      addedObject: {fileID: 8839076696979855366}
   m_SourcePrefab: {fileID: 100100000, guid: 9d995b5379077b649b94d12b91a06947, type: 3}
 --- !u!95 &1951893919284052726 stripped
 Animator:
@@ -296,7 +296,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1.82, z: 0.6}
   m_Center: {x: 0, y: 0.9, z: 0}
---- !u!114 &8354354311733667402
+--- !u!114 &8839076696979855366
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -311,8 +311,7 @@ MonoBehaviour:
   animator: {fileID: 1951893919284052726}
   rigidbody: {fileID: 7732727465881022694}
   character1: {fileID: 5097363761613128246}
-  character2: {fileID: 7909098990111954083, guid: cdcc3917d2a15264ab950cc587d3ad7b,
-    type: 3}
+  character2: {fileID: 0}
   playerRotateSpeed: 25
 --- !u!4 &5617864472494741644 stripped
 Transform:

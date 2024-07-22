@@ -35,9 +35,9 @@ public class PlayerConJS : MonoBehaviour
     void Start()
     {
         InitializeCharacterMappings();
-        SetCharacterActive(character1, true); 
-        activeCharacter = character1;
-        mappingDictionary = new Dictionary<int, string>(character1Mappings);
+        SetCharacterActive(character2, true); 
+        activeCharacter = character2;
+        mappingDictionary = new Dictionary<int, string>(character2Mappings);
 
     }
     #endregion
@@ -49,7 +49,7 @@ public class PlayerConJS : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {         
-            SwitchCharacter();
+            //SwitchCharacter();
         }
 
         Movement();
