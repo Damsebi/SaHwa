@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIDropdownHandler1 : MonoBehaviour
+public class UIDropdownHandler : MonoBehaviour
 {
     #region ¼±¾ð
     public Animator animator;
@@ -68,3 +68,4 @@ public class UIDropdownHandler1 : MonoBehaviour
     }
     #endregion
 }
+

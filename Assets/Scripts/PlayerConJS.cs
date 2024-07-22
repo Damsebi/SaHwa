@@ -1,18 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class PlayerConJS : MonoBehaviour
 {
     #region 선언
 
-    public Animator animator;
-    public Rigidbody rigidbody;
+    public Animator character1Animator;
+    public Animator character2Animator;
     public GameObject character1;
     public GameObject character2;
+    public CinemachineFreeLook freeLookCamera;
 
-    
     private GameObject activeCharacter;
+    private Animator activeAnimator;
     private Dictionary<int, string> mappingDictionary = new Dictionary<int, string>();
 
     private Dictionary<int, string> character1Mappings = new Dictionary<int, string>();
@@ -28,17 +30,26 @@ public class PlayerConJS : MonoBehaviour
     private Vector3 movement;
     private float moveAmount;
     private Quaternion targetRotation;
+    private Rigidbody rb;
     [SerializeField] private float playerRotateSpeed;
     #endregion
 
-    #region Start()
+    #region Start
     void Start()
     {
-        InitializeCharacterMappings();
-        SetCharacterActive(character2, true); 
-        activeCharacter = character2;
-        mappingDictionary = new Dictionary<int, string>(character2Mappings);
+        rb = GetComponent<Rigidbody>();
 
+        rb.useGravity = true;
+        rb.isKinematic = false;
+
+        InitializeCharacterMappings();
+        SetCharacterActive(character1, true);
+        activeCharacter = character1;
+        activeAnimator = character1Animator;
+        mappingDictionary = new Dictionary<int, string>(character1Mappings);
+
+        freeLookCamera.Follow = activeCharacter.transform;
+        freeLookCamera.LookAt = activeCharacter.transform;
     }
     #endregion
 
@@ -48,8 +59,8 @@ public class PlayerConJS : MonoBehaviour
         if (isUIActive) return;
 
         if (Input.GetKeyDown(KeyCode.Space))
-        {         
-            //SwitchCharacter();
+        {
+            SwitchCharacter();
         }
 
         Movement();
@@ -96,13 +107,9 @@ public class PlayerConJS : MonoBehaviour
                     StopCoroutine(animationCheckCoroutine);
                 }
 
-                else
-                {
-                    Debug.LogError("mappingDictionary null");
-                }
                 isAnimationPlaying = true;
                 currentAnimation = animationName;
-                animator.Play(animationName);
+                activeAnimator.Play(animationName);
                 animationCheckCoroutine = StartCoroutine(CheckAnimationFinished());
             }
         }
@@ -110,9 +117,9 @@ public class PlayerConJS : MonoBehaviour
 
     private IEnumerator CheckAnimationFinished()
     {
-        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+        AnimatorStateInfo stateInfo = activeAnimator.GetCurrentAnimatorStateInfo(0);
 
-        while (stateInfo.IsName(currentAnimation) && !animator.IsInTransition(0))
+        while (stateInfo.IsName(currentAnimation) && !activeAnimator.IsInTransition(0))
         {
             yield return null;
         }
@@ -121,11 +128,14 @@ public class PlayerConJS : MonoBehaviour
     }
     #endregion
 
-    #region FixedUpdate()
+    #region FixedUpdate
     private void FixedUpdate()
     {
+        Movement();
         Rotation();
-        rigidbody.MovePosition(transform.position + movement * 6 * Time.deltaTime);
+        rb.MovePosition(rb.position + movement * 6 * Time.deltaTime);
+        activeCharacter.transform.localPosition = Vector3.zero;
+        activeCharacter.transform.localRotation = Quaternion.identity;
     }
     #endregion
 
@@ -138,21 +148,21 @@ public class PlayerConJS : MonoBehaviour
         moveAmount = Mathf.Clamp01(Mathf.Abs(movement.x) + Mathf.Abs(movement.z));
         movement.Normalize();
 
-        animator.SetBool("isMove", moveAmount > 0f);
+        activeAnimator.SetBool("isMove", moveAmount > 0f);
     }
     #endregion
 
     #region 회전
     void Rotation()
     {
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, playerRotateSpeed);
-
         if (moveAmount > 0f)
         {
             Vector3 cam = Camera.main.transform.forward;
             movement = Quaternion.LookRotation(new Vector3(cam.x, 0, cam.z)) * movement;
             targetRotation = Quaternion.LookRotation(movement);
         }
+
+        rb.rotation = Quaternion.RotateTowards(rb.rotation, Quaternion.Normalize(targetRotation), playerRotateSpeed);
     }
     #endregion
 
@@ -174,27 +184,34 @@ public class PlayerConJS : MonoBehaviour
     #region 캐릭터 스위칭
     private void SwitchCharacter()
     {
-        Vector3 currentPosition = activeCharacter.transform.position;
-        Quaternion currentRotation = activeCharacter.transform.rotation;
-
+        Vector3 currentPosition = rb.position;
+        Quaternion currentRotation = rb.rotation;
 
         if (activeCharacter == character1)
         {
             SetCharacterActive(character1, false);
             SetCharacterActive(character2, true);
             activeCharacter = character2;
-            //mappingDictionary = new Dictionary<int, string>(character2Mappings);
+            activeAnimator = character2Animator;
+            mappingDictionary = new Dictionary<int, string>(character2Mappings);
         }
         else
         {
             SetCharacterActive(character2, false);
             SetCharacterActive(character1, true);
             activeCharacter = character1;
-            //mappingDictionary = new Dictionary<int, string>(character1Mappings);
+            activeAnimator = character1Animator;
+            mappingDictionary = new Dictionary<int, string>(character1Mappings);
         }
 
-        activeCharacter.transform.position = currentPosition;
-        activeCharacter.transform.rotation = currentRotation;
+        rb.position = currentPosition;
+        rb.rotation = currentRotation;
+
+        freeLookCamera.Follow = activeCharacter.transform;
+        freeLookCamera.LookAt = activeCharacter.transform;
+
+        activeCharacter.transform.localPosition = Vector3.zero;
+        activeCharacter.transform.localRotation = Quaternion.identity;
     }
     #endregion
 
