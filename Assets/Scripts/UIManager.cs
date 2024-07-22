@@ -7,11 +7,17 @@ public class UIManager : MonoBehaviour
 {
     [SerializeField] GameObject settingUI;
     [SerializeField] bool openSetting;
+    [SerializeField] PlayerConJS playerController;
 
     void Start()
     {
         if (!openSetting) Cursor.lockState = CursorLockMode.Confined;
         else Cursor.lockState = CursorLockMode.None;
+
+        if(playerController == null)
+        {
+            playerController = FindObjectOfType<PlayerConJS>();
+        }
     }
     
     void Update()
@@ -30,11 +36,19 @@ public class UIManager : MonoBehaviour
         {
             Time.timeScale = 0;
             settingUI.SetActive(true);
+            if(playerController != null)
+            {
+                playerController.SetUIActive(true);
+            }
         }
         else
         {
             Time.timeScale = 1;
             settingUI.SetActive(false);
+            if (playerController != null)
+            {
+                playerController.SetUIActive(false);
+            }
         }
     }
     public void Restart()

@@ -8,6 +8,7 @@ public class UIDropdownHandler : MonoBehaviour
     #region ¼±¾ð
     public Animator animator;
     public Dropdown[] dropdowns;
+    public PlayerConJS playerController;
 
     [SerializeField]
     private List<AnimationMapping> mappingList;
@@ -20,7 +21,7 @@ public class UIDropdownHandler : MonoBehaviour
         InitializeDropdownOptions();
         for (int i = 0; i < dropdowns.Length; i++)
         {
-            int index = i;  // local variable to prevent closure issue
+            int index = i;
             dropdowns[i].onValueChanged.AddListener(value => DropdownValueChange(index, value));
         }
     }
@@ -56,7 +57,7 @@ public class UIDropdownHandler : MonoBehaviour
 
         if (mappingDictionary.TryGetValue(selectedOption, out string animationName))
         {
-            PlayerConJS.SetAnimation(index, animationName);
+            playerController.SetAnimation(index, animationName);
         }
     }
     #endregion
