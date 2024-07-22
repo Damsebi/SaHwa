@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIDropdownHandler : MonoBehaviour
+public class UIDropdownHandler1 : MonoBehaviour
 {
     #region ¼±¾ð
     public Animator animator;
@@ -23,6 +23,7 @@ public class UIDropdownHandler : MonoBehaviour
             int index = i;  // local variable to prevent closure issue
             dropdowns[i].onValueChanged.AddListener(value => DropdownValueChange(index, value));
         }
+
     }
     #endregion
 

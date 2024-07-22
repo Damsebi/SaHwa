@@ -15,13 +15,22 @@ public class PlayerConJS : MonoBehaviour
     private float moveAmount;
     private Quaternion targetRotation;
     [SerializeField] float playerRotateSpeed;
+<<<<<<< Updated upstream
 
     private static Dictionary<int, string> mappingDictionary = new Dictionary<int, string>();
 
     private bool isAnimationPlaying = false;
     private string currentAnimation = "";
     private Coroutine animationCheckCoroutine;
+=======
+>>>>>>> Stashed changes
 
+    private static Dictionary<int, string> mappingDictionary = new Dictionary<int, string>();
+
+    private bool isAnimationPlaying = false;
+    private string currentAnimation = "";
+    private Coroutine animationCheckCoroutine;
+    private bool isUIActive = false;
     #endregion
 
     #region Start()
@@ -34,7 +43,16 @@ public class PlayerConJS : MonoBehaviour
     #region Update()
     void Update()
     {
+<<<<<<< Updated upstream
         Movement();  
+=======
+        if (isUIActive)
+        {
+            return;
+        }
+
+        Movement();
+>>>>>>> Stashed changes
 
         if (!isAnimationPlaying)
         {
@@ -55,6 +73,24 @@ public class PlayerConJS : MonoBehaviour
                 PlayAnimation(3);
             }
         }
+    }
+    #endregion   
+
+    #region FixedUpdate()
+    private void FixedUpdate()
+    {
+        Rotation();
+        rigidbody.MovePosition(transform.position + movement * 6 * Time.deltaTime);
+    }
+    #endregion
+
+    #region 맵핑
+    private void SetDefaultMappings()
+    {
+        mappingDictionary.Add(0, "Animation_평타");
+        mappingDictionary.Add(1, "Animation_강공격");
+        mappingDictionary.Add(2, "Animation_스킬 1");
+        mappingDictionary.Add(3, "Animation_스킬 2");
     }
     #endregion
 
@@ -95,18 +131,13 @@ public class PlayerConJS : MonoBehaviour
         {
             yield return null;
         }
+<<<<<<< Updated upstream
 
         // Ensure that the animation is complete before resetting the flag
+=======
+>>>>>>> Stashed changes
         isAnimationPlaying = false;
         currentAnimation = "";
-    }
-    #endregion
-
-    #region FixedUpdate()
-    private void FixedUpdate()
-    {
-        Rotation();
-        rigidbody.MovePosition(transform.position + movement * 6 * Time.deltaTime);
     }
     #endregion
 
@@ -135,6 +166,7 @@ public class PlayerConJS : MonoBehaviour
             targetRotation = Quaternion.LookRotation(movement);
         }
     }
+<<<<<<< Updated upstream
     #endregion
 
     private void SetDefaultMappings()
@@ -144,4 +176,15 @@ public class PlayerConJS : MonoBehaviour
         mappingDictionary.Add(2, "Animation_스킬 1");
         mappingDictionary.Add(3, "Animation_스킬 2");
     }
+=======
+    #endregion   
+
+    #region ui활성화
+    public void SetUIActive(bool active)
+    {
+        isUIActive = active;
+    }
+    #endregion
+
+>>>>>>> Stashed changes
 }
