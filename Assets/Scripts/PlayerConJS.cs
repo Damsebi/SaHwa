@@ -8,36 +8,48 @@ public class PlayerConJS : MonoBehaviour
 
     public Animator animator;
     public Rigidbody rigidbody;
+    public GameObject character1;
+    public GameObject character2;
 
-    private float hori;
-    private float verti;
-    private Vector3 movement;
-    private float moveAmount;
-    private Quaternion targetRotation;
-    [SerializeField] float playerRotateSpeed;
+    
+    private GameObject activeCharacter;
+    private Dictionary<int, string> mappingDictionary = new Dictionary<int, string>();
 
-    private static Dictionary<int, string> mappingDictionary = new Dictionary<int, string>();
+    private Dictionary<int, string> character1Mappings = new Dictionary<int, string>();
+    private Dictionary<int, string> character2Mappings = new Dictionary<int, string>();
 
     private bool isAnimationPlaying = false;
     private string currentAnimation = "";
     private Coroutine animationCheckCoroutine;
     private bool isUIActive = false;
 
+    private float hori;
+    private float verti;
+    private Vector3 movement;
+    private float moveAmount;
+    private Quaternion targetRotation;
+    [SerializeField] private float playerRotateSpeed;
     #endregion
 
     #region Start()
     void Start()
     {
-        SetDefaultMappings();
+        InitializeCharacterMappings();
+        SetCharacterActive(character1, true); 
+        activeCharacter = character1;
+        mappingDictionary = new Dictionary<int, string>(character1Mappings);
+
     }
     #endregion
 
     #region Update()
     void Update()
     {
-        if (isUIActive)
-        {
-            return;
+        if (isUIActive) return;
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {         
+            SwitchCharacter();
         }
 
         Movement();
@@ -62,28 +74,10 @@ public class PlayerConJS : MonoBehaviour
             }
         }
     }
-    #endregion   
-
-    #region FixedUpdate()
-    private void FixedUpdate()
-    {
-        Rotation();
-        rigidbody.MovePosition(transform.position + movement * 6 * Time.deltaTime);
-    }
-    #endregion
-
-    #region 맵핑
-    private void SetDefaultMappings()
-    {
-        mappingDictionary.Add(0, "Animation_평타");
-        mappingDictionary.Add(1, "Animation_강공격");
-        mappingDictionary.Add(2, "Animation_스킬 1");
-        mappingDictionary.Add(3, "Animation_스킬 2");
-    }
     #endregion
 
     #region 애니메이션 설정
-    public static void SetAnimation(int index, string animationName)
+    public void SetAnimation(int index, string animationName)
     {
         if (mappingDictionary.ContainsKey(index))
         {
@@ -102,6 +96,10 @@ public class PlayerConJS : MonoBehaviour
                     StopCoroutine(animationCheckCoroutine);
                 }
 
+                else
+                {
+                    Debug.LogError("mappingDictionary null");
+                }
                 isAnimationPlaying = true;
                 currentAnimation = animationName;
                 animator.Play(animationName);
@@ -120,6 +118,14 @@ public class PlayerConJS : MonoBehaviour
         }
         isAnimationPlaying = false;
         currentAnimation = "";
+    }
+    #endregion
+
+    #region FixedUpdate()
+    private void FixedUpdate()
+    {
+        Rotation();
+        rigidbody.MovePosition(transform.position + movement * 6 * Time.deltaTime);
     }
     #endregion
 
@@ -148,9 +154,58 @@ public class PlayerConJS : MonoBehaviour
             targetRotation = Quaternion.LookRotation(movement);
         }
     }
-    #endregion   
+    #endregion
 
-    #region ui활성화
+    #region 캐릭터 매핑 초기화
+    private void InitializeCharacterMappings()
+    {
+        character1Mappings.Add(0, "human_mask_1");
+        character1Mappings.Add(1, "human_mask_2");
+        character1Mappings.Add(2, "human_mask_3");
+        character1Mappings.Add(3, "human_mask_4");
+
+        character2Mappings.Add(0, "animal_mask_1");
+        character2Mappings.Add(1, "animal_mask_2");
+        character2Mappings.Add(2, "animal_mask_3");
+        character2Mappings.Add(3, "animal_mask_4");
+    }
+    #endregion
+
+    #region 캐릭터 스위칭
+    private void SwitchCharacter()
+    {
+        Vector3 currentPosition = activeCharacter.transform.position;
+        Quaternion currentRotation = activeCharacter.transform.rotation;
+
+
+        if (activeCharacter == character1)
+        {
+            SetCharacterActive(character1, false);
+            SetCharacterActive(character2, true);
+            activeCharacter = character2;
+            //mappingDictionary = new Dictionary<int, string>(character2Mappings);
+        }
+        else
+        {
+            SetCharacterActive(character2, false);
+            SetCharacterActive(character1, true);
+            activeCharacter = character1;
+            //mappingDictionary = new Dictionary<int, string>(character1Mappings);
+        }
+
+        activeCharacter.transform.position = currentPosition;
+        activeCharacter.transform.rotation = currentRotation;
+    }
+    #endregion
+
+    #region 캐릭터 활성화 설정
+    private void SetCharacterActive(GameObject character, bool isActive)
+    {
+        character.SetActive(isActive);
+    }
+    #endregion
+
+    #region UI 활성화 설정
     public void SetUIActive(bool active)
     {
         isUIActive = active;

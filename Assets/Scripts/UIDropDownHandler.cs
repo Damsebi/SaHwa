@@ -8,6 +8,7 @@ public class UIDropdownHandler1 : MonoBehaviour
     #region 선언
     public Animator animator;
     public Dropdown[] dropdowns;
+    public PlayerConJS playerController;
 
     [SerializeField]
     private List<AnimationMapping> mappingList;
@@ -17,13 +18,18 @@ public class UIDropdownHandler1 : MonoBehaviour
     #region Start()
     void Start()
     {
+        if (playerController == null)
+        {
+            Debug.LogError("플레이어 컨트롤러 없음.");
+            return;
+        }
+
         InitializeDropdownOptions();
         for (int i = 0; i < dropdowns.Length; i++)
         {
             int index = i;
             dropdowns[i].onValueChanged.AddListener(value => DropdownValueChange(index, value));
         }
-
     }
     #endregion
 
@@ -57,7 +63,7 @@ public class UIDropdownHandler1 : MonoBehaviour
 
         if (mappingDictionary.TryGetValue(selectedOption, out string animationName))
         {
-            PlayerConJS.SetAnimation(index, animationName);
+            playerController.SetAnimation(index, animationName);
         }
     }
     #endregion
