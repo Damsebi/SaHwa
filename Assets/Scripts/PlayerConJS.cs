@@ -8,47 +8,36 @@ public class PlayerConJS : MonoBehaviour
 
     public Animator animator;
     public Rigidbody rigidbody;
-    public GameObject character1;
-    public GameObject character2;
-
-    private GameObject activeCharacter;
-    private Dictionary<int, string> mappingDictionary = new Dictionary<int, string>();
-
-    private Dictionary<int, string> character1Mappings = new Dictionary<int, string>();
-    private Dictionary<int, string> character2Mappings = new Dictionary<int, string>();
-
-    private bool isAnimationPlaying = false;
-    private string currentAnimation = "";
-    private Coroutine animationCheckCoroutine;
-    private bool isUIActive = false;
 
     private float hori;
     private float verti;
     private Vector3 movement;
     private float moveAmount;
     private Quaternion targetRotation;
-    [SerializeField] private float playerRotateSpeed;
+    [SerializeField] float playerRotateSpeed;
+
+    private static Dictionary<int, string> mappingDictionary = new Dictionary<int, string>();
+
+    private bool isAnimationPlaying = false;
+    private string currentAnimation = "";
+    private Coroutine animationCheckCoroutine;
+    private bool isUIActive = false;
 
     #endregion
 
     #region Start()
     void Start()
     {
-        InitializeCharacterMappings();
-        SetCharacterActive(character1, true);
-        activeCharacter = character1;
-        mappingDictionary = new Dictionary<int, string>(character1Mappings);
+        SetDefaultMappings();
     }
     #endregion
 
     #region Update()
     void Update()
     {
-        if (isUIActive) return;
-
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (isUIActive)
         {
-            SwitchCharacter();
+            return;
         }
 
         Movement();
@@ -73,10 +62,28 @@ public class PlayerConJS : MonoBehaviour
             }
         }
     }
+    #endregion   
+
+    #region FixedUpdate()
+    private void FixedUpdate()
+    {
+        Rotation();
+        rigidbody.MovePosition(transform.position + movement * 6 * Time.deltaTime);
+    }
+    #endregion
+
+    #region 맵핑
+    private void SetDefaultMappings()
+    {
+        mappingDictionary.Add(0, "Animation_평타");
+        mappingDictionary.Add(1, "Animation_강공격");
+        mappingDictionary.Add(2, "Animation_스킬 1");
+        mappingDictionary.Add(3, "Animation_스킬 2");
+    }
     #endregion
 
     #region 애니메이션 설정
-    public void SetAnimation(int index, string animationName)
+    public static void SetAnimation(int index, string animationName)
     {
         if (mappingDictionary.ContainsKey(index))
         {
@@ -110,19 +117,9 @@ public class PlayerConJS : MonoBehaviour
         while (stateInfo.IsName(currentAnimation) && !animator.IsInTransition(0))
         {
             yield return null;
-            stateInfo = animator.GetCurrentAnimatorStateInfo(0);
         }
-
         isAnimationPlaying = false;
         currentAnimation = "";
-    }
-    #endregion
-
-    #region FixedUpdate()
-    private void FixedUpdate()
-    {
-        Rotation();
-        rigidbody.MovePosition(transform.position + movement * 6 * Time.deltaTime);
     }
     #endregion
 
@@ -151,47 +148,12 @@ public class PlayerConJS : MonoBehaviour
             targetRotation = Quaternion.LookRotation(movement);
         }
     }
-    #endregion
+    #endregion   
 
-    private void InitializeCharacterMappings()
-    {
-        character1Mappings.Add(0, "사람탈_애니메이션 1");
-        character1Mappings.Add(1, "사람탈_애니메이션 2");
-        character1Mappings.Add(2, "사람탈_애니메이션 3");
-        character1Mappings.Add(3, "사람탈_애니메이션 4");
-
-        character2Mappings.Add(0, "동물탈_애니메이션 1");
-        character2Mappings.Add(1, "동물탈_애니메이션 2");
-        character2Mappings.Add(2, "동물탈_애니메이션 3");
-        character2Mappings.Add(3, "동물탈_애니메이션 4");
-    }
-
-    private void SwitchCharacter()
-    {
-        if (activeCharacter == character1)
-        {
-            SetCharacterActive(character1, false);
-            SetCharacterActive(character2, true);
-            activeCharacter = character2;
-            mappingDictionary = new Dictionary<int, string>(character2Mappings);
-        }
-        else
-        {
-            SetCharacterActive(character2, false);
-            SetCharacterActive(character1, true);
-            activeCharacter = character1;
-            mappingDictionary = new Dictionary<int, string>(character1Mappings);
-        }
-    }
-
-    private void SetCharacterActive(GameObject character, bool isActive)
-    {
-        character.SetActive(isActive);
-    }
-
+    #region ui활성화
     public void SetUIActive(bool active)
     {
         isUIActive = active;
     }
+    #endregion
 }
-

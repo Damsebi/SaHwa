@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIDropdownHandler : MonoBehaviour
+public class UIDropdownHandler1 : MonoBehaviour
 {
     #region ¼±¾ð
     public Animator animator;
     public Dropdown[] dropdowns;
-    public PlayerConJS playerController;
 
     [SerializeField]
     private List<AnimationMapping> mappingList;
@@ -24,6 +23,7 @@ public class UIDropdownHandler : MonoBehaviour
             int index = i;
             dropdowns[i].onValueChanged.AddListener(value => DropdownValueChange(index, value));
         }
+
     }
     #endregion
 
@@ -57,7 +57,7 @@ public class UIDropdownHandler : MonoBehaviour
 
         if (mappingDictionary.TryGetValue(selectedOption, out string animationName))
         {
-            playerController.SetAnimation(index, animationName);
+            PlayerConJS.SetAnimation(index, animationName);
         }
     }
     #endregion
