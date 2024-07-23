@@ -14,6 +14,7 @@ public class UIManager : MonoBehaviour
     #region Start()
     void Start()
     {
+        OpenSettings();
         if (!openSetting) Cursor.lockState = CursorLockMode.Confined;
         else Cursor.lockState = CursorLockMode.None;
 
