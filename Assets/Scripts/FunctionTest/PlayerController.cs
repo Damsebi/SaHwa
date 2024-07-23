@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerAnimation), typeof(PlayerMove), typeof(PlayerRotate))]
+[RequireComponent(typeof(PlayerAnimation), typeof(PlayerMovement))]
 public class PlayerController : MonoBehaviour
 {
     #region 코드 디자인
@@ -30,8 +30,7 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     [SerializeField] PlayerAnimation playerAnimation;
-    [SerializeField] PlayerMove playerMove;
-    [SerializeField] PlayerRotate playerRotate;
+    [SerializeField] PlayerMovement playerMove;
 
     private static PlayerController instance;
     public static PlayerController Instance
@@ -48,16 +47,15 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        
+        instance = this;
 
-    }
-    void Start()
-    {
-        
+        playerAnimation = GetComponent<PlayerAnimation>();
+        playerMove = GetComponent<PlayerMovement>();
+        playerRotate = GetComponent<PlayerRotate>();
     }
 
     void Update()
     {
-        
+        playerMove.InputDirection(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
     }
 }
