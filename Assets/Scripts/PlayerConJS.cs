@@ -72,19 +72,19 @@ public class PlayerConJS : MonoBehaviour
 
         if (!isAnimationPlaying)
         {
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetButtonDown("Fire1"))
             {
                 PlayAnimation(0);
             }
-            else if (Input.GetMouseButtonDown(1))
+            else if (Input.GetButtonDown("Fire2"))
             {
                 PlayAnimation(1);
             }
-            else if (Input.GetButtonDown("E"))
+            else if (Input.GetButtonDown("ActionSkill1"))
             {
                 PlayAnimation(2);
             }
-            else if (Input.GetButtonDown("R"))
+            else if (Input.GetButtonDown("ActionSkill2"))
             {
                 PlayAnimation(3);
             }
