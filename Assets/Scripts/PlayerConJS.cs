@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using System;
 
 public class PlayerConJS : MonoBehaviour
 {
@@ -88,6 +89,44 @@ public class PlayerConJS : MonoBehaviour
                 PlayAnimation(3);
             }
         }
+
+        if (freeLookCamera.m_YAxis.Value < 0.34f)
+        {
+            freeLookCamera.m_YAxis.Value = 0.34f;
+        }
+
+        float scrollInput = Input.GetAxis("Mouse ScrollWheel");
+        if (scrollInput != 0f)
+        {
+            AdjustCameraOrbits(scrollInput);
+        }
+
+    }
+    #endregion
+
+    #region FixedUpdate()
+    private void FixedUpdate()
+    {
+        if (isUIActive) return;
+
+        Movement();
+        Rotation();
+        playerRigidbody.MovePosition(playerRigidbody.position + movement * 6 * Time.deltaTime);
+        activeCharacter.transform.localPosition = Vector3.zero;
+        activeCharacter.transform.localRotation = Quaternion.identity;
+    }
+    #endregion
+
+    #region 카메라 스크롤
+    private void AdjustCameraOrbits(float scrollInput)
+    {
+        float adjustment = scrollInput * 2.0f;
+        freeLookCamera.m_Orbits[0].m_Radius = Mathf.Clamp(freeLookCamera.m_Orbits[0].m_Radius
+            + adjustment, 5f, 10f);
+        freeLookCamera.m_Orbits[1].m_Radius = Mathf.Clamp(freeLookCamera.m_Orbits[1].m_Radius
+            + adjustment, 5f, 10f);
+        freeLookCamera.m_Orbits[2].m_Radius = Mathf.Clamp(freeLookCamera.m_Orbits[2].m_Radius
+            + adjustment, 5f, 10f);
     }
     #endregion
 
@@ -150,19 +189,6 @@ public class PlayerConJS : MonoBehaviour
         }
         isAnimationPlaying = false;
         currentAnimation = "";
-    }
-    #endregion
-
-    #region FixedUpdate()
-    private void FixedUpdate()
-    {
-        if (isUIActive) return;
-
-        Movement();
-        Rotation();
-        playerRigidbody.MovePosition(playerRigidbody.position + movement * 6 * Time.deltaTime);
-        activeCharacter.transform.localPosition = Vector3.zero;
-        activeCharacter.transform.localRotation = Quaternion.identity;
     }
     #endregion
 
