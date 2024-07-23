@@ -212,106 +212,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 124931}
   m_CullTransparentMesh: 1
---- !u!1 &2899045
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2899046}
-  - component: {fileID: 2899047}
-  m_Layer: 0
-  m_Name: Animal_DropDown
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2899046
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2899045}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 22, y: 448, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1780724052}
-  - {fileID: 1334154483}
-  - {fileID: 499994348}
-  - {fileID: 1796889800}
-  m_Father: {fileID: 1990569926}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2899047
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2899045}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ef1a338f751ba14f8fb5f5f840c7296, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 1223480000}
-  dropdowns:
-  - {fileID: 1780724053}
-  - {fileID: 1334154484}
-  - {fileID: 499994349}
-  - {fileID: 1796889801}
-  playerController: {fileID: 1223479996}
-  mappingList:
-  - dropdownOption: ========
-    animationName: ========
-  - dropdownOption: "\uC810\uD504 \uACF5\uACA9"
-    animationName: Mutant Jump Attack
-  - dropdownOption: "\uD380\uCE58"
-    animationName: Mutant Punch
-  - dropdownOption: "\uD558\uB2E8 \uBC1C\uCC28\uAE30"
-    animationName: Leg Sweep
-  - dropdownOption: "\uB0B4\uB824\uCE58\uAE30"
-    animationName: Mutant Swiping
-  - dropdownOption: "\uD314\uAFC8\uCE58 \uC5B4\uD37C\uCEF7"
-    animationName: Elbow Uppercut Combo
-  - dropdownOption: "\uC30D\uAC80 \uCF64\uBCF4"
-    animationName: Dual Weapon Combo
-  - dropdownOption: "\uC7A1\uC544\uC11C \uB0B4\uB3D9\uB315\uC774"
-    animationName: Grab And Slam
-  - dropdownOption: "\uBC1C\uCC28\uAE30 1"
-    animationName: Mma Kick
-  - dropdownOption: "\uBC1C\uCC28\uAE30 2"
-    animationName: Kicking 4
-  - dropdownOption: "\uBC1C\uCC28\uAE30 3"
-    animationName: Kicking 3
-  - dropdownOption: "\uBC1C\uCC28\uAE30 4"
-    animationName: Kicking 2
-  - dropdownOption: "\uBC1C\uCC28\uAE30 5"
-    animationName: Kicking 1
-  - dropdownOption: "\uBC1C\uCC28\uAE30 6"
-    animationName: Side Kick
-  - dropdownOption: "\uD68C\uC624\uB9AC \uD0A5"
-    animationName: Hurricane Kick
-  - dropdownOption: "\uC2A4\uD540 \uBC1C\uCC28\uAE30"
-    animationName: Spin Flip Kick
-  - dropdownOption: "\uC55E\uC73C\uB85C \uC810\uD504"
-    animationName: Front Flip
-  - dropdownOption: "\uB098\uBE44 \uBC1C\uCC28\uAE30"
-    animationName: Butterfly Twirl
-  - dropdownOption: "\uB0A0\uC544\uCC28\uAE30"
-    animationName: Flying Kick
-  - dropdownOption: "\uC2AC\uB77C\uC774\uB4DC"
-    animationName: Running Slide
-  - dropdownOption: "\uBC31\uC2AC\uB77C\uC774\uB4DC"
-    animationName: Sprint To Backslide
-  - dropdownOption: "\uC2A4\uC719 \uB7F0"
-    animationName: Run And Swing
 --- !u!1 &14996902
 GameObject:
   m_ObjectHideFlags: 3
@@ -998,6 +898,10 @@ Transform:
   - {fileID: 923939819}
   - {fileID: 1557205758}
   - {fileID: 684806727}
+  - {fileID: 1780724052}
+  - {fileID: 1334154483}
+  - {fileID: 499994348}
+  - {fileID: 1796889800}
   m_Father: {fileID: 1990569926}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &138608329
@@ -1012,16 +916,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ef1a338f751ba14f8fb5f5f840c7296, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 1793340004}
-  dropdowns:
+  playerController: {fileID: 253015521}
+  character1Dropdowns:
   - {fileID: 364568885}
   - {fileID: 923939820}
   - {fileID: 1557205759}
   - {fileID: 684806728}
-  playerController: {fileID: 5766620098711602008}
-  mappingList:
-  - dropdownOption: ========
-    animationName: ========
+  character2Dropdowns:
+  - {fileID: 1780724053}
+  - {fileID: 1334154484}
+  - {fileID: 499994349}
+  - {fileID: 1796889801}
+  character1MappingList:
+  - dropdownOption: None
+    animationName: 
+  - dropdownOption: "==== < \uAC80 > ===="
+    animationName: 
   - dropdownOption: "\uD22C\uD578\uB4DC \uC18C\uB4DC 1"
     animationName: 2Hand-Sword-Attack1
   - dropdownOption: "\uD22C\uD578\uB4DC \uC18C\uB4DC 2"
@@ -1034,6 +944,28 @@ MonoBehaviour:
     animationName: 2Hand-Sword-Attack6
   - dropdownOption: "\uD22C\uD578\uB4DC \uC18C\uB4DC \uCF64\uBCF4"
     animationName: Two Hand Sword Combo
+  - dropdownOption: "\uBC00\uB9AC 1"
+    animationName: Standing Melee Attack 360 High
+  - dropdownOption: "\uBC00\uB9AC 2"
+    animationName: Standing Melee Attack Backhand
+  - dropdownOption: "\uBC00\uB9AC 3"
+    animationName: Standing Melee Combo Attack Ver1
+  - dropdownOption: "\uBC00\uB9AC 4"
+    animationName: Standing Melee Combo Attack Ver2
+  - dropdownOption: "\uBC00\uB9AC 5"
+    animationName: Standing Melee Run Jump Attack
+  - dropdownOption: "==== < \uBC29\uD328 > ===="
+    animationName: 
+  - dropdownOption: "\uAC80 \uBC29\uD328 1"
+    animationName: Sword And Shield Attack
+  - dropdownOption: "\uAC80 \uBC29\uD328 2"
+    animationName: Sword And Shield Slash1
+  - dropdownOption: "\uAC80 \uBC29\uD328 3"
+    animationName: Sword And Shield Slash2
+  - dropdownOption: "\uAC80 \uBC29\uD328 4"
+    animationName: Sword And Shield Slash3
+  - dropdownOption: "==== < \uB3C4\uB07C > ===="
+    animationName: 
   - dropdownOption: "\uB3C4\uB07C 1"
     animationName: axeSwing1
   - dropdownOption: "\uB3C4\uB07C 2"
@@ -1045,47 +977,84 @@ MonoBehaviour:
   - dropdownOption: "\uB3C4\uB07C 5"
     animationName: axeSwing5
   - dropdownOption: "\uB3C4\uB07C 6"
-    animationName: axeSwing6
+    animationName: axeSwing5-1
   - dropdownOption: "\uB3C4\uB07C 7"
+    animationName: axeSwing6
+  - dropdownOption: "\uB3C4\uB07C 8"
     animationName: axeSwing7
-  - dropdownOption: "\uBA54\uC774\uC9C0 \uAE30\uBCF8 1"
-    animationName: Frank_RPG_Mage_Attack02
-  - dropdownOption: "\uBA54\uC774\uC9C0 \uAE30\uBCF8 2"
-    animationName: Frank_RPG_Mage_Attack03
-  - dropdownOption: "\uBA54\uC774\uC9C0 \uAE30\uBCF8 3"
-    animationName: Frank_RPG_Mage_Attack06
-  - dropdownOption: "\uBA54\uC774\uC9C0 \uCF64\uBCF4"
-    animationName: Frank_RPG_Mage_Combo03_All
-  - dropdownOption: "\uBA54\uC774\uC9C0 \uC2A4\uD0AC 1"
-    animationName: Frank_RPG_Mage_Skill01
-  - dropdownOption: "\uBA54\uC774\uC9C0 \uC2A4\uD0AC 2"
-    animationName: Frank_RPG_Mage_Skill02
-  - dropdownOption: "\uBA54\uC774\uC9C0 \uC2A4\uD0AC 3"
-    animationName: Frank_RPG_Mage_Skill03
-  - dropdownOption: "\uBA54\uC774\uC9C0 \uC2A4\uD0AC 4"
-    animationName: Frank_RPG_Mage_Skill04
-  - dropdownOption: "\uD65C\uC3D8\uAE30"
+  - dropdownOption: "==== < \uB9C8\uBC95 > ===="
+    animationName: 
+  - dropdownOption: "\uB9C8\uBC95 1"
+    animationName: Frank_RPG_Mage_Attack02_Demo
+  - dropdownOption: "\uB9C8\uBC95 2"
+    animationName: Frank_RPG_Mage_Attack03_Demo
+  - dropdownOption: "\uB9C8\uBC95 3"
+    animationName: Frank_RPG_Mage_Attack06_Demo
+  - dropdownOption: "\uB9C8\uBC95 4"
+    animationName: Frank_RPG_Mage_Skill01_Demo
+  - dropdownOption: "\uB9C8\uBC95 5"
+    animationName: Frank_RPG_Mage_Skill02_Demo
+  - dropdownOption: "\uB9C8\uBC95 6"
+    animationName: Frank_RPG_Mage_Skill03_Demo
+  - dropdownOption: "\uB9C8\uBC95 7"
+    animationName: Frank_RPG_Mage_Skill04_Demo
+  - dropdownOption: "\uB9C8\uBC95 \uCF64\uBCF4"
+    animationName: Frank_RPG_Mage_Combo03_All_Demo
+  - dropdownOption: "==== < \uADF8 \uC678 > ===="
+    animationName: 
+  - dropdownOption: "\uD65C"
     animationName: shootingArrow
-  - dropdownOption: "\uBC00\uB9AC \uACF5\uACA9 1"
-    animationName: Standing Melee Attack 360 High
-  - dropdownOption: "\uBC00\uB9AC \uACF5\uACA9 2"
-    animationName: Standing Melee Attack Backhand
-  - dropdownOption: "\uBC00\uB9AC \uCF64\uBCF4 1"
-    animationName: Standing Melee Combo Attack Ver. 1
-  - dropdownOption: "\uBC00\uB9AC \uCF64\uBCF4 2"
-    animationName: Standing Melee Combo Attack Ver. 2
-  - dropdownOption: "\uBC00\uB9AC \uC2A4\uD0AC 1"
-    animationName: Standing Melee Run Jump Attack
-  - dropdownOption: "\uAC80\uACFC \uBC29\uD328 \uACF5\uACA9 1"
-    animationName: Sword And Shield Attack
-  - dropdownOption: "\uAC80\uACFC \uBC29\uD328 \uACF5\uACA9 2"
-    animationName: Sword And Shield Slash
-  - dropdownOption: "\uAC80\uACFC \uBC29\uD328 \uACF5\uACA9 3"
-    animationName: Sword And Shield Slash (1)
-  - dropdownOption: "\uAC80\uACFC \uBC29\uD328 \uACF5\uACA9 4"
-    animationName: Sword And Shield Slash (2)
-  - dropdownOption: Breakdance 1990
-    animationName: Breakdance 1990 (1)
+  character2MappingList:
+  - dropdownOption: None
+    animationName: 
+  - dropdownOption: "====< \uC8FC\uBA39 >===="
+    animationName: 
+  - dropdownOption: "\uC810\uD504 \uACF5\uACA9"
+    animationName: Mutant Jump Attack
+  - dropdownOption: "\uD380\uCE58 1"
+    animationName: Mutant Punch
+  - dropdownOption: "\uD729\uC4F8\uAE30"
+    animationName: Mutant Swiping
+  - dropdownOption: "\uD314\uAFC8\uCE58 \uACF5\uACA9"
+    animationName: Elbow Uppercut Combo
+  - dropdownOption: "\uC7A1\uAE30"
+    animationName: Grab And Slam
+  - dropdownOption: "\uC591\uC190 \uCF64\uBCF4"
+    animationName: Dual Weapon Combo
+  - dropdownOption: "====< \uBC1C\uCC28\uAE30 >===="
+    animationName: 
+  - dropdownOption: "\uBC1C\uCC28\uAE30 1"
+    animationName: Mma Kick
+  - dropdownOption: "\uBC1C\uCC28\uAE30 2"
+    animationName: Kicking 1
+  - dropdownOption: "\uBC1C\uCC28\uAE30 3"
+    animationName: Kicking 2
+  - dropdownOption: "\uBC1C\uCC28\uAE30 4"
+    animationName: Kicking 3
+  - dropdownOption: "\uBC1C\uCC28\uAE30 5"
+    animationName: Kicking 4
+  - dropdownOption: "\uBC1C\uCC28\uAE30 6"
+    animationName: Side Kick
+  - dropdownOption: "\uD558\uB2E8 \uBC1C\uCC28\uAE30"
+    animationName: Leg Sweep
+  - dropdownOption: "\uB2EC\uB9AC\uBA74\uC11C \uBC1C\uCC28\uAE30"
+    animationName: Run And Swing
+  - dropdownOption: "\uD68C\uC624\uB9AC \uBC1C\uCC28\uAE30"
+    animationName: Hurricane Kick
+  - dropdownOption: "\uC55E\uB3CC\uAE30"
+    animationName: Front Flip
+  - dropdownOption: "\uB098\uBE44 \uBC1C\uCC28\uAE30"
+    animationName: Butterfly Twirl
+  - dropdownOption: "\uB0A0\uC544\uCC28\uAE30"
+    animationName: Flying Kick
+  - dropdownOption: "\uC2A4\uD540 \uBC1C\uCC28\uAE30"
+    animationName: Spin Flip Kick
+  - dropdownOption: "====< \uADF8 \uC678 >===="
+    animationName: 
+  - dropdownOption: "\uC2AC\uB77C\uC774\uB4DC 1"
+    animationName: Running Slide
+  - dropdownOption: "\uC2AC\uB77C\uC774\uB4DC 2"
+    animationName: Sprint To Backslide
 --- !u!1 &148917453
 GameObject:
   m_ObjectHideFlags: 0
@@ -1302,17 +1271,17 @@ PrefabInstance:
     - target: {fileID: 7388457606168595993, guid: cdcc3917d2a15264ab950cc587d3ad7b,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -5.8224864
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7388457606168595993, guid: cdcc3917d2a15264ab950cc587d3ad7b,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.18672293
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7388457606168595993, guid: cdcc3917d2a15264ab950cc587d3ad7b,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.44231668
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7388457606168595993, guid: cdcc3917d2a15264ab950cc587d3ad7b,
         type: 3}
@@ -1359,7 +1328,8 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 443689004578841431, guid: cdcc3917d2a15264ab950cc587d3ad7b, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -1481,7 +1451,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 253015520}
-  - component: {fileID: 253015519}
+  - component: {fileID: 253015521}
+  - component: {fileID: 253015522}
   m_Layer: 0
   m_Name: Player_Controller
   m_TagString: Untagged
@@ -1489,7 +1460,24 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &253015519
+--- !u!4 &253015520
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 253015518}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5766620098711602011}
+  - {fileID: 1223480001}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &253015521
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1503,29 +1491,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   character1Animator: {fileID: 1793340004}
   character2Animator: {fileID: 1223480000}
-  character1Rigidbody: {fileID: 5766620098711602010}
-  character2Rigidbody: {fileID: 1223480003}
   character1: {fileID: 5766620098711602007}
   character2: {fileID: 1223479995}
   freeLookCamera: {fileID: 989973233}
   playerRotateSpeed: 25
---- !u!4 &253015520
-Transform:
+--- !u!54 &253015522
+Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 253015518}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.8224864, y: -0.18672293, z: 0.44231668}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 5766620098711602011}
-  - {fileID: 1223480001}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &293769428
 GameObject:
   m_ObjectHideFlags: 0
@@ -1795,7 +1791,7 @@ GameObject:
   - component: {fileID: 364568886}
   - component: {fileID: 364568885}
   m_Layer: 0
-  m_Name: Skill 1
+  m_Name: H_Skill 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1850,7 +1846,7 @@ MonoBehaviour:
   m_Value: 0
   m_Options:
     m_Options:
-    - m_Text: =============
+    - m_Text: None
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2619,7 +2615,7 @@ GameObject:
   - component: {fileID: 499994350}
   - component: {fileID: 499994349}
   m_Layer: 0
-  m_Name: Skill 3
+  m_Name: A_Skill 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2640,11 +2636,11 @@ RectTransform:
   - {fileID: 370271504}
   - {fileID: 778639896}
   - {fileID: 1957025122}
-  m_Father: {fileID: 2899046}
+  m_Father: {fileID: 138608328}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -100, y: -150}
+  m_AnchoredPosition: {x: -840, y: -150}
   m_SizeDelta: {x: 500, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &499994349
@@ -2696,7 +2692,7 @@ MonoBehaviour:
   m_Value: 0
   m_Options:
     m_Options:
-    - m_Text: =============
+    - m_Text: None
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3549,7 +3545,7 @@ GameObject:
   - component: {fileID: 684806729}
   - component: {fileID: 684806728}
   m_Layer: 0
-  m_Name: Skill 4
+  m_Name: H_Skill 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3626,7 +3622,7 @@ MonoBehaviour:
   m_Value: 0
   m_Options:
     m_Options:
-    - m_Text: =============
+    - m_Text: None
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3704,7 +3700,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 274, y: 480}
+  m_AnchoredPosition: {x: 291, y: 480}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &719487652
@@ -3727,7 +3723,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: ' : Skill 1 :'
+  m_text: 'Skill 1 :'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4155,7 +4151,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: ': Skill 4 :'
+  m_text: 'Skill 4 :'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4808,7 +4804,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: ': Skill 3 :'
+  m_text: 'Skill 3 :'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -5056,7 +5052,7 @@ GameObject:
   - component: {fileID: 923939821}
   - component: {fileID: 923939820}
   m_Layer: 0
-  m_Name: Skill 2
+  m_Name: H_Skill 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5133,7 +5129,7 @@ MonoBehaviour:
   m_Value: 0
   m_Options:
     m_Options:
-    - m_Text: =============
+    - m_Text: None
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
@@ -7146,18 +7142,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 158266232}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1223479996 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 44243187006015383, guid: cdcc3917d2a15264ab950cc587d3ad7b,
-    type: 3}
-  m_PrefabInstance: {fileID: 158266232}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1223479995}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2be9979319f5df4eaf570e3e0688ed5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!95 &1223480000 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 3488389585615688803, guid: cdcc3917d2a15264ab950cc587d3ad7b,
@@ -7167,12 +7151,6 @@ Animator:
 --- !u!4 &1223480001 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7388457606168595993, guid: cdcc3917d2a15264ab950cc587d3ad7b,
-    type: 3}
-  m_PrefabInstance: {fileID: 158266232}
-  m_PrefabAsset: {fileID: 0}
---- !u!54 &1223480003 stripped
-Rigidbody:
-  m_CorrespondingSourceObject: {fileID: 443689004578841431, guid: cdcc3917d2a15264ab950cc587d3ad7b,
     type: 3}
   m_PrefabInstance: {fileID: 158266232}
   m_PrefabAsset: {fileID: 0}
@@ -7499,7 +7477,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: ': Skill 2 :'
+  m_text: 'Skill 2 :'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -7739,7 +7717,7 @@ GameObject:
   - component: {fileID: 1334154485}
   - component: {fileID: 1334154484}
   m_Layer: 0
-  m_Name: Skill 2
+  m_Name: A_Skill 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7760,11 +7738,11 @@ RectTransform:
   - {fileID: 1182555603}
   - {fileID: 1325478332}
   - {fileID: 760419579}
-  m_Father: {fileID: 2899046}
+  m_Father: {fileID: 138608328}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -100, y: -60}
+  m_AnchoredPosition: {x: -840, y: -60}
   m_SizeDelta: {x: 500, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1334154484
@@ -7816,7 +7794,7 @@ MonoBehaviour:
   m_Value: 0
   m_Options:
     m_Options:
-    - m_Text: =============
+    - m_Text: None
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
@@ -8634,7 +8612,7 @@ GameObject:
   - component: {fileID: 1557205760}
   - component: {fileID: 1557205759}
   m_Layer: 0
-  m_Name: Skill 3
+  m_Name: H_Skill 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8711,7 +8689,7 @@ MonoBehaviour:
   m_Value: 0
   m_Options:
     m_Options:
-    - m_Text: =============
+    - m_Text: None
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
@@ -9132,7 +9110,7 @@ GameObject:
   - component: {fileID: 1690523483}
   - component: {fileID: 1690523486}
   - component: {fileID: 1690523485}
-  - component: {fileID: 1690523484}
+  - component: {fileID: 1690523487}
   m_Layer: 0
   m_Name: cm
   m_TagString: Untagged
@@ -9155,33 +9133,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2037589909}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1690523484
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1690523482}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4044717213e31446939f7bd49c896ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_TrackedObjectOffset: {x: 0, y: 0, z: 0}
-  m_LookaheadTime: 0
-  m_LookaheadSmoothing: 0
-  m_LookaheadIgnoreY: 0
-  m_HorizontalDamping: 0
-  m_VerticalDamping: 0
-  m_ScreenX: 0.5
-  m_ScreenY: 0.5
-  m_DeadZoneWidth: 0
-  m_DeadZoneHeight: 0
-  m_SoftZoneWidth: 0.8
-  m_SoftZoneHeight: 0.8
-  m_BiasX: 0
-  m_BiasY: 0
-  m_CenterOnActivate: 1
 --- !u!114 &1690523485
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -9248,6 +9199,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0b09e7857660247b1477e93731de29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1690523487
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1690523482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4044717213e31446939f7bd49c896ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TrackedObjectOffset: {x: 0, y: 0, z: 0}
+  m_LookaheadTime: 0
+  m_LookaheadSmoothing: 0
+  m_LookaheadIgnoreY: 0
+  m_HorizontalDamping: 0.5
+  m_VerticalDamping: 0.5
+  m_ScreenX: 0.5
+  m_ScreenY: 0.5
+  m_DeadZoneWidth: 0
+  m_DeadZoneHeight: 0
+  m_SoftZoneWidth: 0.8
+  m_SoftZoneHeight: 0.8
+  m_BiasX: 0
+  m_BiasY: 0
+  m_CenterOnActivate: 1
 --- !u!1 &1698524830
 GameObject:
   m_ObjectHideFlags: 0
@@ -9561,7 +9539,7 @@ GameObject:
   - component: {fileID: 1780724054}
   - component: {fileID: 1780724053}
   m_Layer: 0
-  m_Name: Skill 1
+  m_Name: A_Skill 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9582,11 +9560,11 @@ RectTransform:
   - {fileID: 2025315677}
   - {fileID: 1855549791}
   - {fileID: 545873304}
-  m_Father: {fileID: 2899046}
+  m_Father: {fileID: 138608328}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -100, y: 30}
+  m_AnchoredPosition: {x: -840, y: 30}
   m_SizeDelta: {x: 500, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1780724053
@@ -9638,7 +9616,7 @@ MonoBehaviour:
   m_Value: 0
   m_Options:
     m_Options:
-    - m_Text: =============
+    - m_Text: None
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
@@ -9780,7 +9758,7 @@ GameObject:
   - component: {fileID: 1796889802}
   - component: {fileID: 1796889801}
   m_Layer: 0
-  m_Name: Skill 4
+  m_Name: A_Skill 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9801,11 +9779,11 @@ RectTransform:
   - {fileID: 1547889713}
   - {fileID: 1502757334}
   - {fileID: 1156233840}
-  m_Father: {fileID: 2899046}
+  m_Father: {fileID: 138608328}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -100, y: -240}
+  m_AnchoredPosition: {x: -840, y: -240}
   m_SizeDelta: {x: 500, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1796889801
@@ -9857,7 +9835,7 @@ MonoBehaviour:
   m_Value: 0
   m_Options:
     m_Options:
-    - m_Text: =============
+    - m_Text: None
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
@@ -10732,7 +10710,6 @@ RectTransform:
   - {fileID: 1915750529}
   - {fileID: 937527347}
   - {fileID: 138608328}
-  - {fileID: 2899046}
   m_Father: {fileID: 1362240598}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -11919,17 +11896,17 @@ PrefabInstance:
     - target: {fileID: 5617864472494741644, guid: 67938ef9578702448a02109627b15db5,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -5.8224864
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5617864472494741644, guid: 67938ef9578702448a02109627b15db5,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.18672293
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5617864472494741644, guid: 67938ef9578702448a02109627b15db5,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.44231668
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5617864472494741644, guid: 67938ef9578702448a02109627b15db5,
         type: 3}
@@ -11986,7 +11963,8 @@ PrefabInstance:
       propertyPath: freeLookCamera
       value: 
       objectReference: {fileID: 989973233}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7732727465881022694, guid: 67938ef9578702448a02109627b15db5, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -11994,24 +11972,6 @@ PrefabInstance:
 --- !u!1 &5766620098711602007 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5097363761613128246, guid: 67938ef9578702448a02109627b15db5,
-    type: 3}
-  m_PrefabInstance: {fileID: 5766620098711602006}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &5766620098711602008 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8839076696979855366, guid: 67938ef9578702448a02109627b15db5,
-    type: 3}
-  m_PrefabInstance: {fileID: 5766620098711602006}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5766620098711602007}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2be9979319f5df4eaf570e3e0688ed5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!54 &5766620098711602010 stripped
-Rigidbody:
-  m_CorrespondingSourceObject: {fileID: 7732727465881022694, guid: 67938ef9578702448a02109627b15db5,
     type: 3}
   m_PrefabInstance: {fileID: 5766620098711602006}
   m_PrefabAsset: {fileID: 0}
@@ -12029,6 +11989,6 @@ SceneRoots:
   - {fileID: 989973234}
   - {fileID: 410087041}
   - {fileID: 854304584}
-  - {fileID: 293769430}
   - {fileID: 1304303932}
   - {fileID: 253015520}
+  - {fileID: 293769430}

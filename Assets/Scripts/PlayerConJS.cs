@@ -6,7 +6,6 @@ using Cinemachine;
 public class PlayerConJS : MonoBehaviour
 {
     #region 선언
-
     public Animator character1Animator;
     public Animator character2Animator;
     public GameObject character1;
@@ -15,11 +14,11 @@ public class PlayerConJS : MonoBehaviour
 
     private GameObject activeCharacter;
     private Animator activeAnimator;
-    private Dictionary<int, string> mappingDictionary = new Dictionary<int, string>();
 
     private Dictionary<int, string> character1Mappings = new Dictionary<int, string>();
     private Dictionary<int, string> character2Mappings = new Dictionary<int, string>();
 
+    private Dictionary<int, string> currentMappings;
     private bool isAnimationPlaying = false;
     private string currentAnimation = "";
     private Coroutine animationCheckCoroutine;
@@ -30,23 +29,23 @@ public class PlayerConJS : MonoBehaviour
     private Vector3 movement;
     private float moveAmount;
     private Quaternion targetRotation;
-    private Rigidbody rb;
+    private Rigidbody playerRigidbody;
     [SerializeField] private float playerRotateSpeed;
     #endregion
 
-    #region Start
+    #region Start()
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        playerRigidbody = GetComponent<Rigidbody>();
 
-        rb.useGravity = true;
-        rb.isKinematic = false;
+        playerRigidbody.useGravity = true;
+        playerRigidbody.isKinematic = false;
 
         InitializeCharacterMappings();
         SetCharacterActive(character1, true);
         activeCharacter = character1;
         activeAnimator = character1Animator;
-        mappingDictionary = new Dictionary<int, string>(character1Mappings);
+        currentMappings = character1Mappings;
 
         freeLookCamera.Follow = activeCharacter.transform;
         freeLookCamera.LookAt = activeCharacter.transform;
@@ -56,9 +55,14 @@ public class PlayerConJS : MonoBehaviour
     #region Update()
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            SetUIActive(!isUIActive);
+        }
+
         if (isUIActive) return;
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && !isAnimationPlaying)
         {
             SwitchCharacter();
         }
@@ -88,17 +92,32 @@ public class PlayerConJS : MonoBehaviour
     #endregion
 
     #region 애니메이션 설정
-    public void SetAnimation(int index, string animationName)
+    public void SetAnimation(int index, string animationName, bool isCharacter1)
     {
-        if (mappingDictionary.ContainsKey(index))
+        if (isCharacter1)
         {
-            mappingDictionary[index] = animationName;
+            if (character1Mappings.ContainsKey(index))
+            {
+                character1Mappings[index] = animationName;
+            }
+        }
+        else
+        {
+            if (character2Mappings.ContainsKey(index))
+            {
+                character2Mappings[index] = animationName;
+            }
+        }
+
+        if (activeCharacter == (isCharacter1 ? character1 : character2))
+        {
+            currentMappings[index] = animationName;
         }
     }
 
     private void PlayAnimation(int index)
     {
-        if (mappingDictionary.TryGetValue(index, out string animationName) && !string.IsNullOrEmpty(animationName))
+        if (currentMappings.TryGetValue(index, out string animationName) && !string.IsNullOrEmpty(animationName))
         {
             if (currentAnimation != animationName)
             {
@@ -117,23 +136,31 @@ public class PlayerConJS : MonoBehaviour
 
     private IEnumerator CheckAnimationFinished()
     {
-        AnimatorStateInfo stateInfo = activeAnimator.GetCurrentAnimatorStateInfo(0);
-
-        while (stateInfo.IsName(currentAnimation) && !activeAnimator.IsInTransition(0))
+        while (true)
         {
-            yield return null;
+            AnimatorStateInfo stateInfo = activeAnimator.GetCurrentAnimatorStateInfo(0);
+            if (stateInfo.IsName(currentAnimation) && stateInfo.normalizedTime < 1.0f)
+            {
+                yield return null;
+            }
+            else
+            {
+                break;
+            }
         }
         isAnimationPlaying = false;
         currentAnimation = "";
     }
     #endregion
 
-    #region FixedUpdate
+    #region FixedUpdate()
     private void FixedUpdate()
     {
+        if (isUIActive) return;
+
         Movement();
         Rotation();
-        rb.MovePosition(rb.position + movement * 6 * Time.deltaTime);
+        playerRigidbody.MovePosition(playerRigidbody.position + movement * 6 * Time.deltaTime);
         activeCharacter.transform.localPosition = Vector3.zero;
         activeCharacter.transform.localRotation = Quaternion.identity;
     }
@@ -162,7 +189,8 @@ public class PlayerConJS : MonoBehaviour
             targetRotation = Quaternion.LookRotation(movement);
         }
 
-        rb.rotation = Quaternion.RotateTowards(rb.rotation, Quaternion.Normalize(targetRotation), playerRotateSpeed);
+        targetRotation = Quaternion.Normalize(targetRotation);
+        playerRigidbody.rotation = Quaternion.RotateTowards(playerRigidbody.rotation, targetRotation, playerRotateSpeed);
     }
     #endregion
 
@@ -184,8 +212,8 @@ public class PlayerConJS : MonoBehaviour
     #region 캐릭터 스위칭
     private void SwitchCharacter()
     {
-        Vector3 currentPosition = rb.position;
-        Quaternion currentRotation = rb.rotation;
+        Vector3 currentPosition = playerRigidbody.position;
+        Quaternion currentRotation = playerRigidbody.rotation;
 
         if (activeCharacter == character1)
         {
@@ -193,7 +221,7 @@ public class PlayerConJS : MonoBehaviour
             SetCharacterActive(character2, true);
             activeCharacter = character2;
             activeAnimator = character2Animator;
-            mappingDictionary = new Dictionary<int, string>(character2Mappings);
+            currentMappings = character2Mappings;
         }
         else
         {
@@ -201,11 +229,11 @@ public class PlayerConJS : MonoBehaviour
             SetCharacterActive(character1, true);
             activeCharacter = character1;
             activeAnimator = character1Animator;
-            mappingDictionary = new Dictionary<int, string>(character1Mappings);
+            currentMappings = character1Mappings;
         }
 
-        rb.position = currentPosition;
-        rb.rotation = currentRotation;
+        playerRigidbody.position = currentPosition;
+        playerRigidbody.rotation = currentRotation;
 
         freeLookCamera.Follow = activeCharacter.transform;
         freeLookCamera.LookAt = activeCharacter.transform;
@@ -226,6 +254,7 @@ public class PlayerConJS : MonoBehaviour
     public void SetUIActive(bool active)
     {
         isUIActive = active;
+        Time.timeScale = active ? 0 : 1;
     }
     #endregion
 }

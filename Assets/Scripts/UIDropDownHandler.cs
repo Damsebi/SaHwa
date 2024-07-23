@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,66 +5,73 @@ using UnityEngine.UI;
 public class UIDropdownHandler : MonoBehaviour
 {
     #region 선언
-    public Animator animator;
-    public Dropdown[] dropdowns;
     public PlayerConJS playerController;
+    public Dropdown[] character1Dropdowns;
+    public Dropdown[] character2Dropdowns;
 
-    [SerializeField]
-    private List<AnimationMapping> mappingList;
-    private Dictionary<string, string> mappingDictionary;
+    private Dictionary<string, string> character1MappingDictionary;
+    private Dictionary<string, string> character2MappingDictionary;
+
+    [System.Serializable]
+    public struct AnimationMapping
+    {
+        public string dropdownOption;
+        public string animationName;
+    }
+
+    public List<AnimationMapping> character1MappingList;
+    public List<AnimationMapping> character2MappingList;
+
     #endregion
 
     #region Start()
     void Start()
     {
-        if (playerController == null)
-        {
-            Debug.LogError("플레이어 컨트롤러 없음.");
-            return;
-        }
+        InitializeDropdownOptions(character1Dropdowns, character1MappingList, ref character1MappingDictionary);
+        InitializeDropdownOptions(character2Dropdowns, character2MappingList, ref character2MappingDictionary);
 
-        InitializeDropdownOptions();
-        for (int i = 0; i < dropdowns.Length; i++)
+        for (int i = 0; i < character1Dropdowns.Length; i++)
         {
             int index = i;
-            dropdowns[i].onValueChanged.AddListener(value => DropdownValueChange(index, value));
+            character1Dropdowns[i].onValueChanged.AddListener((value) => DropdownValueChanged(index, value, true));
+        }
+
+        for (int i = 0; i < character2Dropdowns.Length; i++)
+        {
+            int index = i;
+            character2Dropdowns[i].onValueChanged.AddListener((value) => DropdownValueChanged(index, value, false));
         }
     }
     #endregion
 
-    #region 드롭다운, 맵핑 초기화
-    private void InitializeDropdownOptions()
+    #region 드롭다운 초기화 
+    void InitializeDropdownOptions(Dropdown[] dropdowns, List<AnimationMapping> mappingList, ref Dictionary<string, string> mappingDictionary)
     {
         mappingDictionary = new Dictionary<string, string>();
-
         foreach (var mapping in mappingList)
         {
-            mappingDictionary[mapping.dropdownOption] = mapping.animationName;
+            mappingDictionary.Add(mapping.dropdownOption, mapping.animationName);
         }
 
         for (int i = 0; i < dropdowns.Length; i++)
         {
-            List<string> options = new List<string>();
-            foreach (var mapping in mappingList)
-            {
-                options.Add(mapping.dropdownOption);
-            }
+            List<string> options = new List<string>(mappingDictionary.Keys);
             dropdowns[i].ClearOptions();
             dropdowns[i].AddOptions(options);
         }
     }
     #endregion
 
-    #region 인덱스 확인
-    void DropdownValueChange(int index, int value)
+    #region 애니메이션 변경 호출
+    void DropdownValueChanged(int index, int value, bool isCharacter1)
     {
-        string selectedOption = dropdowns[index].options[value].text;
+        string selectedOption = isCharacter1 ? character1Dropdowns[index].options[value].text : character2Dropdowns[index].options[value].text;
+        Dictionary<string, string> mappingDictionary = isCharacter1 ? character1MappingDictionary : character2MappingDictionary;
 
         if (mappingDictionary.TryGetValue(selectedOption, out string animationName))
         {
-            playerController.SetAnimation(index, animationName);
+            playerController.SetAnimation(index, animationName, isCharacter1);
         }
     }
     #endregion
 }
-

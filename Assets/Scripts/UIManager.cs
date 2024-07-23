@@ -5,10 +5,13 @@ using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
+    #region 선언
     [SerializeField] GameObject settingUI;
     [SerializeField] bool openSetting;
     [SerializeField] PlayerConJS playerController;
+    #endregion
 
+    #region Start()
     void Start()
     {
         if (!openSetting) Cursor.lockState = CursorLockMode.Confined;
@@ -19,7 +22,9 @@ public class UIManager : MonoBehaviour
             playerController = FindObjectOfType<PlayerConJS>();
         }
     }
-    
+    #endregion
+
+    #region Update()
     void Update()
     {
         if (!openSetting) Cursor.visible = false;
@@ -27,6 +32,7 @@ public class UIManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Escape)) OpenSettings();
     }
+    #endregion
 
     #region 설정
     private void OpenSettings()
