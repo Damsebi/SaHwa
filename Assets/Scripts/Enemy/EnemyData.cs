@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "EnemyData", menuName = "ScriptableObjects/EnemyData")]
 public class EnemyData : ScriptableObject
 {
+
     //적 몬스터의 버프 같은걸 고려해서 최대와 현재로 나눔.
 
     public float hpMax;//최대 체력

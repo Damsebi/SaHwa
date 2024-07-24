@@ -63,6 +63,7 @@ public class PlayerConJS : MonoBehaviour
 
         if (isUIActive) return;
 
+        //스페이스 
         if (Input.GetKeyDown(KeyCode.Space) && !isAnimationPlaying)
         {
             SwitchCharacter();
