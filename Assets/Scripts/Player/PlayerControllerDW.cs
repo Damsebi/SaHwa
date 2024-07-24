@@ -6,7 +6,7 @@ using UnityEngine;
 [RequireComponent (typeof (PlayerMovement))]
 public class PlayerControllerDW : MonoBehaviour 
 {
-    [SerializeField] private PlayerMovement playerMovement;
+    private PlayerMovement playerMovement;
 
     private void Awake()
     {

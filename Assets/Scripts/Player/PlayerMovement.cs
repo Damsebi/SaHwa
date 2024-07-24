@@ -8,29 +8,42 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private PlayerData playerData;
     [SerializeField] private Rigidbody rigidbody;
+    [SerializeField] private Transform transform;
 
-    //카메라 기준으로 움직임, 회전
-    private float moveAmount;
+    private float moveAmount; 
     private Vector3 movement;
     private Quaternion targetRotation;
 
-    public void InputMovement(float hori, float verti) //이동, 회전
+    public void InputMovement(float hori, float verti) //카메라 기준 이동벡터 설정
     {
         movement = new Vector3(hori, 0f, verti);
-        movement.Normalize();
-
-        //moveAmount 필요한가
-
-        //카메라 기준 플레이어 이동 , 카메라 받아와서 처리
-        Vector3 cam = Camera.main.transform.forward;
-        movement = Quaternion.LookRotation(new Vector3(cam.x, 0 , cam.z)) * movement;
-        targetRotation = Quaternion.LookRotation(movement);
+        moveAmount = Mathf.Clamp01(Mathf.Abs(movement.x) + Mathf.Abs(movement.z));
+        movement.Normalize(); 
     }
 
-    public void MovementWithCamera()
+    public void MovementWithCamera() //물리적 움직임
     {
-        rigidbody.MovePosition(this.gameObject.transform.position + movement * playerData.moveSpeed * Time.deltaTime);
+        if (moveAmount > 0f)
+        {
+
+            Vector3 cam = Camera.main.transform.forward; //나중에 카메라쪽에서 받는걸로
+            movement = Quaternion.LookRotation(new Vector3(cam.x, 0, cam.z)) * movement;
+            targetRotation = Quaternion.LookRotation(movement);
+
+            rigidbody.MovePosition(this.gameObject.transform.position + movement * playerData.moveSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, playerData.playerRotateSpeed);
+
+        }
     }
+
+    public Vector3 DebugMovement()
+    {
+        Vector3 cam = Camera.main.transform.forward; 
+        movement = Quaternion.LookRotation(new Vector3(cam.x, 0, cam.z)) * movement;
+
+        return movement;
+    }
+
 
     //타겟 기준으로 움직임, 회전
 
