@@ -1862,7 +1862,7 @@ GameObject:
   - component: {fileID: 364568886}
   - component: {fileID: 364568885}
   m_Layer: 0
-  m_Name: H_Skill 1
+  m_Name: HM_Skill 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2686,7 +2686,7 @@ GameObject:
   - component: {fileID: 499994350}
   - component: {fileID: 499994349}
   m_Layer: 0
-  m_Name: A_Skill 3
+  m_Name: AM_Skill 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3616,7 +3616,7 @@ GameObject:
   - component: {fileID: 684806729}
   - component: {fileID: 684806728}
   m_Layer: 0
-  m_Name: H_Skill 4
+  m_Name: HM_Skill 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3749,7 +3749,7 @@ GameObject:
   - component: {fileID: 719487653}
   - component: {fileID: 719487652}
   m_Layer: 0
-  m_Name: Text2 (TMP)
+  m_Name: Skill 1 Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4855,7 +4855,7 @@ GameObject:
   - component: {fileID: 923939821}
   - component: {fileID: 923939820}
   m_Layer: 0
-  m_Name: H_Skill 2
+  m_Name: HM_Skill 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5143,7 +5143,7 @@ GameObject:
   - component: {fileID: 937527349}
   - component: {fileID: 937527348}
   m_Layer: 5
-  m_Name: Quit
+  m_Name: Quit Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5919,7 +5919,7 @@ GameObject:
   - component: {fileID: 1020632588}
   - component: {fileID: 1020632587}
   m_Layer: 0
-  m_Name: Text1 (TMP)
+  m_Name: KeySetting Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5964,8 +5964,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Direction : \u2191\u2190\u2193\u2192, WASD\n\nSkill 1 : moust Left\nSkill
-    2 : moust Right\nSkill 3 : E\nSkill 4 : R\nSwich : Space\n\nSetting : ESC"
+  m_text: "Direction : W / A / S / D\n\nSkill 1 : moust Left\tSkill 2 : moust Right\nSkill
+    3 : E\t\t\tSkill 4 : R\nSwich : Space\n\nSetting : ESC"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -6028,7 +6028,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: -386.58362, z: -548.0968, w: -104.9212}
+  m_margin: {x: 0, y: -386.58362, z: -1020.65186, w: -104.9212}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -6090,7 +6090,7 @@ GameObject:
   - component: {fileID: 1052703091}
   - component: {fileID: 1052703090}
   m_Layer: 0
-  m_Name: Text2 (TMP) (1)
+  m_Name: Skill 2 Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7520,7 +7520,7 @@ GameObject:
   - component: {fileID: 1334154485}
   - component: {fileID: 1334154484}
   m_Layer: 0
-  m_Name: A_Skill 2
+  m_Name: AM_Skill 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7909,7 +7909,7 @@ GameObject:
   - component: {fileID: 1423866090}
   - component: {fileID: 1423866089}
   m_Layer: 0
-  m_Name: Text2 (TMP) (2)
+  m_Name: Skill 3 Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8043,7 +8043,7 @@ GameObject:
   - component: {fileID: 1462870464}
   - component: {fileID: 1462870463}
   m_Layer: 0
-  m_Name: Text2 (TMP) (4)
+  m_Name: Animal Mask Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8683,7 +8683,7 @@ GameObject:
   - component: {fileID: 1557205760}
   - component: {fileID: 1557205759}
   m_Layer: 0
-  m_Name: H_Skill 3
+  m_Name: HM_Skill 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9384,7 +9384,7 @@ GameObject:
   - component: {fileID: 1709250222}
   - component: {fileID: 1709250221}
   m_Layer: 0
-  m_Name: Text2 (TMP) (3)
+  m_Name: Skill 4 Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9744,7 +9744,7 @@ GameObject:
   - component: {fileID: 1780724054}
   - component: {fileID: 1780724053}
   m_Layer: 0
-  m_Name: A_Skill 1
+  m_Name: AM_Skill 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9963,7 +9963,7 @@ GameObject:
   - component: {fileID: 1796889802}
   - component: {fileID: 1796889801}
   m_Layer: 0
-  m_Name: A_Skill 4
+  m_Name: AM_Skill 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10412,7 +10412,7 @@ GameObject:
   - component: {fileID: 1915750531}
   - component: {fileID: 1915750530}
   m_Layer: 5
-  m_Name: Restart
+  m_Name: Restart Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11906,7 +11906,7 @@ GameObject:
   - component: {fileID: 2101541152}
   - component: {fileID: 2101541151}
   m_Layer: 0
-  m_Name: Text2 (TMP) (5)
+  m_Name: Human Maxk Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
