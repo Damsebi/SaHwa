@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerAnimation), typeof(PlayerMovement))]
 public class PlayerController : MonoBehaviour
 {
-    #region 코드 디자인
+    #region 코드 나중에
     /* 
      * 싱글톤: 
      *      전역에 접근 가능(Static). 자주 쓰는 스크립트의 경우 메모리 사용을 줄일 수 있다.
@@ -51,7 +51,6 @@ public class PlayerController : MonoBehaviour
 
         playerAnimation = GetComponent<PlayerAnimation>();
         playerMove = GetComponent<PlayerMovement>();
-        playerRotate = GetComponent<PlayerRotate>();
     }
 
     void Update()
