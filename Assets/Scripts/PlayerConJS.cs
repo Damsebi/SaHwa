@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using System;
+using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
 public class PlayerConJS : MonoBehaviour
 {
@@ -67,8 +68,6 @@ public class PlayerConJS : MonoBehaviour
         {
             SwitchCharacter();
         }
-
-        Movement();
 
         if (!isAnimationPlaying)
         {
