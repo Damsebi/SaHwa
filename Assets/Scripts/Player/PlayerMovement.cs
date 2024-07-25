@@ -8,18 +8,15 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private PlayerData playerData;
     private PlayerMaskChange playerMaskChange;
-    private Rigidbody rigidbody;
-    private Transform transform;
 
     private float moveAmount;
+    private float moveSpeed;
     private Vector3 movement;
     private Quaternion targetRotation;
+    private bool isMove;
 
     private void Awake()
     {
-        rigidbody = GetComponent<Rigidbody>();
-        transform = GetComponent<Transform>();
-
         playerMaskChange = GetComponent<PlayerMaskChange>();
     }
 
@@ -28,31 +25,35 @@ public class PlayerMovement : MonoBehaviour
     {
         movement = new Vector3(horizontal, 0f, vertical);
         moveAmount = Mathf.Clamp01(Mathf.Abs(movement.x) + Mathf.Abs(movement.z));
-        movement.Normalize(); 
+        movement.Normalize();
+
+        playerMaskChange.ActiveAnimator.SetFloat("horizontal", horizontal); 
+        playerMaskChange.ActiveAnimator.SetFloat("vertical", vertical);
+        playerMaskChange.ActiveAnimator.SetFloat("moveAmount", moveAmount); //반대방향 움직일때 멈추는거 수정
     }
 
     //카메라 기준 회전, 이동
-    public void MovementWithCamera() 
+    public void MovementWithCamera()
     {
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, playerData.playerRotateSpeed);
+        playerMaskChange.ActiveCharacter.transform.rotation 
+            = Quaternion.RotateTowards(playerMaskChange.ActiveCharacter.transform.rotation, targetRotation, playerData.playerRotateSpeed);
 
         if (moveAmount > 0f)
         {
             Vector3 cam = Camera.main.transform.forward; //나중에 카메라쪽에서 받는걸로
             movement = Quaternion.LookRotation(new Vector3(cam.x, 0, cam.z)) * movement;
             targetRotation = Quaternion.LookRotation(movement);
-
-            playerMaskChange.ActiveAnimator.SetFloat("moveAmount" , moveAmount); //반대방향 움직일때 멈추는거 수정
         }
 
-        rigidbody.MovePosition(this.gameObject.transform.position + movement * playerData.moveSpeed * Time.deltaTime);
+        if (playerMaskChange.ActiveCharacter.name == "HumanMaskCharacter")
+        {
+            moveSpeed = playerData.humanMoveSpeed;
+        }
+        else
+        {
+            moveSpeed = playerData.animalMoveSpeed;
+        }
+
+        playerMaskChange.ActiveRigidbody.MovePosition(playerMaskChange.ActiveCharacter.transform.position + movement * moveSpeed * Time.deltaTime);
     }
-
-
-    public void MovementWithTarget()
-    {
-
-    }
-
-
 }

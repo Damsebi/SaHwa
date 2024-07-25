@@ -12,8 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bbf185fd1ef9b848bd15e92242f6427, type: 3}
   m_Name: PlayerData
   m_EditorClassIdentifier: 
-  moveSpeed: 6
+  humanMoveSpeed: 5
+  animalMoveSpeed: 9
   playerRotateSpeed: 25
-  restrictTimeForNormalAttack1_1: 3
-  restrictTimeForNormalAttack1_2: 3
-  restrictTimeForNormalAttack1_3: 3
+  restrictTimeForNormalAttack1_1: 1
+  restrictTimeForNormalAttack1_2: 0.7
+  restrictTimeForNormalAttack1_3: 0.7
+  humanInkPillarCooldown: 3
+  inkPillarSkillRange: 0
+  cameraHeight: 2
