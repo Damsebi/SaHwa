@@ -13,7 +13,8 @@ public class PlayerSkillSet : MonoBehaviour
     [SerializeField] private bool restrictForSkill;
     public bool RestrictForSkill { get { return restrictForSkill; } }
 
-    #region 사람탈 기본공격
+    #region 사람탈
+    #region 기본공격
     private bool isNormalAttacking;
     private bool isSkillCoroutineRunning;
     public bool IsSkillCoroutineRunning { get { return isSkillCoroutineRunning; } }
@@ -35,28 +36,26 @@ public class PlayerSkillSet : MonoBehaviour
 
     #region 회피
     [SerializeField] private bool canUseHumanAvoidStep;
-    #endregion 
+    #endregion
+    #endregion
 
-
-    #region 동물탈 기본공격
+    #region 동물탈
+    #region 기본공격
     [SerializeField] private bool canUseAnimalNormalAttack;
     #endregion
 
     #region 양손공격
     [SerializeField] private bool canUseXClaw;
-
     #endregion
 
     #region 도약공격
     [SerializeField] private bool canUseLeapClaw;
-
     #endregion
 
     #region 회피
     [SerializeField] private bool canUseAnimalAvoidBack;
-
     #endregion
-
+    #endregion
 
 
     private void Awake()
@@ -120,7 +119,7 @@ public class PlayerSkillSet : MonoBehaviour
             playerMaskChange.ActiveAnimator.CrossFade("FirstSkill", .1f);
 
             yield return new WaitForSeconds(.8f);
-            Collider[] colliders = Physics.OverlapSphere(transform.position, playerData.inkPillarSkillRange, enemyLayer);
+            Collider[] colliders = Physics.OverlapSphere(transform.position, playerData.humanFirstSkillRange, enemyLayer);
 
             #region SelectionSort
             int countEnemies = colliders.Length;
@@ -148,7 +147,7 @@ public class PlayerSkillSet : MonoBehaviour
             for (int i = 0; i < countEnemies; i++)
             {
                 inkPillar[i] = Instantiate(inkPillarPrefab, selectEnemies[i].transform.position, Quaternion.identity);
-                inkPillar[i].transform.localScale = playerData.inkPillarScale;
+                inkPillar[i].transform.localScale = playerData.humanFirstSkillScale;
             }
 
             yield return new WaitForSeconds(.7f);
@@ -156,23 +155,23 @@ public class PlayerSkillSet : MonoBehaviour
 
             //먹기둥 지속시간과 쿨타임 어느게 일찍 끝나냐에 따라 다름
 
-            if ((playerData.inkPillarDuration + 0.8f) < playerData.inkPillarCooldown)
+            if ((playerData.humanFirstSkillDuration + 0.8f) < playerData.humanFirstSkillCooldown)
             {
-                yield return new WaitForSeconds(playerData.inkPillarDuration - .7f);
+                yield return new WaitForSeconds(playerData.humanFirstSkillDuration - .7f);
                 for (int i = 0; i < countEnemies; i++)
                 {
                     Destroy(inkPillar[i]);
                 }
 
-                yield return new WaitForSeconds(playerData.inkPillarCooldown - .8f - playerData.inkPillarDuration);
+                yield return new WaitForSeconds(playerData.humanFirstSkillCooldown - .8f - playerData.humanFirstSkillDuration);
                 canUseInkPillar = true;
             }
             else
             {
-                yield return new WaitForSeconds(playerData.inkPillarCooldown - .8f - playerData.inkPillarDuration);
+                yield return new WaitForSeconds(playerData.humanFirstSkillCooldown - .8f - playerData.humanFirstSkillDuration);
                 canUseInkPillar = true;
 
-                yield return new WaitForSeconds(playerData.inkPillarDuration - .7f);
+                yield return new WaitForSeconds(playerData.humanFirstSkillDuration - .7f);
                 for (int i = 0; i < countEnemies; i++)
                 {
                     Destroy(inkPillar[i]);
@@ -203,10 +202,10 @@ public class PlayerSkillSet : MonoBehaviour
             yield return new WaitForSeconds(.5f);
             restrictForSkill = false;
 
-            yield return new WaitForSeconds(playerData.inkSmashDuration);
+            yield return new WaitForSeconds(playerData.humanSecondSkillDuration);
             Destroy(inkSmashArea);
 
-            yield return new WaitForSeconds(playerData.inkSmashCooldown - 1.6f - playerData.inkSmashDuration);
+            yield return new WaitForSeconds(playerData.humanSecondSkillCooldown - 1.6f - playerData.humanSecondSkillDuration);
             canUseInkSmash = true;
         }
     }
@@ -228,7 +227,7 @@ public class PlayerSkillSet : MonoBehaviour
 
             restrictForSkill = false;
 
-            yield return new WaitForSeconds(playerData.avoidStepCooldown - .6f);
+            yield return new WaitForSeconds(playerData.humanAvoidStepCooldown - .6f);
             canUseHumanAvoidStep = true;
         }
     }
@@ -265,7 +264,7 @@ public class PlayerSkillSet : MonoBehaviour
             yield return new WaitForSeconds(2f);
             restrictForSkill = false;
 
-            yield return new WaitForSeconds(playerData.xClawCooldown - 2f);
+            yield return new WaitForSeconds(playerData.animalFirstSkillCooldown - 2f);
             canUseXClaw = true;
         }
     }
@@ -287,7 +286,7 @@ public class PlayerSkillSet : MonoBehaviour
             yield return new WaitForSeconds(.3f);
             restrictForSkill = false;
 
-            yield return new WaitForSeconds(playerData.leapClawCooldown -2f);
+            yield return new WaitForSeconds(playerData.animalSecondCooldown -2f);
             canUseLeapClaw = true;
         }
     }
@@ -303,14 +302,16 @@ public class PlayerSkillSet : MonoBehaviour
 
             restrictForSkill = false;
 
-            yield return new WaitForSeconds(playerData.avoidStepCooldown - .6f);
+            yield return new WaitForSeconds(playerData.humanAvoidStepCooldown - .6f);
             canUseAnimalAvoidBack = true;
         }
     }
     #endregion
 
     #region 귀신탈 함수
+    //
 
+    //
 
     #endregion
 

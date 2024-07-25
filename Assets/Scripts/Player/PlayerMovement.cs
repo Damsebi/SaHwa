@@ -10,6 +10,8 @@ public class PlayerMovement : MonoBehaviour
     private PlayerMaskChange playerMaskChange;
 
     private float moveAmount;
+    public float MoveAmount { get { return moveAmount; } }
+
     private float moveSpeed;
     private Vector3 movement;
     private Quaternion targetRotation;

@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class PlayerMaskChange : MonoBehaviour
 {
-    private PlayerFollowCamera playerFollowCamera;
-
     //private Rigidbody rigidbody;
     [Header("Human")]
     [SerializeField] private GameObject humanCharacter;
@@ -53,7 +51,6 @@ public class PlayerMaskChange : MonoBehaviour
 
     private void Awake()
     {
-        playerFollowCamera = GetComponent<PlayerFollowCamera>();
     }
 
 

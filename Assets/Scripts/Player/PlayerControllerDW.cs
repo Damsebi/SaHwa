@@ -6,13 +6,11 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 [RequireComponent (typeof (PlayerMovement), typeof(PlayerMaskChange), typeof(PlayerSkillSet))]
-[RequireComponent(typeof(PlayerFollowCamera))]
 public class PlayerControllerDW : MonoBehaviour 
 {
     private PlayerMovement playerMovement;
     private PlayerMaskChange playerMaskChange;
     private PlayerSkillSet playerSkillSet;
-    private PlayerFollowCamera playerFollowCamera;
 
     private bool restrictControl;
     private bool isRestrictedControl;
@@ -22,26 +20,28 @@ public class PlayerControllerDW : MonoBehaviour
         playerMovement = GetComponent<PlayerMovement>();
         playerMaskChange = GetComponent<PlayerMaskChange>();
         playerSkillSet = GetComponent<PlayerSkillSet>();
-        playerFollowCamera = GetComponent<PlayerFollowCamera>();
     }
 
     private void Start()
     {
         playerMaskChange.InitializeCharacterSetting();
-        playerFollowCamera.CameraSetting();
     }
 
     private void Update()
     {
         if (playerSkillSet.RestrictForSkill) return; //행동 중에 제한
 
+        #region 이동
         playerMovement.InputMovement(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        #endregion
 
+        #region 일반
         if (Input.GetKeyDown(KeyCode.F))
         {
             playerMaskChange.SwitchCharacter();
-            playerFollowCamera.CameraSetting();
+            //playerFollowCamera.CameraSetting();
         }
+        #endregion
 
         #region 사람탈
         if (playerMaskChange.ActiveCharacter.name == "HumanMaskCharacter")
@@ -88,18 +88,33 @@ public class PlayerControllerDW : MonoBehaviour
         }
         #endregion
 
-        #region 락온
-
-
+        #region 카메라
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            PlayerFollowCamera.instance.DetectTarget();
+        }
         #endregion
-
-
     }
 
     private void FixedUpdate()
     {
         if (playerSkillSet.RestrictForSkill) return; //행동 중 제한
 
+        #region 이동
         playerMovement.MovementWithCamera();
+        #endregion
+
+        #region 카메라
+        if (Input.GetKey(KeyCode.Q))
+        {
+            PlayerFollowCamera.instance.RotateLeft();
+        }
+        else if (Input.GetKey(KeyCode.E))
+        {
+            PlayerFollowCamera.instance.RotateRight();
+        }
+
+        #endregion
+
     }
 }

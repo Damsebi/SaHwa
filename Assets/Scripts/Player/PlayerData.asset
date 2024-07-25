@@ -18,14 +18,25 @@ MonoBehaviour:
   restrictTimeForNormalAttack1_1: 1
   restrictTimeForNormalAttack1_2: 0.7
   restrictTimeForNormalAttack1_3: 0.7
-  inkPillarCooldown: 5
-  inkPillarSkillRange: 20
-  inkPillarDuration: 2
-  inkPillarScale: {x: 4, y: 2, z: 4}
-  inkSmashCooldown: 4
-  inkSmashDuration: 1
-  avoidStepCooldown: 2
+  humanFirstSkillCooldown: 4
+  humanFirstSkillRange: 15
+  humanFirstSkillDuration: 3
+  humanFirstSkillScale: {x: 4, y: 4, z: 4}
+  humanSecondSkillCooldown: 4
+  humanSecondSkillDuration: 2
+  humanAvoidStepCooldown: 2
   animalNormalAttackCooldown: 1.5
-  xClawCooldown: 3
-  leapClawCooldown: 3
-  cameraHeight: 2
+  animalFirstSkillCooldown: 4
+  animalSecondCooldown: 4
+  animalAvoidStepCooldown: 2
+  cameraFollowSpeed: 0.171
+  smoothVerticalRotationRate: 0.18
+  turnForwardDuration: 0.0032
+  turnForwardSmoothRate: 0.044
+  turnToTargetSmoothRate: 0
+  detectRange: 15
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  maximumAngleWithTarget: 50
+  cameraYValue: 1
