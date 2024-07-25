@@ -1,10 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-#if UNITY_EDITOR
 using UnityEditor;
-#endif
-public class Enemy : MonoBehaviour
+using UnityEngine;
+
+public class EnemyInEditer : MonoBehaviour
 {
     #region 선언
     public Transform atkRoot; //공격이 시작되는 피벗, 이 피벗 해당 반경 내에 있는 플레이어가 공격당함
@@ -16,8 +15,7 @@ public class Enemy : MonoBehaviour
     #endregion
 
 #if UNITY_EDITOR
-    //유니티 에디터에서만 작동
-    //빌드 단계에서는 작동하지 않음
+
     private void OnDrawGizmosSelected()
     {
         if (atkRoot != null)
@@ -39,15 +37,4 @@ public class Enemy : MonoBehaviour
         }
     }
 #endif
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a376f2e869bc2864199f97e5c81fb8fa, type: 3}
+  m_Name: Normal Hybird
+  m_EditorClassIdentifier: 
+  f_hp: 0
+  f_moveSpeed: 0
+  f_patrolSpeed: 0
+  f_viewDistance: 0
+  f_viewAngle: 0
+  f_distanceToPlayerMin: 0
+  f_paintOver: 0
+  f_hpBarCount: 0
+  b_plusAttackDamage: 0
+  b_plusSkillDamage: 0
+  b_magicGroup: 0
+  f_flatMeleeAttackDamage: 0
+  f_flatMeleeAttackMotionSpeed: 0
+  f_flatMeleeAttackMotionCoolTime: 0
+  f_flatMeleeAttackRange: 0
+  f_flatRangeAttackDamage: 0
+  f_flatRangeAttackMotionSpeed: 0
+  f_flatRangeAttackMotionCoolTime: 0
+  f_flatRangeAttackRange: 0
+  f_distanceToPlayerMax: 0

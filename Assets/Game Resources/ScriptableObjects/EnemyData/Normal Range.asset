@@ -10,18 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 79232e531a1a9eb48bac25143997e486, type: 3}
-  m_Name: Enemy Data Normal Ranged
+  m_Name: Normal Range
   m_EditorClassIdentifier: 
-  f_hpMax: 0
-  f_hpCurr: 0
-  f_speedMax: 0
-  f_speedCurr: 0
-  f_attackSpeedMax: 0
-  f_attackSpeedCurr: 0
-  f_attackDamage: 0
+  f_hp: 0
+  f_moveSpeed: 0
+  f_patrolSpeed: 0
+  f_viewDistance: 10
+  f_viewAngle: 30
+  f_distanceToPlayerMin: 0
   f_paintOver: 0
-  f_lifeRound: 0
-  f_motionSpeed: 0
-  f_motionCoolTime: 0
+  f_hpBarCount: 0
   b_plusAttackDamage: 0
   b_plusSkillDamage: 0
+  b_magicGroup: 0
+  f_flatRangeAttackDamage: 0
+  f_flatRangeAttackMotionSpeed: 0
+  f_flatRangeAttackMotionCoolTime: 0
+  f_flatRangeAttackRange: 10
+  f_distanceToPlayerMax: 0
