@@ -31,7 +31,17 @@ public class PlayerFollowCamera : MonoBehaviour
         }
     }
 
-    
+    //left shift 누르면
+    //      적 찾으면 look at을 락온에
+    //      적 못 찾으면 플레이어 정면 보기 = x axis value를 0으로
+
+
+    //왼쪽은 x axis value를 음수로
+    //왼쪽은 x axis value를 양수로
+
+
+
+
 
 
 }

@@ -33,17 +33,15 @@ public class PlayerControllerDW : MonoBehaviour
 
     private void Update()
     {
-        playerMovement.InputMovement(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-
         if (playerSkillSet.RestrictForSkill) return; //행동 중에 제한
 
+        playerMovement.InputMovement(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 
         if (Input.GetKeyDown(KeyCode.F))
         {
             playerMaskChange.SwitchCharacter();
             playerFollowCamera.CameraSetting();
         }
-
 
         #region 사람탈
         if (playerMaskChange.ActiveCharacter.name == "HumanMaskCharacter")
@@ -58,11 +56,11 @@ public class PlayerControllerDW : MonoBehaviour
             }
             else if (Input.GetKeyDown(KeyCode.D))
             {
-                playerSkillSet.HumanSecondSkill();
+                playerSkillSet.StartCoroutine(playerSkillSet.HumanSecondSkill());
             }
             else if (Input.GetKeyDown(KeyCode.Space))
             {
-                playerSkillSet.HumanAvoidBack();
+                playerSkillSet.StartCoroutine(playerSkillSet.HumanAvoidBack());
             }
         }
         #endregion
@@ -72,21 +70,27 @@ public class PlayerControllerDW : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.A))
             {
-                playerSkillSet.StartCoroutine(playerSkillSet.HumanNormalAttack());
+                playerSkillSet.StartCoroutine(playerSkillSet.AnimalNormalAttack());
+
             }
             else if (Input.GetKeyDown(KeyCode.S))
             {
-                playerSkillSet.AnimalFirstSkill();
+                playerSkillSet.StartCoroutine(playerSkillSet.AnimalFirstSkill());
             }
             else if (Input.GetKeyDown(KeyCode.D))
             {
-                playerSkillSet.AnimalSecondSkill();
+                playerSkillSet.StartCoroutine(playerSkillSet.AnimalSecondSkill());
             }
             else if (Input.GetKeyDown(KeyCode.Space))
             {
-                playerSkillSet.AnimalAvoidBack();
+                playerSkillSet.StartCoroutine(playerSkillSet.AnimalAvoidBack());
             }
         }
+        #endregion
+
+        #region 락온
+
+
         #endregion
 
 
@@ -95,7 +99,6 @@ public class PlayerControllerDW : MonoBehaviour
     private void FixedUpdate()
     {
         if (playerSkillSet.RestrictForSkill) return; //행동 중 제한
-
 
         playerMovement.MovementWithCamera();
     }

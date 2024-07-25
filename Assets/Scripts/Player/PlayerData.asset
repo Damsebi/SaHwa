@@ -18,6 +18,14 @@ MonoBehaviour:
   restrictTimeForNormalAttack1_1: 1
   restrictTimeForNormalAttack1_2: 0.7
   restrictTimeForNormalAttack1_3: 0.7
-  humanInkPillarCooldown: 3
-  inkPillarSkillRange: 0
+  inkPillarCooldown: 5
+  inkPillarSkillRange: 20
+  inkPillarDuration: 2
+  inkPillarScale: {x: 4, y: 2, z: 4}
+  inkSmashCooldown: 4
+  inkSmashDuration: 1
+  avoidStepCooldown: 2
+  animalNormalAttackCooldown: 1.5
+  xClawCooldown: 3
+  leapClawCooldown: 3
   cameraHeight: 2

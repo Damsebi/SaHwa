@@ -13,14 +13,49 @@ public class PlayerSkillSet : MonoBehaviour
     [SerializeField] private bool restrictForSkill;
     public bool RestrictForSkill { get { return restrictForSkill; } }
 
+    #region »ç¶÷Å» ±âº»°ø°Ý
     private bool isNormalAttacking;
     private bool isSkillCoroutineRunning;
     public bool IsSkillCoroutineRunning { get { return isSkillCoroutineRunning; } }
+    [SerializeField] private bool canUseHumanNormalAttack;
+    #endregion
 
-    private bool canUseNormalAttack;
+    #region ¸Ô±âµÕ
     [SerializeField] private bool canUseInkPillar;
 
+    [SerializeField] GameObject inkPillarPrefab;
+    private GameObject[] inkPillar = new GameObject[3];
+    #endregion
 
+    #region ¸Ô ½º¸Å½¬
+    [SerializeField] GameObject inkSmashPrefab;
+    private GameObject inkSmashArea;
+    [SerializeField] private bool canUseInkSmash;
+    #endregion
+
+    #region È¸ÇÇ
+    [SerializeField] private bool canUseHumanAvoidStep;
+    #endregion 
+
+
+    #region µ¿¹°Å» ±âº»°ø°Ý
+    [SerializeField] private bool canUseAnimalNormalAttack;
+    #endregion
+
+    #region ¾ç¼Õ°ø°Ý
+    [SerializeField] private bool canUseXClaw;
+
+    #endregion
+
+    #region µµ¾à°ø°Ý
+    [SerializeField] private bool canUseLeapClaw;
+
+    #endregion
+
+    #region È¸ÇÇ
+    [SerializeField] private bool canUseAnimalAvoidBack;
+
+    #endregion
 
 
 
@@ -31,9 +66,17 @@ public class PlayerSkillSet : MonoBehaviour
 
     private void Start()
     {
+        canUseHumanNormalAttack = true;
         canUseInkPillar = true;
+        canUseInkSmash = true;
+        canUseHumanAvoidStep = true;
+
+        canUseAnimalNormalAttack = true;
+        canUseXClaw = true;
+        canUseLeapClaw = true;
+        canUseAnimalAvoidBack = true;
     }
-    #region »ç¶÷Å»
+    #region »ç¶÷Å» ÇÔ¼ö
     public IEnumerator HumanNormalAttack()
     {
         if (!isSkillCoroutineRunning)
@@ -67,7 +110,6 @@ public class PlayerSkillSet : MonoBehaviour
     }
 
 
-
     public IEnumerator HumanFirstSkill()
     {
         if (canUseInkPillar)
@@ -88,10 +130,10 @@ public class PlayerSkillSet : MonoBehaviour
             for (int i = 0; i < countEnemies; i++)
             {
                 int index = i;
-                float distance1 = Vector3.Distance(transform.position, colliders[index].transform.position);
+                float distance1 = Vector3.Distance(playerMaskChange.ActiveCharacter.transform.position, colliders[index].transform.position);
                 for (int j = i + 1; j < colliders.Length; j++)
                 {
-                    float distance2 = Vector3.Distance(transform.position, colliders[j].transform.position);
+                    float distance2 = Vector3.Distance(playerMaskChange.ActiveCharacter.transform.position, colliders[j].transform.position);
                     if (distance1 > distance2) index = j;
                 }
 
@@ -103,63 +145,173 @@ public class PlayerSkillSet : MonoBehaviour
             }
             #endregion
 
+            for (int i = 0; i < countEnemies; i++)
+            {
+                inkPillar[i] = Instantiate(inkPillarPrefab, selectEnemies[i].transform.position, Quaternion.identity);
+                inkPillar[i].transform.localScale = playerData.inkPillarScale;
+            }
+
             yield return new WaitForSeconds(.7f);
             restrictForSkill = false;
 
+            //¸Ô±âµÕ Áö¼Ó½Ã°£°ú ÄðÅ¸ÀÓ ¾î´À°Ô ÀÏÂï ³¡³ª³Ä¿¡ µû¶ó ´Ù¸§
 
+            if ((playerData.inkPillarDuration + 0.8f) < playerData.inkPillarCooldown)
+            {
+                yield return new WaitForSeconds(playerData.inkPillarDuration - .7f);
+                for (int i = 0; i < countEnemies; i++)
+                {
+                    Destroy(inkPillar[i]);
+                }
 
+                yield return new WaitForSeconds(playerData.inkPillarCooldown - .8f - playerData.inkPillarDuration);
+                canUseInkPillar = true;
+            }
+            else
+            {
+                yield return new WaitForSeconds(playerData.inkPillarCooldown - .8f - playerData.inkPillarDuration);
+                canUseInkPillar = true;
 
+                yield return new WaitForSeconds(playerData.inkPillarDuration - .7f);
+                for (int i = 0; i < countEnemies; i++)
+                {
+                    Destroy(inkPillar[i]);
+                }
+            }
 
-
-
-
-
-
-            yield return new WaitForSeconds(playerData.humanInkPillarCooldown - .4f);
-            canUseInkPillar = true;
-
-            //¸Ô±âµÕ¿¡ ´êÀº Áö¼Ó µ¥¹ÌÁö
+            //¹üÀ§ µ¥¹ÌÁö 
         }
-
     }
 
-    public void HumanSecondSkill()
+    public IEnumerator HumanSecondSkill()
     {
-        playerMaskChange.ActiveAnimator.CrossFade("SecondSkill", .1f);
+        if (canUseInkSmash)
+        {
+            restrictForSkill = true;
+            canUseInkSmash = false;
 
+            playerMaskChange.ActiveAnimator.CrossFade("SecondSkill", .1f);
+            for (int i = 0; i < 40; i++)
+            {
+                yield return new WaitForSeconds(.025f);
+                playerMaskChange.ActiveRigidbody.MovePosition
+                    (playerMaskChange.ActiveCharacter.transform.position + playerMaskChange.ActiveCharacter.transform.forward * 30 * Time.deltaTime);
+            }
+
+            inkSmashArea = Instantiate(inkSmashPrefab,playerMaskChange.ActiveCharacter.transform.position + playerMaskChange.ActiveCharacter.transform.forward * 1.3f, playerMaskChange.ActiveCharacter.transform.rotation);
+
+            yield return new WaitForSeconds(.5f);
+            restrictForSkill = false;
+
+            yield return new WaitForSeconds(playerData.inkSmashDuration);
+            Destroy(inkSmashArea);
+
+            yield return new WaitForSeconds(playerData.inkSmashCooldown - 1.6f - playerData.inkSmashDuration);
+            canUseInkSmash = true;
+        }
     }
 
-    public void HumanAvoidBack()
+    public IEnumerator HumanAvoidBack()
     {
-        playerMaskChange.ActiveAnimator.CrossFade("AvoidBack", .1f);
+        if (canUseHumanAvoidStep)
+        {
+            restrictForSkill = true;
+            canUseHumanAvoidStep = false;
+            playerMaskChange.ActiveAnimator.CrossFade("AvoidBack", .1f);
+
+            for (int i = 0; i < 50; i++) 
+            {
+                yield return new WaitForSeconds(.01f);
+                playerMaskChange.ActiveRigidbody.MovePosition
+                    (playerMaskChange.ActiveCharacter.transform.position - playerMaskChange.ActiveCharacter.transform.forward * 20 * Time.deltaTime);
+            }
+
+            restrictForSkill = false;
+
+            yield return new WaitForSeconds(playerData.avoidStepCooldown - .6f);
+            canUseHumanAvoidStep = true;
+        }
     }
+    #endregion
+
+    #region Áü½ÂÅ» ÇÔ¼ö
+
+    public IEnumerator AnimalNormalAttack()
+    {
+        if (canUseHumanNormalAttack)
+        {
+            restrictForSkill = true;
+            canUseHumanNormalAttack = false;
+
+            playerMaskChange.ActiveAnimator.CrossFade("NormalAttack", .1f);
+
+            yield return new WaitForSeconds(1f);
+            restrictForSkill = false;
+
+            yield return new WaitForSeconds(playerData.animalNormalAttackCooldown - 1f);
+            canUseHumanNormalAttack = true;
+        }
+    }
+
+    public IEnumerator AnimalFirstSkill()
+    {
+        if (canUseXClaw)
+        {
+            restrictForSkill = true;
+            canUseXClaw = false;
+
+            playerMaskChange.ActiveAnimator.CrossFade("FirstSkill", .1f);
+            
+            yield return new WaitForSeconds(2f);
+            restrictForSkill = false;
+
+            yield return new WaitForSeconds(playerData.xClawCooldown - 2f);
+            canUseXClaw = true;
+        }
+    }
+
+    public IEnumerator AnimalSecondSkill()
+    {
+        if (canUseLeapClaw)
+        {
+            restrictForSkill = true;
+            canUseLeapClaw = false;
+
+            playerMaskChange.ActiveAnimator.CrossFade("SecondSkill", .1f);
+            for (int i = 0; i < 60; i++)
+            {
+                yield return new WaitForSeconds(.01f);
+                playerMaskChange.ActiveRigidbody.MovePosition
+                    (playerMaskChange.ActiveCharacter.transform.position + playerMaskChange.ActiveCharacter.transform.forward * 30 * Time.deltaTime);
+            }
+            yield return new WaitForSeconds(.3f);
+            restrictForSkill = false;
+
+            yield return new WaitForSeconds(playerData.leapClawCooldown -2f);
+            canUseLeapClaw = true;
+        }
+    }
+
+    public IEnumerator AnimalAvoidBack()
+    {
+        if (canUseAnimalAvoidBack)
+        {
+            restrictForSkill = true;
+            canUseAnimalAvoidBack = false;
+            playerMaskChange.ActiveAnimator.CrossFade("AvoidBack", .1f);
+            yield return new WaitForSeconds(.6f);
+
+            restrictForSkill = false;
+
+            yield return new WaitForSeconds(playerData.avoidStepCooldown - .6f);
+            canUseAnimalAvoidBack = true;
+        }
+    }
+    #endregion
+
+    #region ±Í½ÅÅ» ÇÔ¼ö
+
 
     #endregion
 
-    #region Áü½ÂÅ»
-
-    public void AnimalNormalAttack()
-    {
-        playerMaskChange.ActiveAnimator.CrossFade("NormalAttack", .1f);
-    }
-
-    public void AnimalFirstSkill()
-    {
-        playerMaskChange.ActiveAnimator.CrossFade("FirstSkill", .1f);
-
-    }
-
-    public void AnimalSecondSkill()
-    {
-        playerMaskChange.ActiveAnimator.CrossFade("SecondSkill", .1f);
-
-    }
-
-    public void AnimalAvoidBack()
-    {
-        playerMaskChange.ActiveAnimator.CrossFade("AvoidBack", .1f);
-    }
-
-
-    #endregion
 }
