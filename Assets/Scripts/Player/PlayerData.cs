@@ -12,4 +12,11 @@ public class PlayerData : ScriptableObject
 
     [Tooltip("플레이어의 회전속도")]
     public float playerRotateSpeed;
+
+    [Header("사람탈 스킬")]
+    [Tooltip("스킬 진행 중에 다른 행동을 제한하는 시간")]
+    public float restrictTimeForNormalAttack1_1;
+    public float restrictTimeForNormalAttack1_2;
+    public float restrictTimeForNormalAttack1_3;
+
 }
