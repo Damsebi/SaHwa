@@ -12,12 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b08edc2396f140840b48e1610cdc5c6f, type: 3}
   m_Name: Normal Buffer
   m_EditorClassIdentifier: 
-  f_hp: 0
-  f_moveSpeed: 0
-  f_patrolSpeed: 0
-  f_viewDistance: 10
-  f_viewAngle: 30
-  f_distanceToPlayerMin: 0
+  f_hp: 1
+  f_moveSpeed: 1
+  f_patrolSpeed: 1
+  f_patrolRange: 0
+  f_turnSmoothVelocity: 0.1
+  f_viewDistance: 6.7
+  f_viewAngle: 14
+  f_distanceToPlayerMin: 1
   f_paintOver: 1
   f_hpBarCount: 1
   b_plusAttackDamage: 0

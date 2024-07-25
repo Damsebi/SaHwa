@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: Normal Melee
   m_EditorClassIdentifier: 
   f_hp: 100
-  f_moveSpeed: 10
-  f_patrolSpeed: 5
-  f_viewDistance: 30
+  f_moveSpeed: 11
+  f_patrolSpeed: 28
+  f_patrolRange: 16.8
+  f_turnSmoothVelocity: 0.3
+  f_viewDistance: 5
   f_viewAngle: 30
   f_distanceToPlayerMin: 10
   f_paintOver: 1

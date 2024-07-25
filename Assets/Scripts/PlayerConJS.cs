@@ -5,7 +5,7 @@ using Cinemachine;
 using System;
 using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
-public class PlayerConJS : MonoBehaviour
+public class PlayerConJS : MonoBehaviour, IDamageable
 {
     #region 선언
     public Animator character1Animator;
@@ -26,6 +26,7 @@ public class PlayerConJS : MonoBehaviour
     private Coroutine animationCheckCoroutine;
     private bool isUIActive = false;
 
+    public bool isDead;
     private float hori;
     private float verti;
     private Vector3 movement;
@@ -282,4 +283,14 @@ public class PlayerConJS : MonoBehaviour
         Time.timeScale = active ? 0 : 1;
     }
     #endregion
+
+    public bool ApplyDamage(DamageMessage damageMessage)
+    {
+        return true;
+    }
+    public void Die()
+    {
+
+    }
+
 }

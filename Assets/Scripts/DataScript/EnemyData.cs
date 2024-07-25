@@ -5,28 +5,34 @@ using UnityEngine;
 public class EnemyData : ScriptableObject
 {
     [Header("체력")]
-    public float f_hp;
+    [Range(1f, 200f)] public float f_hp;
 
     [Header("달리기 속도")]
-    public float f_moveSpeed;
+    [Range(1f, 1000f)] public float f_moveSpeed;
 
     [Header("순찰 속도")]
-    public float f_patrolSpeed;
+    [Range(1f, 1000f)] public float f_patrolSpeed;
+
+    [Header("순찰 범위")]
+    [Range(1f, 100f)] public float f_patrolRange;
+
+    [Header("몸통 회전 속도")]
+    [Range(0.1f, 0.3f)] public float f_turnSmoothVelocity;
 
     [Header("시야 범위")]
-    public float f_viewDistance;
+    [Range(1f, 100f)] public float f_viewDistance;
 
     [Header("시야 각")]
-    public float f_viewAngle;
+    [Range(1f, 359f)] public float f_viewAngle;
 
     [Header("플레이어로부터 거리 최소 거리 유지")]
-    public float f_distanceToPlayerMin;
+    [Range(1f, 100f)] public float f_distanceToPlayerMin;
 
     [Header("덧칠 당하는 총 횟수")]
-    public float f_paintOver;
+    [Range(1, 5)] public int f_paintOver;
 
     [Header("라이프 갯수")]
-    public float f_hpBarCount;
+    [Range(1, 3)] public int f_hpBarCount;
 
     [Header("플레이어 평타에 추가 데미지 추가")]
     public bool b_plusAttackDamage;
@@ -35,5 +41,6 @@ public class EnemyData : ScriptableObject
     public bool b_plusSkillDamage;
 
     [Header("마법 세력")]
-    public bool b_magicGroup;
+    public bool b_magicGroup;   
+
 }

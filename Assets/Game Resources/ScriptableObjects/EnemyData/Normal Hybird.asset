@@ -12,14 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a376f2e869bc2864199f97e5c81fb8fa, type: 3}
   m_Name: Normal Hybird
   m_EditorClassIdentifier: 
-  f_hp: 0
-  f_moveSpeed: 0
-  f_patrolSpeed: 0
-  f_viewDistance: 0
-  f_viewAngle: 0
-  f_distanceToPlayerMin: 0
-  f_paintOver: 0
-  f_hpBarCount: 0
+  f_hp: 1
+  f_moveSpeed: 1
+  f_patrolSpeed: 1
+  f_patrolRange: 1
+  f_turnSmoothVelocity: 0.1
+  f_viewDistance: 1
+  f_viewAngle: 1
+  f_distanceToPlayerMin: 1
+  f_paintOver: 1
+  f_hpBarCount: 1
   b_plusAttackDamage: 0
   b_plusSkillDamage: 0
   b_magicGroup: 0

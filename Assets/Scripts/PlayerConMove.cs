@@ -12,8 +12,23 @@ public class PlayerConMove : MonoBehaviour
     private Animator activeAnimator;
     private Quaternion targetRotation;
     private Rigidbody playerRigidbody;
+    public float playerRotateSpeed = 25;
+    //PlayerData PlayerData;
+    private void Awake()
+    {
+        playerRigidbody = GetComponent<Rigidbody>();
+        activeAnimator = GetComponent<Animator>();
 
-    PlayerData PlayerData;
+        if (playerRigidbody == null)
+        {
+            Debug.LogError("Rigidbody component is missing from the Player GameObject.");
+        }
+
+        if (activeAnimator == null)
+        {
+            Debug.LogError("Animator component is missing from the Player GameObject.");
+        }
+    }
 
     #region ¿Ãµø
     public void Movement()
@@ -39,7 +54,7 @@ public class PlayerConMove : MonoBehaviour
         }
 
         targetRotation = Quaternion.Normalize(targetRotation);
-        playerRigidbody.rotation = Quaternion.RotateTowards(playerRigidbody.rotation, targetRotation, PlayerData.playerRotateSpeed);
+        playerRigidbody.rotation = Quaternion.RotateTowards(playerRigidbody.rotation, targetRotation, playerRotateSpeed);
     }
     #endregion
 }

@@ -12,14 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79232e531a1a9eb48bac25143997e486, type: 3}
   m_Name: Normal Range
   m_EditorClassIdentifier: 
-  f_hp: 0
-  f_moveSpeed: 0
-  f_patrolSpeed: 0
+  f_hp: 1
+  f_moveSpeed: 1
+  f_patrolSpeed: 1
+  f_patrolRange: 1
+  f_turnSmoothVelocity: 0.1
   f_viewDistance: 10
   f_viewAngle: 30
-  f_distanceToPlayerMin: 0
-  f_paintOver: 0
-  f_hpBarCount: 0
+  f_distanceToPlayerMin: 1
+  f_paintOver: 1
+  f_hpBarCount: 1
   b_plusAttackDamage: 0
   b_plusSkillDamage: 0
   b_magicGroup: 0

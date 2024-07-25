@@ -4,13 +4,28 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
+using System.Linq.Expressions;
+using UnityEngine.AI;
+using Unity.XR.Oculus.Input;
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviour, IDamageable
 {
+    #region 열거
+    private enum eState
+    {
+        Patrol, //순찰
+        Tracking, //추적
+        AttackBegin, //공격시작
+        Attacking, //공격중
+        Idle, // 대기 상태
+        BatIdle //공격 대기상태
+    }
+    private eState enemyState;
+    #endregion
     #region 선언
     public EnemyData enemyData;
 
@@ -39,18 +54,34 @@ public class Enemy : MonoBehaviour
     [HideInInspector] public float skillMotionCoolTime; // 스킬 모션 쿨타임
     [HideInInspector] public float skillRange; // 스킬 범위
 
+    private Animator animator;
+    private NavMeshAgent navAgent;
+
+    private float turnSmoothVelocity; //몬스터의 회전 속도
+    private float turnSmoothTime = 0.1f; //몬스터 회전 시 지연시간
+
+    private float lastDamagedTime; //마지막으로 공격 받았던 시간
+    private const float MIN_TIME_BET_DAMAGE = 0.1f;
+
     [HideInInspector] public bool plusAttackDamage; // 플레이어 평타에 추가 데미지 추가
     [HideInInspector] public bool plusSkillDamage; // 플레이어 스킬에 추가 데미지 추가
     [HideInInspector] public bool magicGroup; // 마법 세력
+    private float patrolRange; // 순찰 범위
     private bool isRanged; // 근거리 원거리 공격 체크
     private bool isBuffer; // 버퍼인지 체크
+
+    public LayerMask LayerTarget;
+
+    private float lostSightTime = 1.0f;
+    private float lostSightTimer = 0.0f;
 
     private bool isDead; // 사망 체크
 
     public Transform attackRoot; //공격이 시작되는 피벗, 이 피벗 해당 반경 내에 있는 플레이어가 공격당함
     public Transform viewTransform; //눈 위치
 
-    public Player player;
+    public PlayerConJS player;
+
     private bool hasTarget
     {
         get
@@ -79,15 +110,35 @@ public class Enemy : MonoBehaviour
         viewDistance = enemyData.f_viewDistance;
         distanceToPlayerMin = enemyData.f_distanceToPlayerMin;
         paintOver = enemyData.f_paintOver;
+        turnSmoothVelocity = enemyData.f_turnSmoothVelocity;
         plusAttackDamage = enemyData.b_plusAttackDamage;
         plusSkillDamage = enemyData.b_plusSkillDamage;
         magicGroup = enemyData.b_magicGroup;
+        patrolRange = enemyData.f_patrolRange;
+        //animator = GetComponent<Animator>();
+        navAgent = GetComponent<NavMeshAgent>();
+
+        //if (animator == null)
+        //{
+        //    Debug.LogError("애니메이터 없음.");
+        //}
+
+        if (navAgent == null)
+        {
+            Debug.LogError("네비메쉬 없음.");
+        }
+        var attackPivot = attackRoot.position;
+        attackPivot.y = transform.position.y;
+        //높이를 무시하고 평면상의 거리만 고려
+
+        distanceToPlayerMin = Vector3.Distance(transform.position, attackRoot.position) + flatRange;
     }
     #endregion
 
     #region Start()
     void Start()
     {
+        StartCoroutine(UpdatePath());
         InitializeStats();
     }
     #endregion
@@ -99,9 +150,42 @@ public class Enemy : MonoBehaviour
         {
             return;
         }
-        
+        switch (enemyState)
+        {
+            case eState.Patrol:
+                break;
+            case eState.Idle:
+                break;
+            case eState.Tracking:
+                var distance = Vector3.Distance(player.transform.position, transform.position);
+                if (distance <= distanceToPlayerMin)
+                {
+                    BeginAttack();
+                }
+                break;
+        }
     }
     #endregion
+
+    #region FixedUpdate()
+    private void FixedUpdate()
+    {
+        if (isDead)
+        {
+            return;
+        }
+        if (enemyState == eState.AttackBegin || enemyState == eState.Attacking)
+        {
+            var lookRotation = Quaternion.LookRotation(player.transform.position - transform.position);
+            var targetAngleY = lookRotation.eulerAngles.y;
+
+            targetAngleY = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngleY, ref turnSmoothVelocity, turnSmoothTime);
+            transform.eulerAngles = Vector3.up * targetAngleY;
+            Attack();
+        }
+    }
+    #endregion
+
 
     #region 초기화
     private void InitializeStats()
@@ -151,7 +235,7 @@ public class Enemy : MonoBehaviour
 
     #region 시야 그리기
 #if UNITY_EDITOR
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
         if (attackRoot != null && !isBuffer && !isRanged)
         {
@@ -161,11 +245,19 @@ public class Enemy : MonoBehaviour
         }
         else if (attackRoot != null && !isBuffer && isRanged)
         {
-            Gizmos.color = new Color(1f, 0f, 0f, 0.5f);//붉은색
+            //Gizmos.color = new Color(1f, 0f, 0f, 0.5f);//붉은색
+            //Vector3 cubeSize = new Vector3(0.3f, 0.3f, flatRange); // width, height, depth
+            //Vector3 cubeCenter = attackRoot.position + attackRoot.forward * (flatRange / 2);
+            //Gizmos.DrawCube(cubeCenter, cubeSize);
+            ////긴 직사각형모양의 원거리 공격 범위
+
+            Gizmos.color = new Color(1f, 0f, 0f, 0.5f); // 붉은색
             Vector3 cubeSize = new Vector3(0.3f, 0.3f, flatRange); // width, height, depth
-            Vector3 cubeCenter = attackRoot.position + -attackRoot.forward * (flatRange / 2);
-            Gizmos.DrawCube(cubeCenter, cubeSize);
-            //긴 직사각형모양의 원거리 공격 범위
+            Matrix4x4 oldMatrix = Gizmos.matrix;
+            Gizmos.matrix = Matrix4x4.TRS(attackRoot.position, attackRoot.rotation, attackRoot.lossyScale);
+            Gizmos.DrawCube(-Vector3.forward * (flatRange / 2), cubeSize);
+            Gizmos.matrix = oldMatrix;
+
         }
         else if (attackRoot != null && isBuffer && !isRanged)
         {
@@ -187,4 +279,171 @@ public class Enemy : MonoBehaviour
     }
 #endif
     #endregion
+
+    private void BeginAttack()
+    {
+        enemyState = eState.AttackBegin;
+    }
+    private void Attack()
+    {
+        enemyState = eState.Attacking;
+
+        if (hasTarget)
+        {
+            // 플레이어에게 데미지를 줌
+            var message = new DamageMessage();
+            message.amount = flatDamage;
+            message.damager = this.gameObject;
+            message.hitPoint = player.transform.position;
+            message.hitNormal = (player.transform.position - transform.position).normalized;
+
+            player.ApplyDamage(message);
+        }
+    }
+
+    private IEnumerator UpdatePath()
+    {
+        while (!isDead)
+        {
+            if (hasTarget)
+            {
+                if (enemyState == eState.Patrol || enemyState == eState.Idle)
+                {
+                    enemyState = eState.Tracking;
+                    navAgent.speed = moveSpeed;
+                }
+                navAgent.SetDestination(player.transform.position);
+
+                if (!IsTargetOnSight(player.transform))
+                {
+                    lostSightTimer += Time.deltaTime;
+                    if (lostSightTimer >= lostSightTime)
+                    {
+                        player = null;
+                        enemyState = eState.Patrol;
+                        navAgent.speed = patrolSpeed;
+                    }
+                }
+                else
+                {
+                    lostSightTimer = 0.0f; // 타겟이 다시 시야에 들어오면 타이머 초기화
+                }
+            }
+            else
+            {
+                if (enemyState != eState.Patrol)
+                {
+                    enemyState = eState.Patrol;
+                    navAgent.speed = patrolSpeed;
+                }
+
+                if (!navAgent.pathPending && navAgent.remainingDistance <= navAgent.stoppingDistance)
+                {
+                    enemyState = eState.Idle;
+                    navAgent.isStopped = true;
+                    float idleTime = UnityEngine.Random.Range(1f, 5f); // 1~5초 랜덤 대기 시간
+                    yield return new WaitForSeconds(idleTime);
+                    if (!isDead && navAgent.isOnNavMesh)
+                    {
+                        navAgent.isStopped = false;
+                        SetRandomPatrolPoint(); // 새로운 정찰 지점을 설정
+                    }
+                }
+
+                var colliders = Physics.OverlapSphere(viewTransform.position, viewDistance, LayerTarget);
+                foreach (var collider in colliders)
+                {
+                    var targetPlayer = collider.GetComponent<PlayerConJS>();
+                    if (targetPlayer != null && !targetPlayer.isDead && IsTargetOnSight(targetPlayer.transform))
+                    {
+                        player = targetPlayer;
+                        break;
+                    }
+                }
+            }
+            yield return new WaitForSeconds(.05f);
+        }
+    }
+
+    private void SetRandomPatrolPoint()
+    {
+        Vector3 randomDirection = UnityEngine.Random.insideUnitSphere * patrolRange;
+        randomDirection += transform.position;
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(randomDirection, out hit, patrolRange, 1))
+        {
+            navAgent.SetDestination(hit.position);
+        }
+        //animator.SetFloat("Speed", navAgent.desiredVelocity.magnitude);
+    }
+
+    private bool IsTargetOnSight(Transform target)
+    {
+        var direction = target.position - viewTransform.position;
+        direction.y = viewTransform.forward.y;
+
+        if (Vector3.Angle(direction, viewTransform.forward) > viewAngle * 0.5f)
+        {
+            return false;
+        }
+
+        direction = target.position - viewTransform.position;
+        RaycastHit hit;
+
+        if (Physics.Raycast(viewTransform.position, direction, out hit, viewDistance, LayerTarget))
+        {
+            if (hit.transform == target)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+    public bool ApplyDamage(DamageMessage damageMessage)
+    {
+        if (Time.time < lastDamagedTime + MIN_TIME_BET_DAMAGE || damageMessage.damager == gameObject || isDead)
+        {
+            return false;
+        }
+
+        lastDamagedTime = Time.time;
+        hp -= damageMessage.amount;
+
+        //if (damageMessage.amount != 0)
+        //{
+        //  animator.CrossFade("hit", .2f);
+        //}
+
+        if (hp <= 0)
+        {
+            Die();
+        }
+        else if (hp > 0 && damageMessage.amount != 0)
+        {
+            //animator.SetTrigger("hit");
+        }
+
+        if (player == null)
+        {
+            player = damageMessage.damager.GetComponent<PlayerConJS>();
+        }
+        return true;
+    }
+
+    public void Die()
+    {
+        isDead = true;
+
+        hp = 0;
+        //animator.SetTrigger("Die");
+
+        //if (navAgent.isOnNavMesh)
+        //{
+        //    navAgent.isStopped = true;
+        //    navAgent.ResetPath();
+        //}
+        //navAgent.enabled = false;
+    }
+
 }
