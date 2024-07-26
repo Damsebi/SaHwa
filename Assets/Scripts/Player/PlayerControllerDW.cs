@@ -113,8 +113,11 @@ public class PlayerControllerDW : MonoBehaviour
         {
             PlayerFollowCamera.instance.RotateRight();
         }
+        else
+        {
+            PlayerFollowCamera.instance.NotRotate();
+        }
 
         #endregion
-
     }
 }

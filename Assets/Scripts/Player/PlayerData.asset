@@ -29,14 +29,16 @@ MonoBehaviour:
   animalFirstSkillCooldown: 4
   animalSecondCooldown: 4
   animalAvoidStepCooldown: 2
-  cameraFollowSpeed: 0.171
-  smoothVerticalRotationRate: 0.18
-  turnForwardDuration: 0.0032
-  turnForwardSmoothRate: 0.044
-  turnToTargetSmoothRate: 0
-  detectRange: 15
+  cameraFollowSpeed: 0.093
+  originCameraOrbitAxisPosition: {x: 0, y: 2.09, z: 0}
+  smoothVerticalRotationRate: 0.015
+  smoothHorizontalRotationRate: 0.093
+  turnForwardDuration: 0.0098
+  turnForwardSmoothRate: 0.077
+  turnToTargetSmoothRate: 0.067
+  detectRange: 6.7
   targetLayer:
     serializedVersion: 2
     m_Bits: 64
-  maximumAngleWithTarget: 50
-  cameraYValue: 1
+  maximumAngleWithTarget: 70
+  cameraYValue: 2
