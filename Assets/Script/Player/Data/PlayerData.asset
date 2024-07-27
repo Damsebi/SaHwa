@@ -12,22 +12,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bbf185fd1ef9b848bd15e92242f6427, type: 3}
   m_Name: PlayerData
   m_EditorClassIdentifier: 
-  maxHp: 0
+  maxHp: 100
   humanMoveSpeed: 5
   animalMoveSpeed: 9
   playerRotateSpeed: 25
+  normalAttackDamage1: 1
+  normalAttackDamage2: 1
+  normalAttackDamage3: 2
   restrictTimeForNormalAttack1_1: 1
   restrictTimeForNormalAttack1_2: 0.7
   restrictTimeForNormalAttack1_3: 0.7
+  humanFirstSkillDamage: 4
   humanFirstSkillCooldown: 4
   humanFirstSkillRange: 15
   humanFirstSkillDuration: 3
   humanFirstSkillScale: {x: 4, y: 4, z: 4}
+  humanSecondSkillDamage: 4
   humanSecondSkillCooldown: 4
   humanSecondSkillDuration: 2
   humanAvoidStepCooldown: 2
+  animalNormalAttackDamage: 2
   animalNormalAttackCooldown: 1.5
+  animalFirstSkillDamage: 4
   animalFirstSkillCooldown: 4
+  animalSecondSkillDamage: 5
   animalSecondCooldown: 4
   animalAvoidStepCooldown: 2
   cameraFollowSpeed: 0.093
