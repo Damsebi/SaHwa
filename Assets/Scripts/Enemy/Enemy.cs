@@ -31,11 +31,10 @@ public class Enemy : MonoBehaviour, IDamageable
 
     [HideInInspector] public float hp; //체력
     [HideInInspector] public float hpBarCount; //체력바 갯수
-    [HideInInspector] public float moveSpeed; //이동 속도
+    [HideInInspector] public float trackingSpeed; //추적 속도
     [HideInInspector] public float patrolSpeed; //순찰 속도
     [HideInInspector] public float viewDistance; // 시야 범위
     [HideInInspector] public float viewAngle; // 시야 각
-    [HideInInspector] public float distanceToPlayerMin; // 플레이어와의 최소 거리
     [HideInInspector] public float distanceToPlayerMax; // 플레이어와의 최대 거리
     [HideInInspector] public float paintOver; // 덧칠 횟수
 
@@ -56,6 +55,8 @@ public class Enemy : MonoBehaviour, IDamageable
 
     private Animator animator;
     private NavMeshAgent navAgent;
+
+    private float attackDistance;
 
     private float turnSmoothVelocity; //몬스터의 회전 속도
     private float turnSmoothTime = 0.1f; //몬스터 회전 시 지연시간
@@ -80,66 +81,38 @@ public class Enemy : MonoBehaviour, IDamageable
     public Transform attackRoot; //공격이 시작되는 피벗, 이 피벗 해당 반경 내에 있는 플레이어가 공격당함
     public Transform viewTransform; //눈 위치
 
-    public PlayerConJS player;
+    public PlayerConJS target;
+    private RaycastHit[] hits = new RaycastHit[10];
+    private List<PlayerConJS> lastAttackedTarget = new List<PlayerConJS>();
 
-    private bool hasTarget
-    {
-        get
-        {
-            if (player != null && !player.isDead)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-    }
+
+
+    private bool hasTarget => target != null && !target.isDead;
 
     #endregion
 
     #region Awake()
     private void Awake()
     {
-        hp = enemyData.f_hp;
-        hpBarCount = enemyData.f_hpBarCount;
-        moveSpeed = enemyData.f_moveSpeed;
-        patrolSpeed = enemyData.f_patrolSpeed;
-        viewAngle = enemyData.f_viewAngle;
-        viewDistance = enemyData.f_viewDistance;
-        distanceToPlayerMin = enemyData.f_distanceToPlayerMin;
-        paintOver = enemyData.f_paintOver;
-        turnSmoothVelocity = enemyData.f_turnSmoothVelocity;
-        plusAttackDamage = enemyData.b_plusAttackDamage;
-        plusSkillDamage = enemyData.b_plusSkillDamage;
-        magicGroup = enemyData.b_magicGroup;
-        patrolRange = enemyData.f_patrolRange;
-        //animator = GetComponent<Animator>();
+        animator = GetComponent<Animator>();
         navAgent = GetComponent<NavMeshAgent>();
 
-        //if (animator == null)
-        //{
-        //    Debug.LogError("애니메이터 없음.");
-        //}
-
-        if (navAgent == null)
-        {
-            Debug.LogError("네비메쉬 없음.");
-        }
         var attackPivot = attackRoot.position;
         attackPivot.y = transform.position.y;
         //높이를 무시하고 평면상의 거리만 고려
 
-        distanceToPlayerMin = Vector3.Distance(transform.position, attackRoot.position) + flatRange;
+        attackDistance = Vector3.Distance(transform.position, attackPivot) + flatRange;
+        navAgent.stoppingDistance = attackDistance;
+        navAgent.speed = patrolSpeed;
     }
     #endregion
 
     #region Start()
     void Start()
     {
-        StartCoroutine(UpdatePath());
         InitializeStats();
+        SetUp();
+        StartCoroutine(UpdatePath());
     }
     #endregion
 
@@ -157,8 +130,8 @@ public class Enemy : MonoBehaviour, IDamageable
             case eState.Idle:
                 break;
             case eState.Tracking:
-                var distance = Vector3.Distance(player.transform.position, transform.position);
-                if (distance <= distanceToPlayerMin)
+                var distance = Vector3.Distance(target.transform.position, transform.position);
+                if (distance <= attackDistance)
                 {
                     BeginAttack();
                 }
@@ -170,22 +143,77 @@ public class Enemy : MonoBehaviour, IDamageable
     #region FixedUpdate()
     private void FixedUpdate()
     {
+        //예외처리
         if (isDead)
         {
             return;
         }
+        //공격하거나 공격 도중 플레이어를 바라보게 함
         if (enemyState == eState.AttackBegin || enemyState == eState.Attacking)
         {
-            var lookRotation = Quaternion.LookRotation(player.transform.position - transform.position);
+            var lookRotation = Quaternion.LookRotation(target.transform.position - transform.position);
             var targetAngleY = lookRotation.eulerAngles.y;
 
             targetAngleY = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngleY, ref turnSmoothVelocity, turnSmoothTime);
             transform.eulerAngles = Vector3.up * targetAngleY;
-            Attack();
+        }
+
+        //공격 도중 플레이어가 이동해서 시야에서 놓치면?
+        //physics.cast계열
+
+        if (enemyState == eState.Attacking)
+        {
+            //몬스터의 전방 방향을 구함
+            var direction = transform.forward;
+
+            //네비의 현재속도를 기준으로 deltaDistance를 계산 -> 한 프레임 동안 몬스터가 이동하는 거리
+            var deltaDistance = navAgent.velocity.magnitude * Time.deltaTime;
+
+            // SphereCastNonAlloc을 사용하여 atkRoot.position에서 반지름이 atkRadius인 구 형태로 direction 방향으로 deltaDistance 거리만큼 구체 형태의 캐스트(이동한 궤적에 겹치는 Collider가 있는지 검사)
+            // Trigger,Collision 등은 매 프레임 실행, 그 순간의 겹치는 Collider를 잡아내는 경우는 힘듦.
+            // hits 배열에 충돌한 결과를 저장하고, 충돌한 객체의 수를 size에 저장
+            var size = Physics.SphereCastNonAlloc(attackRoot.position, flatRange, direction, hits, deltaDistance, LayerTarget);
+
+            //충돌한 객체들에 대한 반복
+            for (var i = 0; i < size; i++)
+            {
+                //충돌한 객체가 livingentity인지 확인
+                var atkTarget = hits[i].collider.GetComponent<PlayerConJS>();
+
+                //충돌한 객체가 Player이고 아직 공격한 적 없는 객체라면
+                if (atkTarget != null && !lastAttackedTarget.Contains(atkTarget))
+                {
+                    //damageMessage 객체를 생성해서 데미지 정보를 설정
+                    var message = new DamageMessage();
+                    message.amount = flatDamage;
+                    message.damager = this.gameObject;
+                    message.hitPoint = hits[i].point;
+
+                    //충돌한 지점이 0 이하일 때와 그 외의 경우를 나누어 hitpoint 설정
+                    if (hits[i].distance <= 0f)
+                    {
+                        message.hitPoint = attackRoot.position;
+                    }
+                    else
+                    {
+                        message.hitPoint = hits[i].point;
+                    }
+
+                    //충돌한 지점의 법선을 hitnormal에 설정
+                    message.hitNormal = hits[i].normal;
+
+                    //충돌한 livingEntity에게 데미지 적용
+                    atkTarget.ApplyDamage(message);
+
+                    //해당객체를 lastAtkTarget 리스트에 추가하여 중복공격 방지
+                    lastAttackedTarget.Add(atkTarget);
+
+                    break;
+                }
+            }
         }
     }
     #endregion
-
 
     #region 초기화
     private void InitializeStats()
@@ -230,6 +258,24 @@ public class Enemy : MonoBehaviour, IDamageable
             isRanged = false;
             isBuffer = true;
         }
+    }
+
+    void SetUp()
+    {
+        hp = enemyData.f_hp;
+        hpBarCount = enemyData.f_hpBarCount;
+        trackingSpeed = enemyData.f_trackingSpeed;
+        patrolSpeed = enemyData.f_patrolSpeed;
+        viewAngle = enemyData.f_viewAngle;
+        viewDistance = enemyData.f_viewDistance;
+        paintOver = enemyData.f_paintOver;
+        turnSmoothVelocity = enemyData.f_turnSmoothVelocity;
+        plusAttackDamage = enemyData.b_plusAttackDamage;
+        plusSkillDamage = enemyData.b_plusSkillDamage;
+        magicGroup = enemyData.b_magicGroup;
+        patrolRange = enemyData.f_patrolRange;
+        navAgent.speed = patrolSpeed;
+        enemyState = eState.Idle;
     }
     #endregion
 
@@ -280,27 +326,6 @@ public class Enemy : MonoBehaviour, IDamageable
 #endif
     #endregion
 
-    private void BeginAttack()
-    {
-        enemyState = eState.AttackBegin;
-    }
-    private void Attack()
-    {
-        enemyState = eState.Attacking;
-
-        if (hasTarget)
-        {
-            // 플레이어에게 데미지를 줌
-            var message = new DamageMessage();
-            message.amount = flatDamage;
-            message.damager = this.gameObject;
-            message.hitPoint = player.transform.position;
-            message.hitNormal = (player.transform.position - transform.position).normalized;
-
-            player.ApplyDamage(message);
-        }
-    }
-
     private IEnumerator UpdatePath()
     {
         while (!isDead)
@@ -310,16 +335,16 @@ public class Enemy : MonoBehaviour, IDamageable
                 if (enemyState == eState.Patrol || enemyState == eState.Idle)
                 {
                     enemyState = eState.Tracking;
-                    navAgent.speed = moveSpeed;
+                    navAgent.speed = trackingSpeed;
                 }
-                navAgent.SetDestination(player.transform.position);
+                navAgent.SetDestination(target.transform.position);
 
-                if (!IsTargetOnSight(player.transform))
+                if (!IsTargetOnSight(target.transform))
                 {
                     lostSightTimer += Time.deltaTime;
                     if (lostSightTimer >= lostSightTime)
                     {
-                        player = null;
+                        target = null;
                         enemyState = eState.Patrol;
                         navAgent.speed = patrolSpeed;
                     }
@@ -341,7 +366,8 @@ public class Enemy : MonoBehaviour, IDamageable
                 {
                     enemyState = eState.Idle;
                     navAgent.isStopped = true;
-                    float idleTime = UnityEngine.Random.Range(1f, 5f); // 1~5초 랜덤 대기 시간
+                    float idleTime = UnityEngine.Random.Range(1f, 5f); // 1~5초 랜덤 대기 시간]
+
                     yield return new WaitForSeconds(idleTime);
                     if (!isDead && navAgent.isOnNavMesh)
                     {
@@ -350,13 +376,22 @@ public class Enemy : MonoBehaviour, IDamageable
                     }
                 }
 
-                var colliders = Physics.OverlapSphere(viewTransform.position, viewDistance, LayerTarget);
+                var colliders = Physics.OverlapSphere(viewTransform.position,
+                    viewDistance, LayerTarget);
+                // 레이어를 통해 몬스터를 중심으로 범위 내 플레이어를 인식
+
                 foreach (var collider in colliders)
                 {
-                    var targetPlayer = collider.GetComponent<PlayerConJS>();
-                    if (targetPlayer != null && !targetPlayer.isDead && IsTargetOnSight(targetPlayer.transform))
+                    if (!IsTargetOnSight(collider.transform))
                     {
-                        player = targetPlayer;
+                        continue;
+                    }
+
+                    var Player = collider.GetComponent<PlayerConJS>();
+
+                    if (Player != null && !Player.isDead)
+                    {
+                        target = Player;
                         break;
                     }
                 }
@@ -365,6 +400,28 @@ public class Enemy : MonoBehaviour, IDamageable
         }
     }
 
+    private bool IsTargetOnSight(Transform target)
+    {
+        var direction = target.position - viewTransform.position;
+        direction.y = viewTransform.forward.y;
+        if (Vector3.Angle(direction, viewTransform.forward) > viewAngle * 0.5f)
+        {
+            return false;
+        }
+        direction = target.position - viewTransform.position;
+
+        RaycastHit hit;
+
+        if (Physics.Raycast(viewTransform.position, direction, out hit, viewDistance, LayerTarget))
+        {
+            if (hit.transform == target)
+            {              
+                return true;
+            }
+        }
+
+        return false;
+    }
     private void SetRandomPatrolPoint()
     {
         Vector3 randomDirection = UnityEngine.Random.insideUnitSphere * patrolRange;
@@ -377,29 +434,30 @@ public class Enemy : MonoBehaviour, IDamageable
         //animator.SetFloat("Speed", navAgent.desiredVelocity.magnitude);
     }
 
-    private bool IsTargetOnSight(Transform target)
+
+    #region 공격
+
+    private void BeginAttack()
     {
-        var direction = target.position - viewTransform.position;
-        direction.y = viewTransform.forward.y;
-
-        if (Vector3.Angle(direction, viewTransform.forward) > viewAngle * 0.5f)
-        {
-            return false;
-        }
-
-        direction = target.position - viewTransform.position;
-        RaycastHit hit;
-
-        if (Physics.Raycast(viewTransform.position, direction, out hit, viewDistance, LayerTarget))
-        {
-            if (hit.transform == target)
-            {
-                return true;
-            }
-        }
-
-        return false;
+        enemyState = eState.AttackBegin;
     }
+    private void Attack()
+    {
+        enemyState = eState.Attacking;
+
+        if (hasTarget)
+        {
+            // 플레이어에게 데미지를 줌
+            var message = new DamageMessage();
+            message.amount = flatDamage;
+            message.damager = this.gameObject;
+            message.hitPoint = target.transform.position;
+            message.hitNormal = (target.transform.position - transform.position).normalized;
+
+            target.ApplyDamage(message);
+        }
+    }     
+
     public bool ApplyDamage(DamageMessage damageMessage)
     {
         if (Time.time < lastDamagedTime + MIN_TIME_BET_DAMAGE || damageMessage.damager == gameObject || isDead)
@@ -421,29 +479,29 @@ public class Enemy : MonoBehaviour, IDamageable
         }
         else if (hp > 0 && damageMessage.amount != 0)
         {
-            //animator.SetTrigger("hit");
+            animator.SetTrigger("hit");
         }
 
-        if (player == null)
+        if (target == null)
         {
-            player = damageMessage.damager.GetComponent<PlayerConJS>();
+            target = damageMessage.damager.GetComponent<PlayerConJS>();
         }
         return true;
     }
+    #endregion
 
     public void Die()
     {
         isDead = true;
 
         hp = 0;
-        //animator.SetTrigger("Die");
+        animator.SetTrigger("Die");
 
-        //if (navAgent.isOnNavMesh)
-        //{
-        //    navAgent.isStopped = true;
-        //    navAgent.ResetPath();
-        //}
-        //navAgent.enabled = false;
+        if (navAgent.isOnNavMesh)
+        {
+            navAgent.isStopped = true;
+            navAgent.ResetPath();
+        }
+        navAgent.enabled = false;
     }
-
 }

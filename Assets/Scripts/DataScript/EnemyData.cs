@@ -8,7 +8,7 @@ public class EnemyData : ScriptableObject
     [Range(1f, 200f)] public float f_hp;
 
     [Header("달리기 속도")]
-    [Range(1f, 1000f)] public float f_moveSpeed;
+    [Range(1f, 1000f)] public float f_trackingSpeed;
 
     [Header("순찰 속도")]
     [Range(1f, 1000f)] public float f_patrolSpeed;
@@ -24,9 +24,6 @@ public class EnemyData : ScriptableObject
 
     [Header("시야 각")]
     [Range(1f, 359f)] public float f_viewAngle;
-
-    [Header("플레이어로부터 거리 최소 거리 유지")]
-    [Range(1f, 100f)] public float f_distanceToPlayerMin;
 
     [Header("덧칠 당하는 총 횟수")]
     [Range(1, 5)] public int f_paintOver;
