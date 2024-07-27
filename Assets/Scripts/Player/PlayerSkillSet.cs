@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerSkillSet : MonoBehaviour
 {//스킬 스크립트 분할할지는 리팩토링할 때
@@ -9,6 +10,7 @@ public class PlayerSkillSet : MonoBehaviour
     [SerializeField] LayerMask enemyLayer;
 
     private PlayerMaskChange playerMaskChange;
+    private PlayerMovement playerMovement;
 
     [SerializeField] private bool restrictForSkill;
     public bool RestrictForSkill { get { return restrictForSkill; } }
@@ -16,8 +18,8 @@ public class PlayerSkillSet : MonoBehaviour
     #region 사람탈
     #region 기본공격
     private bool isNormalAttacking;
-    private bool isSkillCoroutineRunning;
-    public bool IsSkillCoroutineRunning { get { return isSkillCoroutineRunning; } }
+    private int normalAttackCount;
+
     [SerializeField] private bool canUseHumanNormalAttack;
     #endregion
 
@@ -57,10 +59,26 @@ public class PlayerSkillSet : MonoBehaviour
     #endregion
     #endregion
 
+    #region 귀신탈
+    private bool canUseFinish;
+    private bool turnOriginMask;
+
+    [SerializeField] private GameObject characterSkin;
+
+    [SerializeField] GameObject ghostWeapon;
+    [SerializeField] GameObject humanWeapon;
+
+    [SerializeField] GameObject finishSkillArea; // 처형 영역 오브젝트
+    //[SerializeField][Range(0, 20)] float executionRange; //처형 범위 나중에 
+    //[SerializeField] float executionAreaSizeRate; //처형 영역 크기비율 나중에
+
+    #endregion
+
 
     private void Awake()
     {
         playerMaskChange = GetComponent<PlayerMaskChange>();
+        playerMovement = GetComponent<PlayerMovement>();    
     }
 
     private void Start()
@@ -74,46 +92,106 @@ public class PlayerSkillSet : MonoBehaviour
         canUseXClaw = true;
         canUseLeapClaw = true;
         canUseAnimalAvoidBack = true;
+
+        canUseFinish = true;
+
+        normalAttackCount = 0;
     }
+    #region 애니메이션 상태 체크(다음 빌드때 애니메이션 스크립트 하나 만들 예정)
+    public void AnimationState() 
+    {
+     
+
+        var currentAnimation = playerMaskChange.ActiveAnimator.GetCurrentAnimatorStateInfo(0);
+        if (currentAnimation.IsName("NormalAttack"))
+        {
+            if (currentAnimation.normalizedTime < .3f)
+            {
+                playerMovement.canRotate = true;
+                playerMovement.canMove = false;
+
+            }
+            else if (currentAnimation.normalizedTime < .35f)
+            {
+                restrictForSkill = true;
+                playerMovement.canRotate = false;
+            }
+        }
+        else if (currentAnimation.IsName("NormalAttack2"))
+        {
+            if (currentAnimation.normalizedTime < .3f)
+            {
+                playerMovement.canRotate = true;
+                playerMovement.canMove = false;
+
+            }
+            else if (currentAnimation.normalizedTime < .35f)
+            {
+                restrictForSkill = true;
+                playerMovement.canRotate = false;
+            }
+        }
+        else if (currentAnimation.IsName("NormalAttack3"))
+        {
+            if (currentAnimation.normalizedTime < .3f)
+            {
+                playerMovement.canRotate = true;
+                playerMovement.canMove = false;
+
+            }
+            else if (currentAnimation.normalizedTime < .35f)
+            {
+                restrictForSkill = true;
+                playerMovement.canRotate = false;
+            }
+        }
+        else if (currentAnimation.IsName("Movement") || currentAnimation.IsName("LockOnMovement")) //버그풀어주는 용도로도 활용
+        {
+            //restrictForSkill = false; // 다른 스킬에도 영향을 줌...
+            playerMovement.canRotate = true;
+            playerMovement.canMove = true;
+        }
+    }
+    #endregion
+
     #region 사람탈 함수
     public IEnumerator HumanNormalAttack()
     {
-        if (!isSkillCoroutineRunning)
+        var currentAnimation = playerMaskChange.ActiveAnimator.GetCurrentAnimatorStateInfo(0);
+        if (!isNormalAttacking)
         {
-            isSkillCoroutineRunning = true;
+            isNormalAttacking = true;
 
-            playerMaskChange.ActiveAnimator.SetBool("isNormalAttacking", true);
-            yield return null;
-            playerMaskChange.ActiveAnimator.SetBool("isNormalAttacking", false);
+            playerMaskChange.ActiveAnimator.SetTrigger("isNormalAttacking");
 
-
-            if (playerMaskChange.ActiveAnimator.GetCurrentAnimatorStateInfo(0).IsName("Movement"))
+            if (currentAnimation.IsName("Movement") || currentAnimation.IsName("LockOnMovement"))
             {
-                playerMaskChange.ActiveAnimator.SetBool("restrict", restrictForSkill = true);
                 yield return new WaitForSeconds(playerData.restrictTimeForNormalAttack1_1);
+                playerMaskChange.ActiveAnimator.SetInteger("normalAttackCount",1);
             }
-            else if (playerMaskChange.ActiveAnimator.GetCurrentAnimatorStateInfo(0).IsName("NormalAttack"))
+            else if (currentAnimation.IsName("NormalAttack"))
             {
-                playerMaskChange.ActiveAnimator.SetBool("restrict", restrictForSkill = true);
                 yield return new WaitForSeconds(playerData.restrictTimeForNormalAttack1_2);
+                playerMaskChange.ActiveAnimator.SetInteger("normalAttackCount", 2);
             }
-            else if (playerMaskChange.ActiveAnimator.GetCurrentAnimatorStateInfo(0).IsName("NormalAttack2"))
+            else if (currentAnimation.IsName("NormalAttack2"))
             {
-                playerMaskChange.ActiveAnimator.SetBool("restrict", restrictForSkill = true);
                 yield return new WaitForSeconds(playerData.restrictTimeForNormalAttack1_3);
+                playerMaskChange.ActiveAnimator.SetInteger("normalAttackCount", 0);
             }
 
-            playerMaskChange.ActiveAnimator.SetBool("restrict", restrictForSkill = false);
-            isSkillCoroutineRunning = false;
+            yield return new WaitForSeconds(.2f);
+
+            isNormalAttacking = false;
+            restrictForSkill = false;
         }
     }
-
-
     public IEnumerator HumanFirstSkill()
     {
         if (canUseInkPillar)
         {
-            restrictForSkill = true;
+            playerMaskChange.ActiveAnimator.SetBool("restrict", restrictForSkill = true);
+
             canUseInkPillar = false;
 
             playerMaskChange.ActiveAnimator.CrossFade("FirstSkill", .1f);
@@ -151,7 +229,7 @@ public class PlayerSkillSet : MonoBehaviour
             }
 
             yield return new WaitForSeconds(.7f);
-            restrictForSkill = false;
+            playerMaskChange.ActiveAnimator.SetBool("restrict", restrictForSkill = false);
 
             //먹기둥 지속시간과 쿨타임 어느게 일찍 끝나냐에 따라 다름
 
@@ -181,26 +259,25 @@ public class PlayerSkillSet : MonoBehaviour
             //범위 데미지 
         }
     }
-
     public IEnumerator HumanSecondSkill()
     {
         if (canUseInkSmash)
         {
-            restrictForSkill = true;
+            playerMaskChange.ActiveAnimator.SetBool("restrict", restrictForSkill = true);
             canUseInkSmash = false;
 
             playerMaskChange.ActiveAnimator.CrossFade("SecondSkill", .1f);
-            for (int i = 0; i < 40; i++)
+            for (int i = 0; i < 80; i++)
             {
-                yield return new WaitForSeconds(.025f);
+                yield return new WaitForSeconds(.01f);
                 playerMaskChange.ActiveRigidbody.MovePosition
-                    (playerMaskChange.ActiveCharacter.transform.position + playerMaskChange.ActiveCharacter.transform.forward * 30 * Time.deltaTime);
+                    (playerMaskChange.ActiveCharacter.transform.position + playerMaskChange.ActiveCharacter.transform.forward * 10 * Time.deltaTime);
             }
 
-            inkSmashArea = Instantiate(inkSmashPrefab,playerMaskChange.ActiveCharacter.transform.position + playerMaskChange.ActiveCharacter.transform.forward * 1.3f, playerMaskChange.ActiveCharacter.transform.rotation);
+            inkSmashArea = Instantiate(inkSmashPrefab,playerMaskChange.ActiveCharacter.transform.position + playerMaskChange.ActiveCharacter.transform.forward * 1, playerMaskChange.ActiveCharacter.transform.rotation);
 
             yield return new WaitForSeconds(.5f);
-            restrictForSkill = false;
+            playerMaskChange.ActiveAnimator.SetBool("restrict", restrictForSkill = false);
 
             yield return new WaitForSeconds(playerData.humanSecondSkillDuration);
             Destroy(inkSmashArea);
@@ -209,12 +286,12 @@ public class PlayerSkillSet : MonoBehaviour
             canUseInkSmash = true;
         }
     }
-
     public IEnumerator HumanAvoidBack()
     {
         if (canUseHumanAvoidStep)
         {
             restrictForSkill = true;
+            playerMaskChange.ActiveAnimator.SetBool("restrict", true);
             canUseHumanAvoidStep = false;
             playerMaskChange.ActiveAnimator.CrossFade("AvoidBack", .1f);
 
@@ -222,10 +299,10 @@ public class PlayerSkillSet : MonoBehaviour
             {
                 yield return new WaitForSeconds(.01f);
                 playerMaskChange.ActiveRigidbody.MovePosition
-                    (playerMaskChange.ActiveCharacter.transform.position - playerMaskChange.ActiveCharacter.transform.forward * 20 * Time.deltaTime);
+                    (playerMaskChange.ActiveCharacter.transform.position - playerMaskChange.ActiveCharacter.transform.forward * 10 * Time.deltaTime);
             }
 
-            restrictForSkill = false;
+            playerMaskChange.ActiveAnimator.SetBool("restrict", restrictForSkill = false);
 
             yield return new WaitForSeconds(playerData.humanAvoidStepCooldown - .6f);
             canUseHumanAvoidStep = true;
@@ -239,13 +316,13 @@ public class PlayerSkillSet : MonoBehaviour
     {
         if (canUseHumanNormalAttack)
         {
-            restrictForSkill = true;
+            playerMaskChange.ActiveAnimator.SetBool("restrict", restrictForSkill = true);
             canUseHumanNormalAttack = false;
 
             playerMaskChange.ActiveAnimator.CrossFade("NormalAttack", .1f);
 
             yield return new WaitForSeconds(1f);
-            restrictForSkill = false;
+            playerMaskChange.ActiveAnimator.SetBool("restrict", restrictForSkill = false);
 
             yield return new WaitForSeconds(playerData.animalNormalAttackCooldown - 1f);
             canUseHumanNormalAttack = true;
@@ -256,13 +333,13 @@ public class PlayerSkillSet : MonoBehaviour
     {
         if (canUseXClaw)
         {
-            restrictForSkill = true;
+            playerMaskChange.ActiveAnimator.SetBool("restrict", restrictForSkill = true);
             canUseXClaw = false;
 
             playerMaskChange.ActiveAnimator.CrossFade("FirstSkill", .1f);
             
-            yield return new WaitForSeconds(2f);
-            restrictForSkill = false;
+            yield return new WaitForSeconds(1.5f);
+            playerMaskChange.ActiveAnimator.SetBool("restrict", restrictForSkill = false);
 
             yield return new WaitForSeconds(playerData.animalFirstSkillCooldown - 2f);
             canUseXClaw = true;
@@ -273,7 +350,7 @@ public class PlayerSkillSet : MonoBehaviour
     {
         if (canUseLeapClaw)
         {
-            restrictForSkill = true;
+            playerMaskChange.ActiveAnimator.SetBool("restrict", restrictForSkill = true);
             canUseLeapClaw = false;
 
             playerMaskChange.ActiveAnimator.CrossFade("SecondSkill", .1f);
@@ -281,10 +358,10 @@ public class PlayerSkillSet : MonoBehaviour
             {
                 yield return new WaitForSeconds(.01f);
                 playerMaskChange.ActiveRigidbody.MovePosition
-                    (playerMaskChange.ActiveCharacter.transform.position + playerMaskChange.ActiveCharacter.transform.forward * 30 * Time.deltaTime);
+                    (playerMaskChange.ActiveCharacter.transform.position + playerMaskChange.ActiveCharacter.transform.forward * 15 * Time.deltaTime);
             }
             yield return new WaitForSeconds(.3f);
-            restrictForSkill = false;
+            playerMaskChange.ActiveAnimator.SetBool("restrict", restrictForSkill = false);
 
             yield return new WaitForSeconds(playerData.animalSecondCooldown -2f);
             canUseLeapClaw = true;
@@ -295,12 +372,12 @@ public class PlayerSkillSet : MonoBehaviour
     {
         if (canUseAnimalAvoidBack)
         {
-            restrictForSkill = true;
+            playerMaskChange.ActiveAnimator.SetBool("restrict", restrictForSkill = true);
             canUseAnimalAvoidBack = false;
             playerMaskChange.ActiveAnimator.CrossFade("AvoidBack", .1f);
             yield return new WaitForSeconds(.6f);
 
-            restrictForSkill = false;
+            playerMaskChange.ActiveAnimator.SetBool("restrict", restrictForSkill = false);
 
             yield return new WaitForSeconds(playerData.humanAvoidStepCooldown - .6f);
             canUseAnimalAvoidBack = true;
@@ -309,10 +386,69 @@ public class PlayerSkillSet : MonoBehaviour
     #endregion
 
     #region 귀신탈 함수
-    //
+    public IEnumerator FinishSkill()
+    {
+        //사람탈로 바꿔서 처형
+        //색깔바꾸기
+        if (playerMaskChange.ActiveCharacter.name == "AnimalMaskCharacter")
+        {
+            playerMaskChange.SwitchCharacter();
+            turnOriginMask = true;
+        }
 
-    //
+        playerMaskChange.ActiveAnimator.SetBool("restrict", restrictForSkill = true);
+        canUseFinish = false;
 
+        ghostWeapon.SetActive(true);
+        humanWeapon.SetActive(false);
+        Color characterOriginColor = characterSkin.GetComponent<Renderer>().material.color;
+        characterSkin.GetComponent<Renderer>().material.color = Color.black;
+
+        playerMaskChange.ActiveAnimator.CrossFade("Finish", .2f);
+
+        Vector3 originAngle = transform.forward;
+
+        //영역 색깔 점점 진하게 바꾸기
+        finishSkillArea.SetActive(true);
+        Color areaOriginColor = finishSkillArea.GetComponentInChildren<Renderer>().material.color;
+        float areaColorAlpha = 0.4f;
+
+        while (areaColorAlpha <= 1f)
+        {
+            areaColorAlpha += .1f;
+            finishSkillArea.GetComponentInChildren<Renderer>().material.color
+                = new Color(areaOriginColor.r, areaOriginColor.g, areaOriginColor.b, areaColorAlpha);
+            yield return new WaitForSeconds(.15f);
+        }
+
+        //타겟리스트에 있는 몬스터 죽이기
+        //for (int i = 0; i < executionTargetList.Count; i++)
+        //{
+        //    var target = executionTargetList[i].GetComponent<Enemy>();
+        //    target.Die();
+        //}
+
+        yield return new WaitForSeconds(1.1f);
+
+        finishSkillArea.SetActive(false);
+        ghostWeapon.SetActive(false);
+        humanWeapon.SetActive(true);
+
+        characterSkin.GetComponent<Renderer>().material.color = characterOriginColor;
+        finishSkillArea.GetComponentInChildren<Renderer>().material.color = areaOriginColor;
+
+        if (turnOriginMask)
+        {
+            playerMaskChange.SwitchCharacter();
+            turnOriginMask = false;
+        }
+
+        yield return new WaitForSeconds(.2f);
+        playerMaskChange.ActiveAnimator.SetBool("restrict", restrictForSkill = false);
+
+        yield return new WaitForSeconds(1f);
+        canUseFinish = true;
+    }
     #endregion
 
 }

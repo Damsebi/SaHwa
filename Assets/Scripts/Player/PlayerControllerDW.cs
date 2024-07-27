@@ -29,36 +29,34 @@ public class PlayerControllerDW : MonoBehaviour
 
     private void Update()
     {
-        if (playerSkillSet.RestrictForSkill) return; //행동 중에 제한
+        #region 상태 체크
+        playerSkillSet.AnimationState(); //애니메이션 상태 체크
+        #endregion
 
         #region 이동
         playerMovement.InputMovement(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         #endregion
 
-        #region 일반
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            playerMaskChange.SwitchCharacter();
-            //playerFollowCamera.CameraSetting();
-        }
-        #endregion
+        if (playerSkillSet.RestrictForSkill) return; //행동 중에 제한
 
         #region 사람탈
         if (playerMaskChange.ActiveCharacter.name == "HumanMaskCharacter")
         {
-            if (Input.GetKeyDown(KeyCode.A))
+            //이동 애니메이션에서 Setbool을 통해 연결되서 제한안걸어도 됨
+            if (Input.GetKeyDown(KeyCode.C))
             {
                 playerSkillSet.StartCoroutine(playerSkillSet.HumanNormalAttack());
             }
-            else if (Input.GetKeyDown(KeyCode.S))
+
+            if (Input.GetKeyDown(KeyCode.A))
             {
                 playerSkillSet.StartCoroutine(playerSkillSet.HumanFirstSkill());
             }
-            else if (Input.GetKeyDown(KeyCode.D))
+            if (Input.GetKeyDown(KeyCode.S))
             {
                 playerSkillSet.StartCoroutine(playerSkillSet.HumanSecondSkill());
             }
-            else if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.Space))
             {
                 playerSkillSet.StartCoroutine(playerSkillSet.HumanAvoidBack());
             }
@@ -66,18 +64,18 @@ public class PlayerControllerDW : MonoBehaviour
         #endregion
 
         #region 동물탈
-        else
+        if (playerMaskChange.ActiveCharacter.name == "AnimalMaskCharacter")
         {
-            if (Input.GetKeyDown(KeyCode.A))
+            if (Input.GetKeyDown(KeyCode.C))
             {
                 playerSkillSet.StartCoroutine(playerSkillSet.AnimalNormalAttack());
 
             }
-            else if (Input.GetKeyDown(KeyCode.S))
+            else if (Input.GetKeyDown(KeyCode.A))
             {
                 playerSkillSet.StartCoroutine(playerSkillSet.AnimalFirstSkill());
             }
-            else if (Input.GetKeyDown(KeyCode.D))
+            else if (Input.GetKeyDown(KeyCode.S))
             {
                 playerSkillSet.StartCoroutine(playerSkillSet.AnimalSecondSkill());
             }
@@ -88,7 +86,21 @@ public class PlayerControllerDW : MonoBehaviour
         }
         #endregion
 
-        #region 카메라
+        #region 일반
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            playerMaskChange.SwitchCharacter();
+        }
+        #endregion
+
+        #region 귀신탈
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            playerSkillSet.StartCoroutine(playerSkillSet.FinishSkill());
+        }
+        #endregion
+
+        #region 타겟 탐색
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             PlayerFollowCamera.instance.DetectTarget();
@@ -100,8 +112,9 @@ public class PlayerControllerDW : MonoBehaviour
     {
         if (playerSkillSet.RestrictForSkill) return; //행동 중 제한
 
-        #region 이동
-        playerMovement.MovementWithCamera();
+        #region 
+        playerMovement.CharacterRotate();
+        playerMovement.CharacterMovement();
         #endregion
 
         #region 카메라

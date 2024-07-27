@@ -4,6 +4,20 @@ using UnityEngine;
 
 public class PlayerData : ScriptableObject
 {
+    /*수정사항
+    기본공격 매크럽게
+    락온할 때 상대방 바라보기
+    상대방 바라보며 걷는 애니
+
+    [애니메이션 진행 중 행동 금지]
+    - animationState 함수를 만들어 진행되는 애니메이션이 움직임이라면 제한 false
+    - 아니면 애니메이션 중에 움직임 금지 시키기
+     */
+
+
+    //스텟
+    [Header("캐릭터 체력")]
+    public float maxHp;
     [Header("사람탈 이동속도")]
     public float humanMoveSpeed;
     [Header("동물탈의 이동속도")]

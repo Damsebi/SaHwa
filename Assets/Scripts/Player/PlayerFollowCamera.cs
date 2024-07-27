@@ -22,6 +22,7 @@ public class PlayerFollowCamera : MonoBehaviour
     private bool canTurn;
     private bool checkCoroutineDone = true;
 
+
     //[SerializeField] LayerMask cameraCollisionLayers;
     //private float originCameraZPosition;
     //private float currentCameraZposition;
@@ -155,6 +156,7 @@ public class PlayerFollowCamera : MonoBehaviour
         if (currentTarget) //락온 해제
         {
             currentTarget = null;
+            if (!currentTarget) playerMaskChange.ActiveAnimator.SetBool("isFocused", false);
             return;
             //MarkTarget();
         }
@@ -197,6 +199,8 @@ public class PlayerFollowCamera : MonoBehaviour
     private void LockOnTarget()
     {
         //타겟 바라보기
+        if(currentTarget) playerMaskChange.ActiveAnimator.SetBool("isFocused", true);
+
         Vector3 directionTowardTarget = currentTarget.transform.position - transform.position;
         directionTowardTarget.Normalize();
         Quaternion LotateTowardTarget = Quaternion.LookRotation(directionTowardTarget);
