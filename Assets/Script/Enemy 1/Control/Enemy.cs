@@ -24,7 +24,7 @@ public class Enemy : MonoBehaviour, IDamageable
         Idle, // 대기 상태
         BatIdle //공격 대기상태
     }
-    private eState enemyState;
+    [SerializeField] private eState enemyState;
     #endregion
     #region 선언
     public EnemyData enemyData;
@@ -86,8 +86,7 @@ public class Enemy : MonoBehaviour, IDamageable
     private List<Player> lastAttackedTarget = new List<Player>();
 
 
-
-    private bool hasTarget => target != null && !target.isDead;
+    private bool hasTarget => target != null && !target.IsDead; 
 
     #endregion
 
@@ -389,7 +388,7 @@ public class Enemy : MonoBehaviour, IDamageable
 
                     var Player = collider.GetComponent<Player>();
 
-                    if (Player != null && !Player.isDead)
+                    if (Player != null && !Player.IsDead)
                     {
                         target = Player;
                         break;
@@ -431,7 +430,7 @@ public class Enemy : MonoBehaviour, IDamageable
         {
             navAgent.SetDestination(hit.position);
         }
-        //animator.SetFloat("Speed", navAgent.desiredVelocity.magnitude);
+        animator.SetFloat("Speed", navAgent.desiredVelocity.magnitude);
     }
 
 
@@ -468,10 +467,10 @@ public class Enemy : MonoBehaviour, IDamageable
         lastDamagedTime = Time.time;
         hp -= damageMessage.amount;
 
-        //if (damageMessage.amount != 0)
-        //{
-        //  animator.CrossFade("hit", .2f);
-        //}
+        if (damageMessage.amount != 0)
+        {
+            animator.CrossFade("hit", .2f);
+        }
 
         if (hp <= 0)
         {

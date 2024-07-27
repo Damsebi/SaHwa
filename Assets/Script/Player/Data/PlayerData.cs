@@ -25,7 +25,14 @@ public class PlayerData : ScriptableObject
     [Header("플레이어의 회전속도")]
     public float playerRotateSpeed;
 
+
     [Space(20f)]
+    [Header("사람탈 평타1-1 데미지")]
+    public float normalAttackDamage1;
+    [Header("사람탈 평타1-2 데미지")]
+    public float normalAttackDamage2;
+    [Header("사람탈 평타1-3 데미지")]
+    public float normalAttackDamage3;
     [Header("사람탈 평타1-1 시전중에 다른 행동 제한하는 시간")]
     public float restrictTimeForNormalAttack1_1;
     [Header("사람탈 평타1-2 시전중에 다른 행동 제한하는 시간")]
@@ -33,7 +40,11 @@ public class PlayerData : ScriptableObject
     [Header("사람탈 평타1-3 시전중에 다른 행동 제한하는 시간")]
     public float restrictTimeForNormalAttack1_3;
 
+
+
     [Space(10f)]
+    [Header("먹기둥 데미지")]
+    public float humanFirstSkillDamage;
     [Header("먹기둥 스킬 쿨타임")]
     public float humanFirstSkillCooldown;
     [Header("먹기둥 스킬 공격이 가능한 적 탐지 범위")]
@@ -44,6 +55,8 @@ public class PlayerData : ScriptableObject
     public Vector3 humanFirstSkillScale;
 
     [Space(10f)]
+    [Header("스매쉬 데미지")]
+    public float humanSecondSkillDamage;
     [Header("스매쉬 스킬 쿨타임")]
     public float humanSecondSkillCooldown;
     [Header("퍼진 먹 영역 지속 시간")]
@@ -54,14 +67,20 @@ public class PlayerData : ScriptableObject
     public float humanAvoidStepCooldown;
 
     [Space(20f)]
+    [Header("동물탈 평타 데미지")]
+    public float animalNormalAttackDamage;
     [Header("동물탈 평타 쿨타임")]
     public float animalNormalAttackCooldown;
 
     [Space(10f)]
+    [Header("양손 할퀴기 데미지")]
+    public float animalFirstSkillDamage;
     [Header("양손 할퀴기 스킬 쿨타임")]
     public float animalFirstSkillCooldown;
 
     [Space(10f)]
+    [Header("도약 공격 데미지")]
+    public float animalSecondSkillDamage;
     [Header("도약 공격 스킬 쿨타임")]
     public float animalSecondCooldown;
 

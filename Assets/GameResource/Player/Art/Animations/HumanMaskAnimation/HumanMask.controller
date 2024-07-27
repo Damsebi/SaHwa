@@ -87,7 +87,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Dead
+  m_Name: Die
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -391,7 +391,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: hit_back
+  m_Name: Hit
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -833,7 +833,7 @@ AnimatorStateMachine:
     m_Position: {x: -110, y: 90, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -4568897310433616679}
-    m_Position: {x: -110, y: 50, z: 0}
+    m_Position: {x: -110, y: 30, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -3398816089486502213}
     m_Position: {x: 10, y: -650, z: 0}

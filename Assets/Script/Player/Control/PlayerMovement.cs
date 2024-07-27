@@ -37,12 +37,6 @@ public class PlayerMovement : MonoBehaviour
         playerMaskChange.ActiveAnimator.SetFloat("horizontal", horizontal);
         playerMaskChange.ActiveAnimator.SetFloat("vertical", vertical);
         playerMaskChange.ActiveAnimator.SetFloat("moveAmount", moveAmount);
-
-        //if (playerSkillSet.RestrictForSkill)
-        //{
-        //    playerMaskChange.ActiveAnimator.SetFloat("moveAmount", 0); 
-        //}
-
     }
 
     //카메라 기준 회전, 이동
@@ -90,5 +84,16 @@ public class PlayerMovement : MonoBehaviour
 
       
     }
-
+    
+    public void AlignCharactersPosition()
+    {
+        if (playerMaskChange.ActiveCharacter.name == "HumanMaskCharacter")
+        {
+            playerMaskChange.AnimalCharacter.transform.position = playerMaskChange.ActiveCharacter.transform.position;
+        }
+        else
+        {
+            playerMaskChange.HumanCharacter.transform.position = playerMaskChange.ActiveCharacter.transform.position;
+        }
+    }
 }

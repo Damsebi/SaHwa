@@ -33,7 +33,7 @@ public class PlayerControllerDW : MonoBehaviour
         playerSkillSet.AnimationState(); //애니메이션 상태 체크
         #endregion
 
-        #region 이동
+        #region 이동 입력
         playerMovement.InputMovement(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         #endregion
 
@@ -115,9 +115,11 @@ public class PlayerControllerDW : MonoBehaviour
 
     private void FixedUpdate()
     {
+        playerMovement.AlignCharactersPosition();
+
         if (playerSkillSet.RestrictForSkill) return; //행동 중 제한
 
-        #region 
+        #region 움직임
         playerMovement.CharacterRotate();
         playerMovement.CharacterMovement();
         #endregion

@@ -11,9 +11,12 @@ public class PlayerSkillSet : MonoBehaviour
 
     private PlayerMaskChange playerMaskChange;
     private PlayerMovement playerMovement;
+    [SerializeField] private Player[] player;
 
     [SerializeField] private bool restrictForSkill;
     public bool RestrictForSkill { get { return restrictForSkill; } }
+    private bool ignoreStun;
+    public bool IgnoreStun { get { return ignoreStun; } }
 
     #region 사람탈
     #region 기본공격
@@ -78,7 +81,7 @@ public class PlayerSkillSet : MonoBehaviour
     private void Awake()
     {
         playerMaskChange = GetComponent<PlayerMaskChange>();
-        playerMovement = GetComponent<PlayerMovement>();    
+        playerMovement = GetComponent<PlayerMovement>();
     }
 
     private void Start()
@@ -100,10 +103,24 @@ public class PlayerSkillSet : MonoBehaviour
     #region 애니메이션 상태 체크(다음 빌드때 애니메이션 스크립트 하나 만들 예정)
     public void AnimationState() 
     {
-     
-
         var currentAnimation = playerMaskChange.ActiveAnimator.GetCurrentAnimatorStateInfo(0);
-        if (currentAnimation.IsName("NormalAttack"))
+        if (currentAnimation.IsName("Die"))
+        {
+            restrictForSkill = true;
+            StopAllCoroutines();
+        }
+        else if (currentAnimation.IsName("Hit"))
+        {
+            restrictForSkill = true;
+            StopAllCoroutines();
+            if (currentAnimation.normalizedTime > 0.95f)
+            {
+                player[0].isDamaged = false;
+                player[1].isDamaged = false;
+            }
+
+        }
+        else if (currentAnimation.IsName("NormalAttack"))
         {
             if (currentAnimation.normalizedTime < .3f)
             {

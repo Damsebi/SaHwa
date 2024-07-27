@@ -12,19 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74595a0381700c84bbc01ec06dfcfcb6, type: 3}
   m_Name: Enemy Data Melee
   m_EditorClassIdentifier: 
-  f_hp: 1
-  f_trackingSpeed: 1
-  f_patrolSpeed: 1
-  f_patrolRange: 1
-  f_turnSmoothVelocity: 0.1
-  f_viewDistance: 1
-  f_viewAngle: 1
-  f_paintOver: 1
-  f_hpBarCount: 1
+  f_hp: 20
+  f_trackingSpeed: 5
+  f_patrolSpeed: 5
+  f_patrolRange: 10
+  f_turnSmoothVelocity: 0.196
+  f_viewDistance: 10
+  f_viewAngle: 101
+  f_paintOver: 3
+  f_hpBarCount: 2
   b_plusAttackDamage: 0
   b_plusSkillDamage: 0
   b_magicGroup: 0
-  f_flatMeleeAttackDamage: 0
-  f_flatMeleeAttackMotionSpeed: 0
-  f_flatMeleeAttackMotionCoolTime: 0
-  f_flatMeleeAttackRange: 0
+  f_flatMeleeAttackDamage: 4
+  f_flatMeleeAttackMotionSpeed: 1
+  f_flatMeleeAttackMotionCoolTime: 1
+  f_flatMeleeAttackRange: 4

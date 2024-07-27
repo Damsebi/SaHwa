@@ -8,11 +8,14 @@ public class PlayerMaskChange : MonoBehaviour
     //private Rigidbody rigidbody;
     [Header("Human")]
     [SerializeField] private GameObject humanCharacter;
+    public GameObject HumanCharacter { get { return humanCharacter; } }
     [SerializeField] private Animator humanAnimator;
     [SerializeField] private Rigidbody humanRigidbody;
 
     [Header("Animal")]
     [SerializeField] private GameObject animalCharacter;
+    public GameObject AnimalCharacter { get { return animalCharacter; } }
+
     [SerializeField] private Animator animalAnimator;
     [SerializeField] private Rigidbody animalRigidbody;
 
@@ -25,10 +28,6 @@ public class PlayerMaskChange : MonoBehaviour
 
     private Rigidbody activeRigidbody;
     public Rigidbody ActiveRigidbody { get { return activeRigidbody; } }
-
-
-
-
 
     #region 캐릭터 맵핑 초기화
     private Dictionary<int, string> character1Mappings = new Dictionary<int, string>();
