@@ -22,6 +22,7 @@ public class PlayerFollowCamera : MonoBehaviour
     private bool canTurn;
     private bool checkCoroutineDone = true;
 
+    public Transform[] pointers;
 
     //[SerializeField] LayerMask cameraCollisionLayers;
     //private float originCameraZPosition;
@@ -248,4 +249,15 @@ public class PlayerFollowCamera : MonoBehaviour
         //}
     }
     #endregion
+
+    public void MoveToPoint()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1)) playerMaskChange.ActiveCharacter.transform.position = pointers[0].transform.position;
+        else if (Input.GetKeyDown(KeyCode.Alpha2)) playerMaskChange.ActiveCharacter.transform.position = pointers[1].transform.position;
+        else if (Input.GetKeyDown(KeyCode.Alpha3)) playerMaskChange.ActiveCharacter.transform.position = pointers[2].transform.position;
+        else if (Input.GetKeyDown(KeyCode.Alpha4)) playerMaskChange.ActiveCharacter.transform.position = pointers[3].transform.position;
+        else if (Input.GetKeyDown(KeyCode.Alpha5)) playerMaskChange.ActiveCharacter.transform.position = pointers[4].transform.position;
+        else if (Input.GetKeyDown(KeyCode.Alpha6)) playerMaskChange.ActiveCharacter.transform.position = pointers[5].transform.position;
+        else if (Input.GetKeyDown(KeyCode.Alpha7)) playerMaskChange.ActiveCharacter.transform.position = pointers[6].transform.position;
+    }
 }

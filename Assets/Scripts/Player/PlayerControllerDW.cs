@@ -106,6 +106,11 @@ public class PlayerControllerDW : MonoBehaviour
             PlayerFollowCamera.instance.DetectTarget();
         }
         #endregion
+
+        #region 테스트용
+        PlayerFollowCamera.instance.MoveToPoint();
+        #endregion
+
     }
 
     private void FixedUpdate()
@@ -130,7 +135,6 @@ public class PlayerControllerDW : MonoBehaviour
         {
             PlayerFollowCamera.instance.NotRotate();
         }
-
         #endregion
     }
 }

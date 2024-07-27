@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bbf185fd1ef9b848bd15e92242f6427, type: 3}
   m_Name: PlayerData
   m_EditorClassIdentifier: 
+  maxHp: 0
   humanMoveSpeed: 5
   animalMoveSpeed: 9
   playerRotateSpeed: 25
