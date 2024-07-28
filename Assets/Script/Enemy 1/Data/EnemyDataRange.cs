@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Enemy Data Range", menuName = "Scriptable Objects/WeaponType/Range")]
+[CreateAssetMenu(fileName = "Enemy Data Range", menuName = "Scriptable Object/Enemy Data/WeaponType/Range")]
 public class EnemyDataRange : EnemyData
 {
     [Header("원거리 평타 데미지")]

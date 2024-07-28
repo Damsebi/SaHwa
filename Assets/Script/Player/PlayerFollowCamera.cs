@@ -68,7 +68,7 @@ public class PlayerFollowCamera : MonoBehaviour
     private void FollowPlayer()
     {
         Vector3 moveToPlayerPosition 
-            = Vector3.SmoothDamp(this.transform.position, playerMaskChange.ActiveCharacter.transform.position + playerData.originCameraOrbitAxisPosition, ref cameraVelocity, playerData.cameraFollowSpeed);
+            = Vector3.SmoothDamp(this.transform.position, playerMaskChange.ActiveCharacter.transform.position + playerData.originCameraOrigidbodyitAxisPosition, ref cameraVelocity, playerData.cameraFollowSpeed);
         this.transform.position = moveToPlayerPosition;
 
         //만약 락온일 때 카메라 시점이 변한다면 "mainCamera" Object의 position, rotation을 변경

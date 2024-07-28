@@ -39,13 +39,16 @@ public class AttackArea : MonoBehaviour
             SetMessage(playerData.animalSecondSkillDamage, 'W', 2);
         }
         
-        //처형스킬 따로
+        //처형스킬 따로           
+    }
 
+    public void Attack(Collider other)
+    {
         if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
-            var atkTarget = other.GetComponent<Enemy>();
+            var attackTarget = other.GetComponent<Enemy>();
 
-            if (atkTarget != null)
+            if (attackTarget != null)
             {
                 var message = new DamageMessage();
                 message.amount = damage;
@@ -53,10 +56,11 @@ public class AttackArea : MonoBehaviour
                 message.color = color;
                 message.value = value;
 
-                atkTarget.ApplyDamage(message);
+                attackTarget.ApplyDamage(message);
             }
-            Debug.Log("atkTarget.name" + atkTarget.name);
+            Debug.Log("attackTarget.name" + attackTarget.name);
         }
+
     }
 
     private void SetMessage(float setDamage, char setColor, float setStackValue)

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Enemy Data Buffer", menuName = "Scriptable Objects/WeaponType/Buffer")]
+[CreateAssetMenu(fileName = "Enemy Data Buffer", menuName = "Scriptable Object/Enemy Data/WeaponType/Buffer")]
 public class EnemyDataBuffer : EnemyData
 {
     [Header("버프 동작 속도")]

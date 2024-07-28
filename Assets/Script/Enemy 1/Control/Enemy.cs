@@ -19,13 +19,14 @@ public class Enemy : MonoBehaviour, IDamageable
     {
         Patrol, //순찰
         Tracking, //추적
-        AttackBegin, //공격시작
+        AttackBegin, //공격시작 (공격이 시작하자마자 데미지가 들어가진 않게)
         Attacking, //공격중
         Idle, // 대기 상태
         BatIdle //공격 대기상태
     }
     [SerializeField] private eState enemyState;
     #endregion
+
     #region 선언
     public EnemyData enemyData;
 
@@ -53,6 +54,9 @@ public class Enemy : MonoBehaviour, IDamageable
     [HideInInspector] public float skillMotionCoolTime; // 스킬 모션 쿨타임
     [HideInInspector] public float skillRange; // 스킬 범위
 
+    [HideInInspector] public float patrolWaitingTimeMin; // 순찰 최소 대기 시간
+    [HideInInspector] public float patrolWaitingTimeMax; // 순찰 최대 대기 시간
+
     private Animator animator;
     private NavMeshAgent navAgent;
 
@@ -71,9 +75,11 @@ public class Enemy : MonoBehaviour, IDamageable
     private bool isRanged; // 근거리 원거리 공격 체크
     private bool isBuffer; // 버퍼인지 체크
 
+    private bool canTriggerHitAnimation = true; // hit 과 hit 사이에 텀
+
     public LayerMask LayerTarget;
 
-    private float lostSightTime = 1.0f;
+    private float lostSightTime = 1f;
     private float lostSightTimer = 0.0f;
 
     private bool isDead; // 사망 체크
@@ -86,7 +92,7 @@ public class Enemy : MonoBehaviour, IDamageable
     private List<Player> lastAttackedTarget = new List<Player>();
 
 
-    private bool hasTarget => target != null && !target.IsDead; 
+    private bool hasTarget => target != null && !target.IsDead;
 
     #endregion
 
@@ -122,31 +128,30 @@ public class Enemy : MonoBehaviour, IDamageable
         {
             return;
         }
-        switch (enemyState)
+        if (enemyState == eState.Tracking)
         {
-            case eState.Patrol:
-                break;
-            case eState.Idle:
-                break;
-            case eState.Tracking:
-                var distance = Vector3.Distance(target.transform.position, transform.position);
-                if (distance <= attackDistance)
-                {
-                    BeginAttack();
-                }
-                break;
+            var distance = Vector3.Distance(target.transform.position, transform.position);
+            if (distance <= attackDistance)
+            {
+                Debug.Log("attackbegin");
+                BeginAttack();
+            }
         }
+        //navmash의 desiredVelocity는 현재 속도값이 아니라 의도한 만큼 지정되는 값이다. 
+        //벽 앞에서 적이 걷는다면 실제 속도는 0이기 때문에
+        //애니메이션이 나오지 않는것을 방지하기 위함(애니메이터의 조건을 speed > 0.1로 걸어두었음)
+        animator.SetFloat("Speed", navAgent.desiredVelocity.magnitude);
     }
     #endregion
 
     #region FixedUpdate()
     private void FixedUpdate()
     {
-        //예외처리
         if (isDead)
         {
             return;
         }
+
         //공격하거나 공격 도중 플레이어를 바라보게 함
         if (enemyState == eState.AttackBegin || enemyState == eState.Attacking)
         {
@@ -159,7 +164,6 @@ public class Enemy : MonoBehaviour, IDamageable
 
         //공격 도중 플레이어가 이동해서 시야에서 놓치면?
         //physics.cast계열
-
         if (enemyState == eState.Attacking)
         {
             //몬스터의 전방 방향을 구함
@@ -171,16 +175,17 @@ public class Enemy : MonoBehaviour, IDamageable
             // SphereCastNonAlloc을 사용하여 atkRoot.position에서 반지름이 atkRadius인 구 형태로 direction 방향으로 deltaDistance 거리만큼 구체 형태의 캐스트(이동한 궤적에 겹치는 Collider가 있는지 검사)
             // Trigger,Collision 등은 매 프레임 실행, 그 순간의 겹치는 Collider를 잡아내는 경우는 힘듦.
             // hits 배열에 충돌한 결과를 저장하고, 충돌한 객체의 수를 size에 저장
+            //nonalloc은 우리가 만든 raycast hits 배열을 사용할 수 있음, 배열은 ref, out을 쓰지 않더라도 변경사항이 저장되므로 안써도 됨.
             var size = Physics.SphereCastNonAlloc(attackRoot.position, flatRange, direction, hits, deltaDistance, LayerTarget);
 
             //충돌한 객체들에 대한 반복
+            //배열 크기보다 적은 값이 들어왔을 때, 나머지 공간에는 직전 프레임의 정보들이 들어있어서 그것을 방지하기 위해서 size를 사용함
             for (var i = 0; i < size; i++)
             {
-                //충돌한 객체가 livingentity인지 확인
-                var atkTarget = hits[i].collider.GetComponent<Player>();
+                var attackTarget = hits[i].collider.GetComponent<Player>();
 
-                //충돌한 객체가 Player이고 아직 공격한 적 없는 객체라면
-                if (atkTarget != null && !lastAttackedTarget.Contains(atkTarget))
+                //충돌한 객체가 Player인지 확인, 아직 공격한 적 없는 player이라면
+                if (attackTarget != null && !lastAttackedTarget.Contains(attackTarget))
                 {
                     //damageMessage 객체를 생성해서 데미지 정보를 설정
                     var message = new DamageMessage();
@@ -188,9 +193,11 @@ public class Enemy : MonoBehaviour, IDamageable
                     message.damager = this.gameObject;
                     message.hitPoint = hits[i].point;
 
-                    //충돌한 지점이 0 이하일 때와 그 외의 경우를 나누어 hitpoint 설정
+                    //가상의 구가 움직이기도 전에 이미 닿아있는 colider가 있다면 무조건 0을 반환
+                    //그러므로 충돌한 지점이 0 이하일 때와 그 외의 경우를 나누어 hitpoint 설정
                     if (hits[i].distance <= 0f)
                     {
+                        //hit.point가 0이 나온다면 hit.point를 쓰는게 아니라 attackroot의 위치를 사용함.
                         message.hitPoint = attackRoot.position;
                     }
                     else
@@ -201,11 +208,11 @@ public class Enemy : MonoBehaviour, IDamageable
                     //충돌한 지점의 법선을 hitnormal에 설정
                     message.hitNormal = hits[i].normal;
 
-                    //충돌한 livingEntity에게 데미지 적용
-                    atkTarget.ApplyDamage(message);
+                    //충돌한 player에게 데미지 적용
+                    attackTarget.ApplyDamage(message);
 
-                    //해당객체를 lastAtkTarget 리스트에 추가하여 중복공격 방지
-                    lastAttackedTarget.Add(atkTarget);
+                    //해당객체를 lastAttackedTarget 리스트에 attackTarget을 추가하여 중복공격 방지
+                    lastAttackedTarget.Add(attackTarget);
 
                     break;
                 }
@@ -225,6 +232,9 @@ public class Enemy : MonoBehaviour, IDamageable
             flatRange = meleeData.f_flatMeleeAttackRange;
             isRanged = false;
             isBuffer = false;
+            patrolWaitingTimeMin = meleeData.i_patrolWaitingTimeMin;
+            patrolWaitingTimeMax = meleeData.i_patrolWaitingTimeMax;
+
         }
         else if (enemyData is EnemyDataRange rangeData)
         {
@@ -262,12 +272,12 @@ public class Enemy : MonoBehaviour, IDamageable
     void SetUp()
     {
         hp = enemyData.f_hp;
-        hpBarCount = enemyData.f_hpBarCount;
+        hpBarCount = enemyData.i_hpBarCount;
         trackingSpeed = enemyData.f_trackingSpeed;
         patrolSpeed = enemyData.f_patrolSpeed;
         viewAngle = enemyData.f_viewAngle;
         viewDistance = enemyData.f_viewDistance;
-        paintOver = enemyData.f_paintOver;
+        paintOver = enemyData.i_paintOver;
         turnSmoothVelocity = enemyData.f_turnSmoothVelocity;
         plusAttackDamage = enemyData.b_plusAttackDamage;
         plusSkillDamage = enemyData.b_plusSkillDamage;
@@ -325,6 +335,7 @@ public class Enemy : MonoBehaviour, IDamageable
 #endif
     #endregion
 
+    #region 경로 업데이트
     private IEnumerator UpdatePath()
     {
         while (!isDead)
@@ -335,6 +346,7 @@ public class Enemy : MonoBehaviour, IDamageable
                 {
                     enemyState = eState.Tracking;
                     navAgent.speed = trackingSpeed;
+                    animator.SetBool("BattleMode", true);
                 }
                 navAgent.SetDestination(target.transform.position);
 
@@ -344,8 +356,9 @@ public class Enemy : MonoBehaviour, IDamageable
                     if (lostSightTimer >= lostSightTime)
                     {
                         target = null;
-                        enemyState = eState.Patrol;
+                        enemyState = eState.Idle;
                         navAgent.speed = patrolSpeed;
+                        animator.SetBool("BattleMode", false);
                     }
                 }
                 else
@@ -359,46 +372,63 @@ public class Enemy : MonoBehaviour, IDamageable
                 {
                     enemyState = eState.Patrol;
                     navAgent.speed = patrolSpeed;
+                    animator.SetBool("BattleMode", false);
                 }
+
+                var colliders = Physics.OverlapSphere(viewTransform.position, viewDistance, LayerTarget);
 
                 if (!navAgent.pathPending && navAgent.remainingDistance <= navAgent.stoppingDistance)
                 {
                     enemyState = eState.Idle;
                     navAgent.isStopped = true;
-                    float idleTime = UnityEngine.Random.Range(1f, 5f); // 1~5초 랜덤 대기 시간]
+                    var idleTime = UnityEngine.Random.Range(patrolWaitingTimeMin, patrolWaitingTimeMax);
+                    var waitingTime = 1f;
 
-                    yield return new WaitForSeconds(idleTime);
+                    while (waitingTime < idleTime)
+                    {
+                        if (!isDead && navAgent.isOnNavMesh)
+                        {
+                            // 레이어를 통해 몬스터를 중심으로 범위 내 플레이어를 인식
+
+                            foreach (var collider in colliders)
+                            {
+                                if (!IsTargetOnSight(collider.transform))
+                                {
+                                    continue;
+                                }
+
+                                var Player = collider.GetComponent<Player>();
+
+                                if (Player != null && !Player.IsDead)
+                                {
+                                    target = Player;
+                                    break;
+                                }
+                            }
+                            if (hasTarget)
+                            {
+                                break;
+                            }
+
+                        }
+
+                        waitingTime += 0.1f;
+                        yield return new WaitForSeconds(0.1f);
+                    }
+
                     if (!isDead && navAgent.isOnNavMesh)
                     {
                         navAgent.isStopped = false;
                         SetRandomPatrolPoint(); // 새로운 정찰 지점을 설정
                     }
                 }
-
-                var colliders = Physics.OverlapSphere(viewTransform.position,
-                    viewDistance, LayerTarget);
-                // 레이어를 통해 몬스터를 중심으로 범위 내 플레이어를 인식
-
-                foreach (var collider in colliders)
-                {
-                    if (!IsTargetOnSight(collider.transform))
-                    {
-                        continue;
-                    }
-
-                    var Player = collider.GetComponent<Player>();
-
-                    if (Player != null && !Player.IsDead)
-                    {
-                        target = Player;
-                        break;
-                    }
-                }
             }
             yield return new WaitForSeconds(.05f);
         }
     }
+    #endregion
 
+    #region 타겟 찾기
     private bool IsTargetOnSight(Transform target)
     {
         var direction = target.position - viewTransform.position;
@@ -414,13 +444,16 @@ public class Enemy : MonoBehaviour, IDamageable
         if (Physics.Raycast(viewTransform.position, direction, out hit, viewDistance, LayerTarget))
         {
             if (hit.transform == target)
-            {              
+            {
                 return true;
             }
         }
 
         return false;
     }
+    #endregion
+
+    #region 랜덤 순찰지점 찍기
     private void SetRandomPatrolPoint()
     {
         Vector3 randomDirection = UnityEngine.Random.insideUnitSphere * patrolRange;
@@ -432,30 +465,30 @@ public class Enemy : MonoBehaviour, IDamageable
         }
         animator.SetFloat("Speed", navAgent.desiredVelocity.magnitude);
     }
-
+    #endregion
 
     #region 공격
 
     private void BeginAttack()
     {
         enemyState = eState.AttackBegin;
+
+        navAgent.isStopped = true;
+        animator.SetTrigger("Attack");
     }
-    private void Attack()
+
+    public void EnableAttack()
     {
         enemyState = eState.Attacking;
 
-        if (hasTarget)
-        {
-            // 플레이어에게 데미지를 줌
-            var message = new DamageMessage();
-            message.amount = flatDamage;
-            message.damager = this.gameObject;
-            message.hitPoint = target.transform.position;
-            message.hitNormal = (target.transform.position - transform.position).normalized;
+        lastAttackedTarget.Clear();
+    }
 
-            target.ApplyDamage(message);
-        }
-    }     
+    public void DisableAttack()
+    {
+        enemyState = eState.Tracking;
+        navAgent.isStopped = false;
+    }
 
     public bool ApplyDamage(DamageMessage damageMessage)
     {
@@ -467,34 +500,46 @@ public class Enemy : MonoBehaviour, IDamageable
         lastDamagedTime = Time.time;
         hp -= damageMessage.amount;
 
-        if (damageMessage.amount != 0)
-        {
-            animator.CrossFade("hit", .2f);
-        }
-
         if (hp <= 0)
         {
             Die();
         }
         else if (hp > 0 && damageMessage.amount != 0)
         {
-            animator.SetTrigger("hit");
-        }
+            if (canTriggerHitAnimation)
+            {
+                StartCoroutine(HandleHitReaction());
+            }
 
-        if (target == null)
-        {
-            target = damageMessage.damager.GetComponent<Player>();
+            if (target == null)
+            {
+                target = damageMessage.damager.GetComponent<Player>();
+            }
         }
         return true;
     }
+    private IEnumerator HandleHitReaction()
+    {
+        canTriggerHitAnimation = false;
+        navAgent.isStopped = true;
+        yield return new WaitForSeconds(1f); // 1초 동안 모든 행동 멈춤
+
+        navAgent.isStopped = false;
+        yield return new WaitForSeconds(2f); // 2초 동안 피격 애니메이션 작동하지 않음
+
+        canTriggerHitAnimation = true; // 2초 후에 다시 피격 애니메이션 가능
+    }
+
     #endregion
+
+    #region 사망처리
 
     public void Die()
     {
         isDead = true;
 
         hp = 0;
-        animator.SetTrigger("die");
+        animator.SetTrigger("Die");
 
         if (navAgent.isOnNavMesh)
         {
@@ -503,4 +548,5 @@ public class Enemy : MonoBehaviour, IDamageable
         }
         navAgent.enabled = false;
     }
+    #endregion
 }

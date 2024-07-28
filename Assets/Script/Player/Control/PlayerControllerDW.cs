@@ -6,11 +6,21 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 [RequireComponent (typeof (PlayerMovement), typeof(PlayerMaskChange), typeof(PlayerSkillSet))]
-public class PlayerControllerDW : MonoBehaviour 
+public class PlayerControllerDW : MonoBehaviour
 {
+    #region 수정부분
+    private GameObject playerGameObject;
+
+    public GameObject GetPlayerGameObject()
+    {
+        return playerGameObject;
+    }
+    #endregion
+
     private PlayerMovement playerMovement;
     private PlayerMaskChange playerMaskChange;
     private PlayerSkillSet playerSkillSet;
+
 
     private bool restrictControl;
     private bool isRestrictedControl;
@@ -20,6 +30,9 @@ public class PlayerControllerDW : MonoBehaviour
         playerMovement = GetComponent<PlayerMovement>();
         playerMaskChange = GetComponent<PlayerMaskChange>();
         playerSkillSet = GetComponent<PlayerSkillSet>();
+        #region 수정부분
+        playerGameObject = transform.Find("HumanMaskCharacter").gameObject;
+        #endregion
     }
 
     private void Start()

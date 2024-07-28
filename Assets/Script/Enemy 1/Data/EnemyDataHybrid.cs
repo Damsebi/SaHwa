@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Enemy Data Hybird", menuName = "Scriptable Objects/WeaponType/Hybird")]
+[CreateAssetMenu(fileName = "Enemy Data Hybird", menuName = "Scriptable Object/Enemy Data/WeaponType/Hybird")]
 public class EnemyDataHybird : EnemyData
 {
     [Header("근접 평타 데미지")]

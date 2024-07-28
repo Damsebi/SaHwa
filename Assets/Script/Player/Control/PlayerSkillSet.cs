@@ -1,5 +1,8 @@
+using Cinemachine.Utility;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
+using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,6 +14,7 @@ public class PlayerSkillSet : MonoBehaviour
 
     private PlayerMaskChange playerMaskChange;
     private PlayerMovement playerMovement;
+
     [SerializeField] private Player[] player;
 
     [SerializeField] private bool restrictForSkill;
@@ -271,6 +275,23 @@ public class PlayerSkillSet : MonoBehaviour
                 yield return new WaitForSeconds(playerData.restrictTimeForNormalAttack1_3);
                 playerMaskChange.ActiveAnimator.SetInteger("normalAttackCount", 0);
             }
+
+            #region 수정부분
+            var humanNormalAttackRange = 2f;
+            var enemies = Physics.OverlapSphere(playerMaskChange.ActiveCharacter.transform.position, humanNormalAttackRange, enemyLayer);
+            foreach (var enemy in enemies)
+            {
+                var damageMessage = new DamageMessage
+                {
+                    amount = playerData.humanNormalAttackDamage,
+                    damager = this.gameObject,
+                    hitPoint = enemy.transform.position,
+                    hitNormal = (enemy.transform.position - playerMaskChange.ActiveCharacter.transform.position).normalized
+                };
+                enemy.GetComponent<Enemy>().ApplyDamage(damageMessage);
+                UnityEngine.Debug.Log(damageMessage.damager);
+            }
+            #endregion
 
             yield return new WaitForSeconds(.2f);
 
