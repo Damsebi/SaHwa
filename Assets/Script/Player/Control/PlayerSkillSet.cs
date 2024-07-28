@@ -80,6 +80,8 @@ public class PlayerSkillSet : MonoBehaviour
     [SerializeField] private GameObject humanWeapon;
 
     [SerializeField] private GameObject finishSkillArea; // 처형 영역 오브젝트
+    private List<Transform> finishTargetList;
+
     //[SerializeField][Range(0, 20)] float executionRange; //처형 범위 나중에 
     //[SerializeField] float executionAreaSizeRate; //처형 영역 크기비율 나중에
     #endregion
@@ -326,6 +328,8 @@ public class PlayerSkillSet : MonoBehaviour
             playerMaskChange.ActiveAnimator.SetBool("restrict", restrictForSkill = false);
 
             //먹기둥 지속시간과 쿨타임 어느게 일찍 끝나냐에 따라 다름
+            
+            yield return new WaitForSeconds(2f);
 
             if ((playerData.humanFirstSkillDuration + 0.8f) < playerData.humanFirstSkillCooldown)
             {
@@ -478,73 +482,93 @@ public class PlayerSkillSet : MonoBehaviour
     #endregion
 
     #region 귀신탈 함수
+    public void CheckEnableFinish()
+    {
+        if (PlayerFollowCamera.instance.CurrentTarget)
+        {
+            if (PlayerFollowCamera.instance.CurrentTarget.gameObject.GetComponent<CalliSystem>().IsPaintOverMax())
+            {
+                StartCoroutine(FinishSkill());
+            }
+        }
+    }
+
+
     public IEnumerator FinishSkill()
     {
         //사람탈로 바꿔서 처형
         //색깔바꾸기
-        if (PlayerFollowCamera.instance.CurrentTarget)
+
+        Collider[] colliders = Physics.OverlapSphere(playerMaskChange.ActiveCharacter. transform.position, playerData.detectRange, enemyLayer);
+        finishTargetList.Clear();
+
+        //장애물인식 필요, 상대 정지 필요, 
+        for (int i = 0; i < colliders.Length; i++)
         {
-            if (playerMaskChange.ActiveCharacter.name == "AnimalMaskCharacter")
+            if (colliders[i].gameObject.GetComponent<CalliSystem>().IsPaintOverMax())
             {
-                playerMaskChange.SwitchCharacter();
-                turnOriginMask = true;
+                finishTargetList.Add(colliders[i].transform);
             }
+        }    
 
-            playerMaskChange.ActiveAnimator.SetBool("restrict", restrictForSkill = true);
-            canUseFinish = false;
-
-            ghostWeapon.SetActive(true);
-            humanWeapon.SetActive(false);
-            Color characterOriginColor = characterSkin.GetComponent<Renderer>().material.color;
-            characterSkin.GetComponent<Renderer>().material.color = Color.black;
-
-            playerMaskChange.ActiveAnimator.CrossFade("Finish", .2f);
-
-            Vector3 originAngle = transform.forward;
-
-            //영역 색깔 점점 진하게 바꾸기
-            finishSkillArea.SetActive(true);
-            Color areaOriginColor = finishSkillArea.GetComponentInChildren<Renderer>().material.color;
-            float areaColorAlpha = 0.4f;
-
-            while (areaColorAlpha <= 1f)
-            {
-                areaColorAlpha += .1f;
-                finishSkillArea.GetComponentInChildren<Renderer>().material.color
-                    = new Color(areaOriginColor.r, areaOriginColor.g, areaOriginColor.b, areaColorAlpha);
-                yield return new WaitForSeconds(.15f);
-            }
-
-            //타겟리스트에 있는 몬스터 죽이기
-            //for (int i = 0; i < executionTargetList.Count; i++)
-            //{
-            //    var target = executionTargetList[i].GetComponent<Enemy>();
-            //    target.Die();
-            //}
-
-            yield return new WaitForSeconds(1.1f);
-
-            finishSkillArea.SetActive(false);
-            ghostWeapon.SetActive(false);
-            humanWeapon.SetActive(true);
-
-            characterSkin.GetComponent<Renderer>().material.color = characterOriginColor;
-            finishSkillArea.GetComponentInChildren<Renderer>().material.color = areaOriginColor;
-
-            if (turnOriginMask)
-            {
-                playerMaskChange.SwitchCharacter();
-                turnOriginMask = false;
-            }
-
-            yield return new WaitForSeconds(.2f);
-            playerMaskChange.ActiveAnimator.SetBool("restrict", restrictForSkill = false);
-
-            yield return new WaitForSeconds(1f);
-            canUseFinish = true;
+        if (playerMaskChange.ActiveCharacter.name == "AnimalMaskCharacter")
+        {
+            playerMaskChange.SwitchCharacter();
+            turnOriginMask = true;
         }
 
-        
+        playerMaskChange.ActiveAnimator.SetBool("restrict", restrictForSkill = true);
+        canUseFinish = false;
+
+        ghostWeapon.SetActive(true);
+        humanWeapon.SetActive(false);
+        Color characterOriginColor = characterSkin.GetComponent<Renderer>().material.color;
+        characterSkin.GetComponent<Renderer>().material.color = Color.black;
+
+        playerMaskChange.ActiveAnimator.CrossFade("Finish", .2f);
+
+        Vector3 originAngle = transform.forward;
+
+        //영역 색깔 점점 진하게 바꾸기
+        finishSkillArea.SetActive(true);
+        Color areaOriginColor = finishSkillArea.GetComponentInChildren<Renderer>().material.color;
+        float areaColorAlpha = 0.4f;
+
+        while (areaColorAlpha <= 1f)
+        {
+            areaColorAlpha += .1f;
+            finishSkillArea.GetComponentInChildren<Renderer>().material.color
+                = new Color(areaOriginColor.r, areaOriginColor.g, areaOriginColor.b, areaColorAlpha);
+            yield return new WaitForSeconds(.15f);
+        }
+
+        //타겟리스트에 있는 몬스터 죽이기
+        for (int i = 0; i < finishTargetList.Count; i++)
+        {
+            var target = finishTargetList[i].GetComponent<Enemy>();
+            target.Die();
+        }
+
+        yield return new WaitForSeconds(1.1f);
+
+        finishSkillArea.SetActive(false);
+        ghostWeapon.SetActive(false);
+        humanWeapon.SetActive(true);
+
+        characterSkin.GetComponent<Renderer>().material.color = characterOriginColor;
+        finishSkillArea.GetComponentInChildren<Renderer>().material.color = areaOriginColor;
+
+        if (turnOriginMask)
+        {
+            playerMaskChange.SwitchCharacter();
+            turnOriginMask = false;
+        }
+
+        yield return new WaitForSeconds(.2f);
+        playerMaskChange.ActiveAnimator.SetBool("restrict", restrictForSkill = false);
+
+        yield return new WaitForSeconds(1f);
+        canUseFinish = true;
     }
     #endregion
 

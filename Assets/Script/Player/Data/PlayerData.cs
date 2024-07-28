@@ -37,7 +37,6 @@ public class PlayerData : ScriptableObject
     public float restrictTimeForNormalAttack1_3;
 
 
-
     [Space(10f)]
     [Header("먹기둥 데미지")]
     public float humanFirstSkillDamage;
@@ -61,6 +60,7 @@ public class PlayerData : ScriptableObject
     [Space(10f)]
     [Header("사람탈 회피 스킬 쿨타임")]
     public float humanAvoidStepCooldown;
+
 
     [Space(20f)]
     [Header("동물탈 평타 데미지")]

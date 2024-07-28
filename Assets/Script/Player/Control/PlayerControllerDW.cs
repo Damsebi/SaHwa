@@ -96,7 +96,7 @@ public class PlayerControllerDW : MonoBehaviour
         #region ±ÕΩ≈≈ª
         if (Input.GetKeyDown(KeyCode.D))
         {
-            playerSkillSet.StartCoroutine(playerSkillSet.FinishSkill());
+            playerSkillSet.CheckEnableFinish();
         }
         #endregion
 
