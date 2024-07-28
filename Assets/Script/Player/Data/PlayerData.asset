@@ -24,7 +24,7 @@ MonoBehaviour:
   humanFirstSkillCooldown: 4
   humanFirstSkillRange: 10
   humanFirstSkillDuration: 3
-  humanFirstSkillScale: {x: 4, y: 4, z: 4}
+  humanFirstSkillScale: {x: 6, y: 6, z: 6}
   humanSecondSkillDamage: 4
   humanSecondSkillCooldown: 4
   humanSecondSkillDuration: 2

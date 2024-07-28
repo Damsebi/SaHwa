@@ -23,6 +23,8 @@ public class PlayerSkillSet : MonoBehaviour
     private bool isNormalAttacking;
     private bool canUseHumanNormalAttack;
     [SerializeField] private GameObject humanNormalAttackArea;
+    [SerializeField] private GameObject weaponTrail;
+
     #endregion
 
     #region 먹기둥
@@ -77,7 +79,7 @@ public class PlayerSkillSet : MonoBehaviour
     [SerializeField] private GameObject ghostWeapon; //사람 상태에서 처형. 붓에서 낫으로 교체
     [SerializeField] private GameObject humanWeapon;
 
-    [SerializeField] GameObject finishSkillArea; // 처형 영역 오브젝트
+    [SerializeField] private GameObject finishSkillArea; // 처형 영역 오브젝트
     //[SerializeField][Range(0, 20)] float executionRange; //처형 범위 나중에 
     //[SerializeField] float executionAreaSizeRate; //처형 영역 크기비율 나중에
     #endregion
@@ -125,7 +127,7 @@ public class PlayerSkillSet : MonoBehaviour
             StopAllCoroutines();
             ResetAttackArea();
         }
-        
+
         //사람탈, 동물탈 애니 이름이 같긴한데 상관X => 나중에 스킬이름 확정되면 고치기
         else if (currentAnimation.IsName("NormalAttack"))
         {
@@ -143,9 +145,9 @@ public class PlayerSkillSet : MonoBehaviour
 
             SwitchAttakArea(humanNormalAttackArea, 0.145f, true);
             SwitchAttakArea(humanNormalAttackArea, 0.246f, false);
-            
+
             SwitchAttakArea(humanNormalAttackArea, 0.4f, true);
-            SwitchAttakArea(humanNormalAttackArea, 0.48f,false);
+            SwitchAttakArea(humanNormalAttackArea, 0.48f, false);
 
             SwitchAttakArea(animalNormalAttackArea, 0.2f, true);
             SwitchAttakArea(animalNormalAttackArea, 0.46f, false);
@@ -164,8 +166,27 @@ public class PlayerSkillSet : MonoBehaviour
                 playerMovement.canRotate = false;
             }
 
-            SwitchAttakArea(humanNormalAttackArea, 0.2f,true);
-            SwitchAttakArea(humanNormalAttackArea, 0.32f,false);
+            SwitchAttakArea(humanNormalAttackArea, 0.2f, true);
+            SwitchAttakArea(humanNormalAttackArea, 0.32f, false);
+        }
+        else if (currentAnimation.IsName("NormalAttack3"))
+        {
+            if (currentAnimation.normalizedTime < .2f)
+            {
+                playerMovement.canRotate = true;
+                playerMovement.canMove = false;
+
+            }
+            else if (currentAnimation.normalizedTime < .25f)
+            {
+                restrictForSkill = true;
+                playerMovement.canRotate = false;
+            }
+
+            SwitchAttakArea(weaponTrail, .1f, false);
+
+            SwitchAttakArea(humanNormalAttackArea, 0.1f, true);
+            SwitchAttakArea(humanNormalAttackArea, 0.58f, false);
         }
         else if (currentAnimation.IsName("FirstSkill"))
         {
@@ -177,30 +198,11 @@ public class PlayerSkillSet : MonoBehaviour
             SwitchAttakArea(animalSecondSkillArea, 0.37f, true);
             SwitchAttakArea(animalSecondSkillArea, 0.49f, false);
         }
-        else if (currentAnimation.IsName("NormalAttack3"))
-        {
-            if (currentAnimation.normalizedTime < .3f)
-            {
-                playerMovement.canRotate = true;
-                playerMovement.canMove = false;
-
-            }
-            else if (currentAnimation.normalizedTime < .35f)
-            {
-                restrictForSkill = true;
-                playerMovement.canRotate = false;
-            }
-            SwitchAttakArea(humanNormalAttackArea, 0.21f, true);
-            SwitchAttakArea(humanNormalAttackArea, 0.58f, false);
-
-        }
-        ///* 적용안됨
         else if (currentAnimation.IsName("AvoidBack")) //CrossFade("AvoidBack",.2f) .2f -> 0 (O)
         {
             SwitchAttakArea(humanAvoidStepArea, 0.1f, true);
             SwitchAttakArea(humanAvoidStepArea, 0.2f, false);
         }
-        //*/
         else if (currentAnimation.IsName("Movement") || currentAnimation.IsName("LockOnMovement")) //버그풀어주는 용도로도 활용
         {
             if (currentAnimation.normalizedTime > 0.5f && currentAnimation.normalizedTime < 0.51f)
@@ -480,64 +482,69 @@ public class PlayerSkillSet : MonoBehaviour
     {
         //사람탈로 바꿔서 처형
         //색깔바꾸기
-        if (playerMaskChange.ActiveCharacter.name == "AnimalMaskCharacter")
+        if (PlayerFollowCamera.instance.CurrentTarget)
         {
-            playerMaskChange.SwitchCharacter();
-            turnOriginMask = true;
+            if (playerMaskChange.ActiveCharacter.name == "AnimalMaskCharacter")
+            {
+                playerMaskChange.SwitchCharacter();
+                turnOriginMask = true;
+            }
+
+            playerMaskChange.ActiveAnimator.SetBool("restrict", restrictForSkill = true);
+            canUseFinish = false;
+
+            ghostWeapon.SetActive(true);
+            humanWeapon.SetActive(false);
+            Color characterOriginColor = characterSkin.GetComponent<Renderer>().material.color;
+            characterSkin.GetComponent<Renderer>().material.color = Color.black;
+
+            playerMaskChange.ActiveAnimator.CrossFade("Finish", .2f);
+
+            Vector3 originAngle = transform.forward;
+
+            //영역 색깔 점점 진하게 바꾸기
+            finishSkillArea.SetActive(true);
+            Color areaOriginColor = finishSkillArea.GetComponentInChildren<Renderer>().material.color;
+            float areaColorAlpha = 0.4f;
+
+            while (areaColorAlpha <= 1f)
+            {
+                areaColorAlpha += .1f;
+                finishSkillArea.GetComponentInChildren<Renderer>().material.color
+                    = new Color(areaOriginColor.r, areaOriginColor.g, areaOriginColor.b, areaColorAlpha);
+                yield return new WaitForSeconds(.15f);
+            }
+
+            //타겟리스트에 있는 몬스터 죽이기
+            //for (int i = 0; i < executionTargetList.Count; i++)
+            //{
+            //    var target = executionTargetList[i].GetComponent<Enemy>();
+            //    target.Die();
+            //}
+
+            yield return new WaitForSeconds(1.1f);
+
+            finishSkillArea.SetActive(false);
+            ghostWeapon.SetActive(false);
+            humanWeapon.SetActive(true);
+
+            characterSkin.GetComponent<Renderer>().material.color = characterOriginColor;
+            finishSkillArea.GetComponentInChildren<Renderer>().material.color = areaOriginColor;
+
+            if (turnOriginMask)
+            {
+                playerMaskChange.SwitchCharacter();
+                turnOriginMask = false;
+            }
+
+            yield return new WaitForSeconds(.2f);
+            playerMaskChange.ActiveAnimator.SetBool("restrict", restrictForSkill = false);
+
+            yield return new WaitForSeconds(1f);
+            canUseFinish = true;
         }
 
-        playerMaskChange.ActiveAnimator.SetBool("restrict", restrictForSkill = true);
-        canUseFinish = false;
-
-        ghostWeapon.SetActive(true);
-        humanWeapon.SetActive(false);
-        Color characterOriginColor = characterSkin.GetComponent<Renderer>().material.color;
-        characterSkin.GetComponent<Renderer>().material.color = Color.black;
-
-        playerMaskChange.ActiveAnimator.CrossFade("Finish", .2f);
-
-        Vector3 originAngle = transform.forward;
-
-        //영역 색깔 점점 진하게 바꾸기
-        finishSkillArea.SetActive(true);
-        Color areaOriginColor = finishSkillArea.GetComponentInChildren<Renderer>().material.color;
-        float areaColorAlpha = 0.4f;
-
-        while (areaColorAlpha <= 1f)
-        {
-            areaColorAlpha += .1f;
-            finishSkillArea.GetComponentInChildren<Renderer>().material.color
-                = new Color(areaOriginColor.r, areaOriginColor.g, areaOriginColor.b, areaColorAlpha);
-            yield return new WaitForSeconds(.15f);
-        }
-
-        //타겟리스트에 있는 몬스터 죽이기
-        //for (int i = 0; i < executionTargetList.Count; i++)
-        //{
-        //    var target = executionTargetList[i].GetComponent<Enemy>();
-        //    target.Die();
-        //}
-
-        yield return new WaitForSeconds(1.1f);
-
-        finishSkillArea.SetActive(false);
-        ghostWeapon.SetActive(false);
-        humanWeapon.SetActive(true);
-
-        characterSkin.GetComponent<Renderer>().material.color = characterOriginColor;
-        finishSkillArea.GetComponentInChildren<Renderer>().material.color = areaOriginColor;
-
-        if (turnOriginMask)
-        {
-            playerMaskChange.SwitchCharacter();
-            turnOriginMask = false;
-        }
-
-        yield return new WaitForSeconds(.2f);
-        playerMaskChange.ActiveAnimator.SetBool("restrict", restrictForSkill = false);
-
-        yield return new WaitForSeconds(1f);
-        canUseFinish = true;
+        
     }
     #endregion
 
