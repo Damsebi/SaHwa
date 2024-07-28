@@ -3,7 +3,14 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - HumanNormalAttack
+  - HumanFirstSkill
+  - HumanSecondSkill
+  - AnimalNormalAttack
+  - AnimalFirstSkill
+  - AnimalSecondSkill
+  - FinishSkill
   layers:
   - Default
   - TransparentFX

@@ -494,7 +494,7 @@ public class Enemy : MonoBehaviour, IDamageable
         isDead = true;
 
         hp = 0;
-        animator.SetTrigger("Die");
+        animator.SetTrigger("die");
 
         if (navAgent.isOnNavMesh)
         {

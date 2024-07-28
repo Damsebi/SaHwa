@@ -27,12 +27,8 @@ public class PlayerData : ScriptableObject
 
 
     [Space(20f)]
-    [Header("사람탈 평타1-1 데미지")]
-    public float normalAttackDamage1;
-    [Header("사람탈 평타1-2 데미지")]
-    public float normalAttackDamage2;
-    [Header("사람탈 평타1-3 데미지")]
-    public float normalAttackDamage3;
+    [Header("사람탈 평타 데미지(3번 동일")]
+    public float humanNormalAttackDamage;
     [Header("사람탈 평타1-1 시전중에 다른 행동 제한하는 시간")]
     public float restrictTimeForNormalAttack1_1;
     [Header("사람탈 평타1-2 시전중에 다른 행동 제한하는 시간")]

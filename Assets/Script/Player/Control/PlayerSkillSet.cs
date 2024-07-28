@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerSkillSet : MonoBehaviour
-{//스킬 스크립트 분할할지는 리팩토링할 때
+{
     [SerializeField] private PlayerData playerData;
     [SerializeField] LayerMask enemyLayer;
 
@@ -21,13 +21,12 @@ public class PlayerSkillSet : MonoBehaviour
     #region 사람탈
     #region 기본공격
     private bool isNormalAttacking;
-    private int normalAttackCount;
-
-    [SerializeField] private bool canUseHumanNormalAttack;
+    private bool canUseHumanNormalAttack;
+    [SerializeField] private GameObject humanNormalAttackArea;
     #endregion
 
     #region 먹기둥
-    [SerializeField] private bool canUseInkPillar;
+    private bool canUseInkPillar;
 
     [SerializeField] GameObject inkPillarPrefab;
     private GameObject[] inkPillar = new GameObject[3];
@@ -36,25 +35,33 @@ public class PlayerSkillSet : MonoBehaviour
     #region 먹 스매쉬
     [SerializeField] GameObject inkSmashPrefab;
     private GameObject inkSmashArea;
-    [SerializeField] private bool canUseInkSmash;
+    private bool canUseInkSmash;
     #endregion
 
     #region 회피
-    [SerializeField] private bool canUseHumanAvoidStep;
+    private bool canUseHumanAvoidStep;
+    [SerializeField] private GameObject humanAvoidStepArea;
+
     #endregion
     #endregion
 
     #region 동물탈
     #region 기본공격
-    [SerializeField] private bool canUseAnimalNormalAttack;
+    private bool canUseAnimalNormalAttack;
+    [SerializeField] private GameObject animalNormalAttackArea;
+
     #endregion
 
     #region 양손공격
-    [SerializeField] private bool canUseXClaw;
+    private bool canUseXClaw;
+    [SerializeField] private GameObject animalFirstSkillArea;
+
     #endregion
 
     #region 도약공격
-    [SerializeField] private bool canUseLeapClaw;
+    private bool canUseLeapClaw;
+    [SerializeField] private GameObject animalSecondSkillArea;
+
     #endregion
 
     #region 회피
@@ -64,17 +71,15 @@ public class PlayerSkillSet : MonoBehaviour
 
     #region 귀신탈
     private bool canUseFinish;
-    private bool turnOriginMask;
+    private bool turnOriginMask; //처형은 사람탈에서 진행함
 
-    [SerializeField] private GameObject characterSkin;
-
-    [SerializeField] GameObject ghostWeapon;
-    [SerializeField] GameObject humanWeapon;
+    [SerializeField] private GameObject characterSkin; //스킨 검은색으로
+    [SerializeField] private GameObject ghostWeapon; //사람 상태에서 처형. 붓에서 낫으로 교체
+    [SerializeField] private GameObject humanWeapon;
 
     [SerializeField] GameObject finishSkillArea; // 처형 영역 오브젝트
     //[SerializeField][Range(0, 20)] float executionRange; //처형 범위 나중에 
     //[SerializeField] float executionAreaSizeRate; //처형 영역 크기비율 나중에
-
     #endregion
 
 
@@ -97,10 +102,9 @@ public class PlayerSkillSet : MonoBehaviour
         canUseAnimalAvoidBack = true;
 
         canUseFinish = true;
-
-        normalAttackCount = 0;
     }
-    #region 애니메이션 상태 체크(다음 빌드때 애니메이션 스크립트 하나 만들 예정)
+
+    #region 애니메이션 상태, 진행도 체크(다음 빌드때 애니메이션 스크립트 하나 만들 예정), + 애니메이션 진행도에 따라 함수진행해도 괜찮을 듯
     public void AnimationState() 
     {
         var currentAnimation = playerMaskChange.ActiveAnimator.GetCurrentAnimatorStateInfo(0);
@@ -108,18 +112,21 @@ public class PlayerSkillSet : MonoBehaviour
         {
             restrictForSkill = true;
             StopAllCoroutines();
+            ResetAttackArea();
         }
         else if (currentAnimation.IsName("Hit"))
         {
             restrictForSkill = true;
-            StopAllCoroutines();
             if (currentAnimation.normalizedTime > 0.95f)
             {
                 player[0].isDamaged = false;
                 player[1].isDamaged = false;
             }
-
+            StopAllCoroutines();
+            ResetAttackArea();
         }
+        
+        //사람탈, 동물탈 애니 이름이 같긴한데 상관X => 나중에 스킬이름 확정되면 고치기
         else if (currentAnimation.IsName("NormalAttack"))
         {
             if (currentAnimation.normalizedTime < .3f)
@@ -133,6 +140,15 @@ public class PlayerSkillSet : MonoBehaviour
                 restrictForSkill = true;
                 playerMovement.canRotate = false;
             }
+
+            SwitchAttakArea(humanNormalAttackArea, 0.145f, true);
+            SwitchAttakArea(humanNormalAttackArea, 0.246f, false);
+            
+            SwitchAttakArea(humanNormalAttackArea, 0.4f, true);
+            SwitchAttakArea(humanNormalAttackArea, 0.48f,false);
+
+            SwitchAttakArea(animalNormalAttackArea, 0.2f, true);
+            SwitchAttakArea(animalNormalAttackArea, 0.46f, false);
         }
         else if (currentAnimation.IsName("NormalAttack2"))
         {
@@ -147,6 +163,19 @@ public class PlayerSkillSet : MonoBehaviour
                 restrictForSkill = true;
                 playerMovement.canRotate = false;
             }
+
+            SwitchAttakArea(humanNormalAttackArea, 0.2f,true);
+            SwitchAttakArea(humanNormalAttackArea, 0.32f,false);
+        }
+        else if (currentAnimation.IsName("FirstSkill"))
+        {
+            SwitchAttakArea(animalFirstSkillArea, 0.48f, true);
+            SwitchAttakArea(animalFirstSkillArea, 0.71f, false);
+        }
+        else if (currentAnimation.IsName("SecondSkill"))
+        {
+            SwitchAttakArea(animalSecondSkillArea, 0.37f, true);
+            SwitchAttakArea(animalSecondSkillArea, 0.49f, false);
         }
         else if (currentAnimation.IsName("NormalAttack3"))
         {
@@ -161,14 +190,60 @@ public class PlayerSkillSet : MonoBehaviour
                 restrictForSkill = true;
                 playerMovement.canRotate = false;
             }
+            SwitchAttakArea(humanNormalAttackArea, 0.21f, true);
+            SwitchAttakArea(humanNormalAttackArea, 0.58f, false);
+
         }
+        ///* 적용안됨
+        else if (currentAnimation.IsName("AvoidBack")) //CrossFade("AvoidBack",.2f) .2f -> 0 (O)
+        {
+            SwitchAttakArea(humanAvoidStepArea, 0.1f, true);
+            SwitchAttakArea(humanAvoidStepArea, 0.2f, false);
+        }
+        //*/
         else if (currentAnimation.IsName("Movement") || currentAnimation.IsName("LockOnMovement")) //버그풀어주는 용도로도 활용
         {
-            //restrictForSkill = false; // 다른 스킬에도 영향을 줌...
+            if (currentAnimation.normalizedTime > 0.5f && currentAnimation.normalizedTime < 0.51f)
+            {
+                restrictForSkill = false;
+                ResetAttackArea();
+            }
             playerMovement.canRotate = true;
             playerMovement.canMove = true;
         }
     }
+    #endregion
+
+    #region 공격범위 On/Off.
+    //의도치 않은 공격범위 활성화 방지
+    private void ResetAttackArea() 
+    {
+        humanNormalAttackArea.SetActive(false);
+        humanAvoidStepArea.SetActive(false);
+
+        animalNormalAttackArea.SetActive(false);
+        animalFirstSkillArea.SetActive(false);
+        animalSecondSkillArea.SetActive(false);
+
+        finishSkillArea.SetActive(false);
+    }
+    private void SwitchAttakArea(GameObject attackArea, float normalizedTime, bool onOffSwitch)
+    {
+        var currentAnimation = playerMaskChange.ActiveAnimator.GetCurrentAnimatorStateInfo(0);
+        if (currentAnimation.normalizedTime >= normalizedTime && currentAnimation.normalizedTime < normalizedTime + 0.01f)
+        {
+            attackArea.SetActive(onOffSwitch);
+        }
+    }
+    private void TurOffAttakArea(GameObject attackArea, float normalizedTime)
+    {
+        var currentAnimation = playerMaskChange.ActiveAnimator.GetCurrentAnimatorStateInfo(0);
+        if (currentAnimation.normalizedTime >= normalizedTime && currentAnimation.normalizedTime < normalizedTime + 0.01f)
+        {
+            attackArea.SetActive(false);
+        }
+    }
+
     #endregion
 
     #region 사람탈 함수
@@ -214,7 +289,7 @@ public class PlayerSkillSet : MonoBehaviour
             playerMaskChange.ActiveAnimator.CrossFade("FirstSkill", .1f);
 
             yield return new WaitForSeconds(.8f);
-            Collider[] colliders = Physics.OverlapSphere(transform.position, playerData.humanFirstSkillRange, enemyLayer);
+            Collider[] colliders = Physics.OverlapSphere(playerMaskChange.ActiveCharacter.transform.position, playerData.humanFirstSkillRange, enemyLayer);
 
             #region SelectionSort
             int countEnemies = colliders.Length;
@@ -241,7 +316,7 @@ public class PlayerSkillSet : MonoBehaviour
 
             for (int i = 0; i < countEnemies; i++)
             {
-                inkPillar[i] = Instantiate(inkPillarPrefab, selectEnemies[i].transform.position, Quaternion.identity);
+                inkPillar[i] = Instantiate(inkPillarPrefab, selectEnemies[i].transform.position, selectEnemies[i].transform.rotation);
                 inkPillar[i].transform.localScale = playerData.humanFirstSkillScale;
             }
 
@@ -272,8 +347,6 @@ public class PlayerSkillSet : MonoBehaviour
                     Destroy(inkPillar[i]);
                 }
             }
-
-            //범위 데미지 
         }
     }
     public IEnumerator HumanSecondSkill()
@@ -310,9 +383,9 @@ public class PlayerSkillSet : MonoBehaviour
             restrictForSkill = true;
             playerMaskChange.ActiveAnimator.SetBool("restrict", true);
             canUseHumanAvoidStep = false;
-            playerMaskChange.ActiveAnimator.CrossFade("AvoidBack", .1f);
+            playerMaskChange.ActiveAnimator.CrossFade("AvoidBack", 0f);
 
-            for (int i = 0; i < 50; i++) 
+            for (int i = 0; i < 30; i++) 
             {
                 yield return new WaitForSeconds(.01f);
                 playerMaskChange.ActiveRigidbody.MovePosition
@@ -331,10 +404,10 @@ public class PlayerSkillSet : MonoBehaviour
 
     public IEnumerator AnimalNormalAttack()
     {
-        if (canUseHumanNormalAttack)
+        if (canUseAnimalNormalAttack)
         {
             playerMaskChange.ActiveAnimator.SetBool("restrict", restrictForSkill = true);
-            canUseHumanNormalAttack = false;
+            canUseAnimalNormalAttack = false;
 
             playerMaskChange.ActiveAnimator.CrossFade("NormalAttack", .1f);
 
@@ -342,7 +415,7 @@ public class PlayerSkillSet : MonoBehaviour
             playerMaskChange.ActiveAnimator.SetBool("restrict", restrictForSkill = false);
 
             yield return new WaitForSeconds(playerData.animalNormalAttackCooldown - 1f);
-            canUseHumanNormalAttack = true;
+            canUseAnimalNormalAttack = true;
         }
     }
 
