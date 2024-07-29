@@ -106,6 +106,7 @@ public class PlayerSkillSet : MonoBehaviour
         canUseAnimalAvoidBack = true;
 
         canUseFinish = true;
+        finishTargetList = new();
     }
 
     #region 애니메이션 상태, 진행도 체크(다음 빌드때 애니메이션 스크립트 하나 만들 예정), + 애니메이션 진행도에 따라 함수진행해도 괜찮을 듯
@@ -170,25 +171,6 @@ public class PlayerSkillSet : MonoBehaviour
 
             SwitchAttakArea(humanNormalAttackArea, 0.2f, true);
             SwitchAttakArea(humanNormalAttackArea, 0.32f, false);
-        }
-        else if (currentAnimation.IsName("NormalAttack3"))
-        {
-            if (currentAnimation.normalizedTime < .2f)
-            {
-                playerMovement.canRotate = true;
-                playerMovement.canMove = false;
-
-            }
-            else if (currentAnimation.normalizedTime < .25f)
-            {
-                restrictForSkill = true;
-                playerMovement.canRotate = false;
-            }
-
-            SwitchAttakArea(weaponTrail, .1f, false);
-
-            SwitchAttakArea(humanNormalAttackArea, 0.1f, true);
-            SwitchAttakArea(humanNormalAttackArea, 0.58f, false);
         }
         else if (currentAnimation.IsName("FirstSkill"))
         {
@@ -268,11 +250,6 @@ public class PlayerSkillSet : MonoBehaviour
             else if (currentAnimation.IsName("NormalAttack"))
             {
                 yield return new WaitForSeconds(playerData.restrictTimeForNormalAttack1_2);
-                playerMaskChange.ActiveAnimator.SetInteger("normalAttackCount", 2);
-            }
-            else if (currentAnimation.IsName("NormalAttack2"))
-            {
-                yield return new WaitForSeconds(playerData.restrictTimeForNormalAttack1_3);
                 playerMaskChange.ActiveAnimator.SetInteger("normalAttackCount", 0);
             }
 
@@ -496,9 +473,6 @@ public class PlayerSkillSet : MonoBehaviour
 
     public IEnumerator FinishSkill()
     {
-        //사람탈로 바꿔서 처형
-        //색깔바꾸기
-
         Collider[] colliders = Physics.OverlapSphere(playerMaskChange.ActiveCharacter. transform.position, playerData.detectRange, enemyLayer);
         finishTargetList.Clear();
 
@@ -526,6 +500,11 @@ public class PlayerSkillSet : MonoBehaviour
         characterSkin.GetComponent<Renderer>().material.color = Color.black;
 
         playerMaskChange.ActiveAnimator.CrossFade("Finish", .2f);
+        for (int i = 0; i < finishTargetList.Count; i++)
+        {
+            var target = finishTargetList[i].GetComponent<Enemy>(); //GetComponent 넘 많이쓰는데
+            target.StopAction();
+        }
 
         Vector3 originAngle = transform.forward;
 
@@ -542,14 +521,15 @@ public class PlayerSkillSet : MonoBehaviour
             yield return new WaitForSeconds(.15f);
         }
 
-        //타겟리스트에 있는 몬스터 죽이기
+        yield return new WaitForSeconds(.5f);
+
         for (int i = 0; i < finishTargetList.Count; i++)
         {
             var target = finishTargetList[i].GetComponent<Enemy>();
             target.Die();
         }
 
-        yield return new WaitForSeconds(1.1f);
+        yield return new WaitForSeconds(.6f);
 
         finishSkillArea.SetActive(false);
         ghostWeapon.SetActive(false);

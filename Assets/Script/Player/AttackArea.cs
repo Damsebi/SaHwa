@@ -49,7 +49,7 @@ public class AttackArea : MonoBehaviour
             {
                 var message = new DamageMessage();
                 message.amount = damage;
-                message.damager = damager;
+                message.damager = PlayerMaskChange.instance.ActiveCharacter;
                 message.color = color;
                 message.value = value;
 

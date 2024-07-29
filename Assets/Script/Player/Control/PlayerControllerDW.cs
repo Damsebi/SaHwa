@@ -20,11 +20,11 @@ public class PlayerControllerDW : MonoBehaviour
         playerMovement = GetComponent<PlayerMovement>();
         playerMaskChange = GetComponent<PlayerMaskChange>();
         playerSkillSet = GetComponent<PlayerSkillSet>();
+        playerMaskChange.InitializeCharacterSetting();
     }
 
     private void Start()
     {
-        playerMaskChange.InitializeCharacterSetting();
     }
 
     private void Update()

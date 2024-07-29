@@ -7,8 +7,8 @@ using static Enemy;
 public class CalliSystem : MonoBehaviour
 {
     private List<char> paint = new List<char>();
-    private int maxPaintOver = 10; // 기본 최대 한도
-    private char lastColor = ' '; // 마지막 색을 기록
+    [SerializeField] private int maxPaintOver = 10; // 기본 최대 한도
+    [SerializeField] private char lastColor = ' '; // 마지막 색을 기록
 
     public float paintWhite { get; private set; }
     public float paintBlack { get; private set; }
@@ -117,6 +117,8 @@ public class CalliSystem : MonoBehaviour
                 paintBlack++;
             }
         }
+
+        Debug.Log("paintOver" + paintOver);
     }
 
     public float StackRatio() // (쌓인 스택 / 최대 스택)

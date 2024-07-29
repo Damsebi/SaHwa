@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class PlayerMaskChange : MonoBehaviour
 {
-    //private Rigidbody rigidbody;
+    public static PlayerMaskChange instance;
+
     [Header("Human")]
     [SerializeField] private GameObject humanCharacter;
     public GameObject HumanCharacter { get { return humanCharacter; } }
@@ -50,6 +51,10 @@ public class PlayerMaskChange : MonoBehaviour
 
     private void Awake()
     {
+        #region ΩÃ±€≈Ê
+        if (instance == null) instance = this;
+        else if (instance != this) Destroy(this.gameObject); 
+        #endregion
     }
 
 

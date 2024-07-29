@@ -12,6 +12,7 @@ public class PlayerFollowCamera : MonoBehaviour
     public static PlayerFollowCamera instance;
 
     [SerializeField] private Camera mainCamera;
+    public Camera MainCamera { get { return mainCamera; } }
     private Vector3 cameraVelocity;
 
     float rotateCameraYValue;
@@ -51,7 +52,7 @@ public class PlayerFollowCamera : MonoBehaviour
     void Start()
     {
         //originCameraZPosition = mainCamera.transform.localPosition.z;
-
+        rotateCameraYValue = playerMaskChange.ActiveCharacter.transform.eulerAngles.y; //그냥 rotation.y는 쿼터니언
     }
     private void FixedUpdate()
     {
@@ -78,6 +79,11 @@ public class PlayerFollowCamera : MonoBehaviour
         if (currentTarget)
         {
             LockOnTarget();
+
+            if (Vector3.Distance(playerMaskChange.ActiveCharacter.transform.position, currentTarget.transform.position) > playerData.detectRange)
+            {
+                currentTarget = null;
+            }
         }
         else
         {
@@ -92,7 +98,6 @@ public class PlayerFollowCamera : MonoBehaviour
                 //락온해제시, 카메라 위아래 회전 초기화
                 float resetXValue
                     = Mathf.Lerp(transform.rotation.eulerAngles.x, rotateCameraXValue, playerData.smoothVerticalRotationRate);
-
                 if (resetXValue < -80) resetXValue = transform.rotation.eulerAngles.x;
                 transform.rotation = Quaternion.Euler(0, rotateCameraYValue, 0);
             }

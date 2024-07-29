@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 using System.Linq.Expressions;
 using UnityEngine.AI;
 using Unity.XR.Oculus.Input;
@@ -85,9 +85,13 @@ public class Enemy : MonoBehaviour, IDamageable
     private RaycastHit[] hits = new RaycastHit[10];
     private List<Player> lastAttackedTarget = new List<Player>();
 
-
     private bool hasTarget => target != null && !target.IsDead; 
 
+    //추가(대원)
+    private CalliSystem calliSystem;
+    [SerializeField] private GameObject[] paintOverStacks;
+    [SerializeField] private GameObject stackUI;
+    private bool paintOverMax;
     #endregion
 
     #region Awake()
@@ -95,6 +99,9 @@ public class Enemy : MonoBehaviour, IDamageable
     {
         animator = GetComponent<Animator>();
         navAgent = GetComponent<NavMeshAgent>();
+        
+        //추가(대원)
+        calliSystem = GetComponent<CalliSystem>();
 
         var attackPivot = attackRoot.position;
         attackPivot.y = transform.position.y;
@@ -134,8 +141,12 @@ public class Enemy : MonoBehaviour, IDamageable
                 {
                     BeginAttack();
                 }
+                
                 break;
         }
+
+        //추가(대원)
+        CheckPaintOver();
     }
     #endregion
 
@@ -433,9 +444,41 @@ public class Enemy : MonoBehaviour, IDamageable
         animator.SetFloat("Speed", navAgent.desiredVelocity.magnitude);
     }
 
+    #region 덧칠확인, 행동 제한시키기(대원)
+    private void CheckPaintOver()
+    {
+        if (stackUI.activeSelf) stackUI.transform.rotation 
+                = PlayerFollowCamera.instance.MainCamera.transform.rotation;
+        if (paintOverMax) return;
+
+        if (calliSystem.IsPaintOverMax())
+        {
+            paintOverMax = true;
+
+            for (int i = 0; i < paintOverStacks.Length; i++)
+            {
+                paintOverStacks[i].GetComponent<Image>().color = Color.white;
+            }
+            return;
+        }
+
+        for (int i = 0; i <= calliSystem.paintOver; i++)
+        {
+            if (i < 6) //아직 스택 5개까지만 
+            {
+                paintOverStacks[i].SetActive(true);
+            }
+        }
+    }
+    public void StopAction() //처형시에 움짐임 봉쇄. 
+    {
+        isDead = true;
+        navAgent.speed = 0;
+        navAgent.velocity = Vector3.zero;
+    }
+    #endregion
 
     #region 공격
-
     private void BeginAttack()
     {
         enemyState = eState.AttackBegin;
@@ -459,6 +502,7 @@ public class Enemy : MonoBehaviour, IDamageable
 
     public bool ApplyDamage(DamageMessage damageMessage)
     {
+
         if (Time.time < lastDamagedTime + MIN_TIME_BET_DAMAGE || damageMessage.damager == gameObject || isDead)
         {
             return false;
@@ -485,6 +529,14 @@ public class Enemy : MonoBehaviour, IDamageable
         {
             target = damageMessage.damager.GetComponent<Player>();
         }
+
+        //추가(대원)
+        if (calliSystem != null)
+        {
+            if(!stackUI.activeSelf) stackUI.SetActive(true);
+            calliSystem.Painting(damageMessage.color, damageMessage.value);
+        }
+
         return true;
     }
     #endregion
@@ -502,5 +554,9 @@ public class Enemy : MonoBehaviour, IDamageable
             navAgent.ResetPath();
         }
         navAgent.enabled = false;
+
+        //추가(대원)
+        stackUI.SetActive(false);
+
     }
 }

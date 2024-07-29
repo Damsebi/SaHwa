@@ -19,7 +19,6 @@ MonoBehaviour:
   humanNormalAttackDamage: 2
   restrictTimeForNormalAttack1_1: 0.8
   restrictTimeForNormalAttack1_2: 0.6
-  restrictTimeForNormalAttack1_3: 0.6
   humanFirstSkillDamage: 4
   humanFirstSkillCooldown: 4
   humanFirstSkillRange: 10
@@ -37,13 +36,13 @@ MonoBehaviour:
   animalSecondCooldown: 4
   animalAvoidStepCooldown: 2
   cameraFollowSpeed: 0.093
-  originCameraOrbitAxisPosition: {x: 0, y: 2.09, z: 0}
+  originCameraOrbitAxisPosition: {x: 0, y: -0.15, z: 0}
   smoothVerticalRotationRate: 0.015
   smoothHorizontalRotationRate: 0.093
   turnForwardDuration: 0.0098
   turnForwardSmoothRate: 0.077
   turnToTargetSmoothRate: 0.067
-  detectRange: 6.7
+  detectRange: 15
   targetLayer:
     serializedVersion: 2
     m_Bits: 64
