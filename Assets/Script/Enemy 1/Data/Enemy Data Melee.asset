@@ -19,7 +19,7 @@ MonoBehaviour:
   f_turnSmoothVelocity: 0.1804
   f_viewDistance: 1
   f_viewAngle: 1
-  f_paintOver: 3
+  f_paintOver: 1
   f_hpBarCount: 2
   b_plusAttackDamage: 0
   b_plusSkillDamage: 0

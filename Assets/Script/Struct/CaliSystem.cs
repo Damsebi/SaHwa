@@ -7,8 +7,9 @@ using static Enemy;
 public class CalliSystem : MonoBehaviour
 {
     private List<char> paint = new List<char>();
-    [SerializeField] private int maxPaintOver = 10; // 기본 최대 한도
-    [SerializeField] private char lastColor = ' '; // 마지막 색을 기록
+    [SerializeField] private int maxPaintOver = 10;
+    public int MaxPaintOver {  get { return maxPaintOver; } }
+    private char lastColor = ' '; 
 
     public float paintWhite { get; private set; }
     public float paintBlack { get; private set; }
@@ -16,23 +17,23 @@ public class CalliSystem : MonoBehaviour
 
     private void Awake()
     {
-        // 적의 종류에 따라 maxPaintOver를 설정
+        // 적의 종류에 따라 maxPaintOver를 설정. 사실상 EnemyData에서 정해짐
         Enemy enemy = GetComponent<Enemy>();
         if (enemy != null)
         {
             switch (enemy.enemyData)
             {
                 case EnemyDataMelee meleeData:
-                    maxPaintOver = 5;
+                    maxPaintOver = 3;
                     break;
                 case EnemyDataRange rangeData:
-                    maxPaintOver = 10;
+                    maxPaintOver = 5;
                     break;
                 case EnemyDataHybird hybridData:
-                    maxPaintOver = 20;
+                    maxPaintOver = 5;
                     break;
                 case EnemyDataBuffer bufferData:
-                    maxPaintOver = 30;
+                    maxPaintOver = 5;
                     break;
             }
         }

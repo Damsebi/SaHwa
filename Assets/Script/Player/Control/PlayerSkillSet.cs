@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,12 +17,12 @@ public class PlayerSkillSet : MonoBehaviour
     private bool ignoreStun;
     public bool IgnoreStun { get { return ignoreStun; } }
 
-    #region 사람탈
+    #region 사람탈 변수
     #region 기본공격
     private bool isNormalAttacking;
     private bool canUseHumanNormalAttack;
     [SerializeField] private GameObject humanNormalAttackArea;
-    [SerializeField] private GameObject weaponTrail;
+    [SerializeField] private GameObject humanWeaponTrail;
 
     #endregion
 
@@ -47,7 +46,7 @@ public class PlayerSkillSet : MonoBehaviour
     #endregion
     #endregion
 
-    #region 동물탈
+    #region 동물탈 변수
     #region 기본공격
     private bool canUseAnimalNormalAttack;
     [SerializeField] private GameObject animalNormalAttackArea;
@@ -55,15 +54,14 @@ public class PlayerSkillSet : MonoBehaviour
     #endregion
 
     #region 양손공격
-    private bool canUseXClaw;
+    private bool canUseFirstSkill;
     [SerializeField] private GameObject animalFirstSkillArea;
 
     #endregion
 
     #region 도약공격
-    private bool canUseLeapClaw;
+    private bool canUseSecondSkill;
     [SerializeField] private GameObject animalSecondSkillArea;
-
     #endregion
 
     #region 회피
@@ -71,7 +69,7 @@ public class PlayerSkillSet : MonoBehaviour
     #endregion
     #endregion
 
-    #region 귀신탈
+    #region 귀신탈 변수
     private bool canUseFinish;
     private bool turnOriginMask; //처형은 사람탈에서 진행함
 
@@ -81,6 +79,7 @@ public class PlayerSkillSet : MonoBehaviour
 
     [SerializeField] private GameObject finishSkillArea; // 처형 영역 오브젝트
     private List<Transform> finishTargetList;
+    
 
     //[SerializeField][Range(0, 20)] float executionRange; //처형 범위 나중에 
     //[SerializeField] float executionAreaSizeRate; //처형 영역 크기비율 나중에
@@ -101,8 +100,8 @@ public class PlayerSkillSet : MonoBehaviour
         canUseHumanAvoidStep = true;
 
         canUseAnimalNormalAttack = true;
-        canUseXClaw = true;
-        canUseLeapClaw = true;
+        canUseFirstSkill = true;
+        canUseSecondSkill = true;
         canUseAnimalAvoidBack = true;
 
         canUseFinish = true;
@@ -146,14 +145,15 @@ public class PlayerSkillSet : MonoBehaviour
                 playerMovement.canRotate = false;
             }
 
-            SwitchAttakArea(humanNormalAttackArea, 0.145f, true);
+            SwitchEffect(humanWeaponTrail, 0.15f, true);
+            SwitchEffect(humanWeaponTrail, .24f, false);
+            SwitchEffect(humanWeaponTrail, .4f, true);
+            SwitchEffect(humanWeaponTrail, .5f, false);
+
+            SwitchAttakArea(humanNormalAttackArea, 0.17f, true);
             SwitchAttakArea(humanNormalAttackArea, 0.246f, false);
-
-            SwitchAttakArea(humanNormalAttackArea, 0.4f, true);
-            SwitchAttakArea(humanNormalAttackArea, 0.48f, false);
-
-            SwitchAttakArea(animalNormalAttackArea, 0.2f, true);
-            SwitchAttakArea(animalNormalAttackArea, 0.46f, false);
+            SwitchAttakArea(humanNormalAttackArea, 0.42f, true);
+            SwitchAttakArea(humanNormalAttackArea, 0.46f, false);
         }
         else if (currentAnimation.IsName("NormalAttack2"))
         {
@@ -169,16 +169,25 @@ public class PlayerSkillSet : MonoBehaviour
                 playerMovement.canRotate = false;
             }
 
-            SwitchAttakArea(humanNormalAttackArea, 0.2f, true);
+            SwitchEffect(humanWeaponTrail, 0.2f, true);
+            SwitchEffect(humanWeaponTrail, .32f, false);
+
+            SwitchAttakArea(humanNormalAttackArea, 0.21f, true);
             SwitchAttakArea(humanNormalAttackArea, 0.32f, false);
         }
         else if (currentAnimation.IsName("FirstSkill"))
         {
+            SwitchEffect(humanWeaponTrail, 0.41f, true);
+            SwitchEffect(humanWeaponTrail, .5f, false);
+
             SwitchAttakArea(animalFirstSkillArea, 0.48f, true);
             SwitchAttakArea(animalFirstSkillArea, 0.71f, false);
         }
         else if (currentAnimation.IsName("SecondSkill"))
         {
+            SwitchEffect(humanWeaponTrail, 0.09f, true);
+            SwitchEffect(humanWeaponTrail, .35f, false);
+
             SwitchAttakArea(animalSecondSkillArea, 0.37f, true);
             SwitchAttakArea(animalSecondSkillArea, 0.49f, false);
         }
@@ -200,7 +209,7 @@ public class PlayerSkillSet : MonoBehaviour
     }
     #endregion
 
-    #region 공격범위 On/Off.
+    #region 공격범위,트레일 On/Off.
     //의도치 않은 공격범위 활성화 방지
     private void ResetAttackArea() 
     {
@@ -221,12 +230,13 @@ public class PlayerSkillSet : MonoBehaviour
             attackArea.SetActive(onOffSwitch);
         }
     }
-    private void TurOffAttakArea(GameObject attackArea, float normalizedTime)
+
+    private void SwitchEffect(GameObject Effect, float normalizedTime, bool onOffSwitch)
     {
         var currentAnimation = playerMaskChange.ActiveAnimator.GetCurrentAnimatorStateInfo(0);
         if (currentAnimation.normalizedTime >= normalizedTime && currentAnimation.normalizedTime < normalizedTime + 0.01f)
         {
-            attackArea.SetActive(false);
+            Effect.SetActive(onOffSwitch);
         }
     }
 
@@ -383,7 +393,7 @@ public class PlayerSkillSet : MonoBehaviour
     }
     #endregion
 
-    #region 짐승탈 함수
+    #region 동물탈 함수
 
     public IEnumerator AnimalNormalAttack()
     {
@@ -404,10 +414,10 @@ public class PlayerSkillSet : MonoBehaviour
 
     public IEnumerator AnimalFirstSkill()
     {
-        if (canUseXClaw)
+        if (canUseFirstSkill)
         {
             playerMaskChange.ActiveAnimator.SetBool("restrict", restrictForSkill = true);
-            canUseXClaw = false;
+            canUseFirstSkill = false;
 
             playerMaskChange.ActiveAnimator.CrossFade("FirstSkill", .1f);
             
@@ -415,29 +425,29 @@ public class PlayerSkillSet : MonoBehaviour
             playerMaskChange.ActiveAnimator.SetBool("restrict", restrictForSkill = false);
 
             yield return new WaitForSeconds(playerData.animalFirstSkillCooldown - 2f);
-            canUseXClaw = true;
+            canUseFirstSkill = true;
         }
     }
 
     public IEnumerator AnimalSecondSkill()
     {
-        if (canUseLeapClaw)
+        if (canUseSecondSkill)
         {
             playerMaskChange.ActiveAnimator.SetBool("restrict", restrictForSkill = true);
-            canUseLeapClaw = false;
+            canUseSecondSkill = false;
 
             playerMaskChange.ActiveAnimator.CrossFade("SecondSkill", .1f);
             for (int i = 0; i < 60; i++)
             {
                 yield return new WaitForSeconds(.01f);
                 playerMaskChange.ActiveRigidbody.MovePosition
-                    (playerMaskChange.ActiveCharacter.transform.position + playerMaskChange.ActiveCharacter.transform.forward * 15 * Time.deltaTime);
+                    (playerMaskChange.ActiveCharacter.transform.position + playerMaskChange.ActiveCharacter.transform.forward * 25 * Time.deltaTime);
             }
             yield return new WaitForSeconds(.3f);
             playerMaskChange.ActiveAnimator.SetBool("restrict", restrictForSkill = false);
 
             yield return new WaitForSeconds(playerData.animalSecondCooldown -2f);
-            canUseLeapClaw = true;
+            canUseSecondSkill = true;
         }
     }
 
@@ -461,6 +471,7 @@ public class PlayerSkillSet : MonoBehaviour
     #region 귀신탈 함수
     public void CheckEnableFinish()
     {
+        if (!canUseFinish) return;
         if (PlayerFollowCamera.instance.CurrentTarget)
         {
             if (PlayerFollowCamera.instance.CurrentTarget.gameObject.GetComponent<CalliSystem>().IsPaintOverMax())
@@ -469,7 +480,6 @@ public class PlayerSkillSet : MonoBehaviour
             }
         }
     }
-
 
     public IEnumerator FinishSkill()
     {
@@ -547,7 +557,7 @@ public class PlayerSkillSet : MonoBehaviour
         yield return new WaitForSeconds(.2f);
         playerMaskChange.ActiveAnimator.SetBool("restrict", restrictForSkill = false);
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(playerData.finishSkillCooldown > 1.8 ? playerData.finishSkillCooldown : 0);
         canUseFinish = true;
     }
     #endregion

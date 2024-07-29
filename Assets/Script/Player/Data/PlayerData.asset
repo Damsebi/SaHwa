@@ -16,25 +16,26 @@ MonoBehaviour:
   humanMoveSpeed: 5
   animalMoveSpeed: 9
   playerRotateSpeed: 50
-  humanNormalAttackDamage: 2
+  humanNormalAttackDamage: 1
   restrictTimeForNormalAttack1_1: 0.8
   restrictTimeForNormalAttack1_2: 0.6
   humanFirstSkillDamage: 4
   humanFirstSkillCooldown: 4
   humanFirstSkillRange: 10
-  humanFirstSkillDuration: 3
+  humanFirstSkillDuration: 4
   humanFirstSkillScale: {x: 6, y: 6, z: 6}
   humanSecondSkillDamage: 4
   humanSecondSkillCooldown: 4
-  humanSecondSkillDuration: 2
-  humanAvoidStepCooldown: 2
-  animalNormalAttackDamage: 2
+  humanSecondSkillDuration: 3
+  humanAvoidStepCooldown: 3
+  animalNormalAttackDamage: 3
   animalNormalAttackCooldown: 1.5
   animalFirstSkillDamage: 4
   animalFirstSkillCooldown: 4
   animalSecondSkillDamage: 5
   animalSecondCooldown: 4
   animalAvoidStepCooldown: 2
+  finishSkillCooldown: 5
   cameraFollowSpeed: 0.093
   originCameraOrbitAxisPosition: {x: 0, y: -0.15, z: 0}
   smoothVerticalRotationRate: 0.015

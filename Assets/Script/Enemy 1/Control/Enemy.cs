@@ -447,27 +447,30 @@ public class Enemy : MonoBehaviour, IDamageable
     #region 덧칠확인, 행동 제한시키기(대원)
     private void CheckPaintOver()
     {
-        if (stackUI.activeSelf) stackUI.transform.rotation 
-                = PlayerFollowCamera.instance.MainCamera.transform.rotation;
-        if (paintOverMax) return;
-
-        if (calliSystem.IsPaintOverMax())
+        if (stackUI.activeSelf)
         {
-            paintOverMax = true;
-
-            for (int i = 0; i < paintOverStacks.Length; i++)
-            {
-                paintOverStacks[i].GetComponent<Image>().color = Color.white;
-            }
-            return;
+            stackUI.transform.rotation
+                = PlayerFollowCamera.instance.MainCamera.transform.rotation ; 
         }
 
-        for (int i = 0; i <= calliSystem.paintOver; i++)
+        if (paintOverMax || calliSystem.paintOver == 0) return;
+
+        if (calliSystem.paintOver < calliSystem.MaxPaintOver)
         {
-            if (i < 6) //아직 스택 5개까지만 
+            for (int i = 0; i < calliSystem.paintOver + 1; i++)
             {
                 paintOverStacks[i].SetActive(true);
             }
+        }
+        else
+        {
+            for (int i = 0; i < calliSystem.MaxPaintOver + 1; i++)
+            {
+                paintOverStacks[i].SetActive(true);
+                paintOverStacks[i].GetComponent<Image>().color = Color.white;
+            }
+            paintOverMax = true;
+
         }
     }
     public void StopAction() //처형시에 움짐임 봉쇄. 

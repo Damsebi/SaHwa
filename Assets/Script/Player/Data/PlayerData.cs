@@ -81,7 +81,13 @@ public class PlayerData : ScriptableObject
     [Header("동물탈 회피 스킬 쿨타임")]
     public float animalAvoidStepCooldown;
 
-    [Space(20f)]
+    [Space(10f)]
+    [Header("귀신탈 스킬 쿨타임")]
+    public float finishSkillCooldown;
+
+
+
+    [Space(30f)]
     [Header("카메라")]
     [Header("카메라가 플레이어를 따라오는 속도비율. 값이 작을수록 빠름")]
     [Range(0, 1)] public float cameraFollowSpeed;

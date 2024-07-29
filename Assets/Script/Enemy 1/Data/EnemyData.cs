@@ -25,7 +25,7 @@ public class EnemyData : ScriptableObject
     [Header("½Ã¾ß °¢")]
     [Range(1f, 359f)] public float f_viewAngle;
 
-    [Header("µ¡Ä¥ ´çÇÏ´Â ÃÑ È½¼ö")]
+    [Header("µ¡Ä¥ ´çÇÏ´Â ÃÑ È½¼ö(ÇöÀç´Â ÃÖ´ë 5È¸)")]
     [Range(1, 5)] public int f_paintOver;
 
     [Header("¶óÀÌÇÁ °¹¼ö")]
