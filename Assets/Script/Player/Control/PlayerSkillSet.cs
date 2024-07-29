@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.ProBuilder.MeshOperations;
 using UnityEngine.UI;
 
 public class PlayerSkillSet : MonoBehaviour
@@ -154,6 +155,9 @@ public class PlayerSkillSet : MonoBehaviour
             SwitchAttakArea(humanNormalAttackArea, 0.246f, false);
             SwitchAttakArea(humanNormalAttackArea, 0.42f, true);
             SwitchAttakArea(humanNormalAttackArea, 0.46f, false);
+
+            SwitchAttakArea(animalNormalAttackArea, 0.2f, true);
+            SwitchAttakArea(animalNormalAttackArea, 0.52f, false);
         }
         else if (currentAnimation.IsName("NormalAttack2"))
         {
@@ -196,6 +200,7 @@ public class PlayerSkillSet : MonoBehaviour
             SwitchAttakArea(humanAvoidStepArea, 0.1f, true);
             SwitchAttakArea(humanAvoidStepArea, 0.2f, false);
         }
+        
         else if (currentAnimation.IsName("Movement") || currentAnimation.IsName("LockOnMovement")) //버그풀어주는 용도로도 활용
         {
             if (currentAnimation.normalizedTime > 0.5f && currentAnimation.normalizedTime < 0.51f)
@@ -203,9 +208,12 @@ public class PlayerSkillSet : MonoBehaviour
                 restrictForSkill = false;
                 ResetAttackArea();
             }
+            
+            humanWeaponTrail.SetActive(false);
             playerMovement.canRotate = true;
             playerMovement.canMove = true;
         }
+      
     }
     #endregion
 
@@ -350,9 +358,9 @@ public class PlayerSkillSet : MonoBehaviour
             canUseInkSmash = false;
 
             playerMaskChange.ActiveAnimator.CrossFade("SecondSkill", .1f);
-            for (int i = 0; i < 80; i++)
+            for (int i = 0; i < 45; i++)
             {
-                yield return new WaitForSeconds(.01f);
+                yield return new WaitForSeconds(.02f);
                 playerMaskChange.ActiveRigidbody.MovePosition
                     (playerMaskChange.ActiveCharacter.transform.position + playerMaskChange.ActiveCharacter.transform.forward * 10 * Time.deltaTime);
             }
