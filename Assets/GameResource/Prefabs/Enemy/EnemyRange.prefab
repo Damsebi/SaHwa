@@ -979,7 +979,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2fcb218bae311564bb0644962a1b1d0d,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 7407664343264653550}
+      addedObject: {fileID: -3263419842659141518}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2fcb218bae311564bb0644962a1b1d0d,
         type: 3}
       insertIndex: -1
@@ -1084,7 +1084,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &7407664343264653550
+--- !u!114 &-3263419842659141518
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1093,16 +1093,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 8346180153134451801}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47b3e9d3504b29e42971f551aab22b4a, type: 3}
+  m_Script: {fileID: 11500000, guid: cb5e918c9ec896b41b8bd92a75a4086c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   enemyState: 0
-  enemyData: {fileID: 11400000, guid: 852b0590041f94d4699a1a7a5e68f487, type: 2}
   LayerTarget:
     serializedVersion: 2
-    m_Bits: 256
-  attackRoot: {fileID: 4091209156618501617}
-  viewTransform: {fileID: 4091209156618501617}
+    m_Bits: 0
+  attackRoot: {fileID: 0}
+  viewTransform: {fileID: 0}
   target: {fileID: 0}
   hp: 0
   hpBarCount: 0
@@ -1120,9 +1119,6 @@ MonoBehaviour:
   flatRange: 0
   patrolWaitingTimeMin: 0
   patrolWaitingTimeMax: 0
-  distanceToPlayerMax: 0
-  isRanged: 0
-  isBuffer: 0
   flatHybridDamage: 0
   flatHybridMotionSpeed: 0
   flatHybridMotionCoolTime: 0
@@ -1132,7 +1128,15 @@ MonoBehaviour:
   skillMotionCoolTime: 0
   skillRange: 0
   paintOverStacks: []
-  stackUI: {fileID: 1832290472146441033}
+  stackUI: {fileID: 0}
+  stonePrefab: {fileID: 0}
+  firePoint: {fileID: 0}
+  distanceToPlayerMax: 0
+  isRanged: 0
+  isBuffer: 0
+  lastAttackTime: 0
+  attackCooltime: 0
+  projectileSpeed: 0
 --- !u!114 &4197281662800700801
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -9,6 +9,7 @@ using UnityEngine.AI;
 using Unity.XR.Oculus.Input;
 using UnityEditor;
 using UnityEngine.XR;
+using UnityEditor.Rendering;
 
 public class Enemy : MonoBehaviour, IDamageable
 {
@@ -32,7 +33,7 @@ public class Enemy : MonoBehaviour, IDamageable
     public Transform attackRoot; //공격이 시작되는 피벗, 이 피벗 해당 반경 내에 있는 플레이어가 공격당함
     public Transform viewTransform; //눈 위치
     public Player target;
-    protected RaycastHit[] hits = new RaycastHit[10];
+
     protected List<Player> lastAttackedTarget = new List<Player>();
 
     #region SO 데이터(공통)
@@ -107,10 +108,8 @@ public class Enemy : MonoBehaviour, IDamageable
     #endregion
 
     #region Start()
-    void Start()
+    protected virtual void Start()
     {
-        SetUp();
-        InitializeStats();
         StartCoroutine(UpdatePath());
 
         var attackPivot = attackRoot.position;
@@ -119,6 +118,7 @@ public class Enemy : MonoBehaviour, IDamageable
 
         attackDistance = Vector3.Distance(transform.position, attackPivot) + flatRange;
         navAgent.stoppingDistance = attackDistance;
+        Debug.Log(navAgent.stoppingDistance);
     }
     #endregion
 
@@ -134,6 +134,7 @@ public class Enemy : MonoBehaviour, IDamageable
             var distance = Vector3.Distance(target.transform.position, transform.position);
             if (distance <= attackDistance)
             {
+                Debug.Log("1");
                 BeginAttack();
             }
         }
@@ -149,7 +150,7 @@ public class Enemy : MonoBehaviour, IDamageable
     #endregion
 
     #region FixedUpdate()
-    private void FixedUpdate()
+    protected virtual void FixedUpdate()
     {
         if (isDead)
         {
@@ -164,125 +165,31 @@ public class Enemy : MonoBehaviour, IDamageable
             targetAngleY = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngleY, ref turnSmoothVelocity, turnSmoothTime);
             transform.eulerAngles = Vector3.up * targetAngleY;
         }
-
-        //공격 도중 플레이어가 이동해서 시야에서 놓치면?
-        //physics.cast계열
-
-        if (enemyState == eState.Attacking)
+        if (enemyState == eState.AttackBegin)
         {
-            //몬스터의 전방 방향을 구함
-            var direction = transform.forward;
-
-            //네비의 현재속도를 기준으로 deltaDistance를 계산 -> 한 프레임 동안 몬스터가 이동하는 거리
-            var deltaDistance = navAgent.velocity.magnitude * Time.deltaTime;
-
-            // SphereCastNonAlloc을 사용하여 atkRoot.position에서 반지름이 atkRadius인 구 형태로 direction 방향으로 deltaDistance 거리만큼 구체 형태의 캐스트(이동한 궤적에 겹치는 Collider가 있는지 검사)
-            // Trigger,Collision 등은 매 프레임 실행, 그 순간의 겹치는 Collider를 잡아내는 경우는 힘듦.
-            // hits 배열에 충돌한 결과를 저장하고, 충돌한 객체의 수를 size에 저장
-            var size = Physics.SphereCastNonAlloc(attackRoot.position, flatRange, direction, hits, deltaDistance, LayerTarget);
-
-            //충돌한 객체들에 대한 반복
-            for (var i = 0; i < size; i++)
-            {
-                //충돌한 객체가 livingentity인지 확인
-                var atkTarget = hits[i].collider.GetComponent<Player>();
-
-                //충돌한 객체가 Player이고 아직 공격한 적 없는 객체라면
-                if (atkTarget != null && !lastAttackedTarget.Contains(atkTarget))
-                {
-                    //damageMessage 객체를 생성해서 데미지 정보를 설정
-                    var message = new DamageMessage();
-                    message.amount = flatDamage;
-                    message.damager = this.gameObject;
-                    message.hitPoint = hits[i].point;
-
-                    //충돌한 지점이 0 이하일 때와 그 외의 경우를 나누어 hitpoint 설정
-                    if (hits[i].distance <= 0f)
-                    {
-                        message.hitPoint = attackRoot.position;
-                    }
-                    else
-                    {
-                        message.hitPoint = hits[i].point;
-                    }
-
-                    //충돌한 지점의 법선을 hitnormal에 설정
-                    message.hitNormal = hits[i].normal;
-
-                    //충돌한 livingEntity에게 데미지 적용
-                    atkTarget.ApplyDamage(message);
-
-                    //해당객체를 lastAtkTarget 리스트에 추가하여 중복공격 방지
-                    lastAttackedTarget.Add(atkTarget);
-
-                    break;
-                }
-            }
+            // 공격 시작 시 애니메이션 재생
+            animator.SetTrigger("Attack");
+            enemyState = eState.Attacking;
         }
     }
     #endregion
 
     #region 초기화
-    private void InitializeStats()
+    protected void InitializeStats(float f_hp, int i_hpBarCount, float f_trackingSpeed, float f_patrolSpeed, float f_viewAngle, 
+        float f_viewDistance, int i_paintOver, float f_turnSmoothVelocity, bool b_plusAttackDamage, bool b_plusSkillDamage, bool b_magicGroup, float f_patrolRange)
     {
-        if (enemyData is EnemyDataMelee meleeData)
-        {
-            flatDamage = meleeData.f_flatMeleeAttackDamage;
-            flatMotionSpeed = meleeData.f_flatMeleeAttackMotionSpeed;
-            flatMotionCoolTime = meleeData.f_flatMeleeAttackMotionCoolTime;
-            flatRange = meleeData.f_flatMeleeAttackRange;
-            isRanged = false;
-            isBuffer = false;
-            patrolWaitingTimeMin = meleeData.i_patrolWaitingTimeMin;
-            patrolWaitingTimeMax = meleeData.i_patrolWaitingTimeMax;
-        }
-        else if (enemyData is EnemyDataRange rangeData)
-        {
-            flatDamage = rangeData.f_flatRangeAttackDamage;
-            flatMotionSpeed = rangeData.f_flatRangeAttackMotionSpeed;
-            flatMotionCoolTime = rangeData.f_flatRangeAttackMotionCoolTime;
-            flatRange = rangeData.f_flatRangeAttackRange;
-            isRanged = true;
-            isBuffer = false;
-        }
-        else if (enemyData is EnemyDataHybird hybridData)
-        {
-            flatDamage = hybridData.f_flatMeleeAttackDamage;
-            flatMotionSpeed = hybridData.f_flatMeleeAttackMotionSpeed;
-            flatMotionCoolTime = hybridData.f_flatMeleeAttackMotionCoolTime;
-            flatRange = hybridData.f_flatMeleeAttackRange;
-
-            flatHybridDamage = hybridData.f_flatRangeAttackDamage;
-            flatHybridMotionSpeed = hybridData.f_flatRangeAttackMotionSpeed;
-            flatHybridMotionCoolTime = hybridData.f_flatRangeAttackMotionCoolTime;
-            flatHybridRange = hybridData.f_flatRangeAttackRange;
-            isRanged = true;
-            isBuffer = false;
-        }
-        else if (enemyData is EnemyDataBuffer bufferData)
-        {
-            flatMotionSpeed = bufferData.f_buffMotionSpeed;
-            flatMotionCoolTime = bufferData.f_buffMotionCoolTime;
-            flatRange = bufferData.f_buffRange;
-            isRanged = false;
-            isBuffer = true;
-        }
-    }
-
-    void SetUp()
-    {
-        hp = enemyData.f_hp;
-        hpBarCount = enemyData.i_hpBarCount;
-        trackingSpeed = enemyData.f_trackingSpeed;
-        patrolSpeed = enemyData.f_patrolSpeed;
-        viewAngle = enemyData.f_viewAngle;
-        viewDistance = enemyData.f_viewDistance;
-        paintOver = enemyData.i_paintOver;
-        turnSmoothVelocity = enemyData.f_turnSmoothVelocity;
-        plusAttackDamage = enemyData.b_plusAttackDamage;
-        plusSkillDamage = enemyData.b_plusSkillDamage;
-        magicGroup = enemyData.b_magicGroup;
-        patrolRange = enemyData.f_patrolRange;
+        hp = f_hp;
+        hpBarCount = i_hpBarCount;
+        trackingSpeed = f_trackingSpeed;
+        patrolSpeed = f_patrolSpeed;
+        viewAngle = f_viewAngle;
+        viewDistance = f_viewDistance;
+        paintOver = i_paintOver;
+        turnSmoothVelocity = f_turnSmoothVelocity;
+        plusAttackDamage = b_plusAttackDamage;
+        plusSkillDamage = b_plusSkillDamage;
+        magicGroup = b_magicGroup;
+        patrolRange = f_patrolRange;
         navAgent.speed = patrolSpeed;
         enemyState = eState.Idle;
     }
@@ -444,7 +351,6 @@ public class Enemy : MonoBehaviour, IDamageable
     }
     #endregion
 
-    #endregion
 
     #region 덧칠확인, 행동 제한시키기
     private void CheckPaintOver()
@@ -495,17 +401,8 @@ public class Enemy : MonoBehaviour, IDamageable
     }
     #endregion
 
-    #region 공격 들어가는 지점
-    public void EnableAttack()
-    {
-        enemyState = eState.Attacking;
-
-        lastAttackedTarget.Clear();
-    }
-    #endregion
-
     #region 공격 나오는 지점
-    public void DisableAttack()
+    private void DisableAttack()
     {
         enemyState = eState.Tracking;
         navAgent.isStopped = false;
@@ -576,5 +473,6 @@ public class Enemy : MonoBehaviour, IDamageable
     }
     #endregion
 
+    #endregion
     #endregion
 }

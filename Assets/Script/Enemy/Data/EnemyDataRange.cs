@@ -19,4 +19,12 @@ public class EnemyDataRange : EnemyData
 
     [Header("플레이어로부터 거리 최대 거리 유지")]
     public float f_distanceToPlayerMax;
+    
+    [Header("원거리 공격 쿨타임")]
+    public float f_attackCooltime;
+
+    [Header("발사체 속도")]
+    public float f_projectileSpeed;
+
+
 }

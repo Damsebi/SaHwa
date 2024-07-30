@@ -94508,6 +94508,12 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5403771587319418401}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &132052959955737646 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 9174950745957318329, guid: 664441e6ed620dd428bd86eff53433a4,
+    type: 3}
+  m_PrefabInstance: {fileID: 1240621587934337698}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &144370849784568100
 GameObject:
   m_ObjectHideFlags: 0
@@ -94976,6 +94982,12 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1629247146498621671}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &374873721264467041 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4091209156618501617, guid: 664441e6ed620dd428bd86eff53433a4,
+    type: 3}
+  m_PrefabInstance: {fileID: 1240621587934337698}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &378045003204616393
 GameObject:
   m_ObjectHideFlags: 0
@@ -96705,12 +96717,53 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 7407664343264653550, guid: 664441e6ed620dd428bd86eff53433a4,
+    - target: {fileID: -3263419842659141518, guid: 664441e6ed620dd428bd86eff53433a4,
         type: 3}
-      propertyPath: enemyData
+      propertyPath: stackUI
+      value: 
+      objectReference: {fileID: 1872040912227208093}
+    - target: {fileID: -3263419842659141518, guid: 664441e6ed620dd428bd86eff53433a4,
+        type: 3}
+      propertyPath: firePoint
+      value: 
+      objectReference: {fileID: 374873721264467041}
+    - target: {fileID: -3263419842659141518, guid: 664441e6ed620dd428bd86eff53433a4,
+        type: 3}
+      propertyPath: attackRoot
+      value: 
+      objectReference: {fileID: 374873721264467041}
+    - target: {fileID: -3263419842659141518, guid: 664441e6ed620dd428bd86eff53433a4,
+        type: 3}
+      propertyPath: stonePrefab
+      value: 
+      objectReference: {fileID: 4536686792126828990, guid: 64751f9af91d696489bb74dfc2660639,
+        type: 3}
+    - target: {fileID: -3263419842659141518, guid: 664441e6ed620dd428bd86eff53433a4,
+        type: 3}
+      propertyPath: viewTransform
+      value: 
+      objectReference: {fileID: 132052959955737646}
+    - target: {fileID: -3263419842659141518, guid: 664441e6ed620dd428bd86eff53433a4,
+        type: 3}
+      propertyPath: enemyDataRange
       value: 
       objectReference: {fileID: 11400000, guid: 852b0590041f94d4699a1a7a5e68f487,
         type: 2}
+    - target: {fileID: -3263419842659141518, guid: 664441e6ed620dd428bd86eff53433a4,
+        type: 3}
+      propertyPath: LayerTarget.m_Bits
+      value: 256
+      objectReference: {fileID: 0}
+    - target: {fileID: 4091209156618501617, guid: 664441e6ed620dd428bd86eff53433a4,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.984
+      objectReference: {fileID: 0}
+    - target: {fileID: 4091209156618501617, guid: 664441e6ed620dd428bd86eff53433a4,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.097
+      objectReference: {fileID: 0}
     - target: {fileID: 8346180153134451801, guid: 664441e6ed620dd428bd86eff53433a4,
         type: 3}
       propertyPath: m_Name
@@ -98139,6 +98192,12 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &1872040912227208093 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1832290472146441033, guid: 664441e6ed620dd428bd86eff53433a4,
+    type: 3}
+  m_PrefabInstance: {fileID: 1240621587934337698}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1878275218140578307
 GameObject:
   m_ObjectHideFlags: 0

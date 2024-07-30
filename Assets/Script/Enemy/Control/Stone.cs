@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class Stone : MonoBehaviour
 {
-    public float damage = 10f;
-    public float lifeTime = 5f;
+    public float damage;
+    public float lifeTime;
 
     private void Start()
     {

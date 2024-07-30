@@ -27,5 +27,7 @@ MonoBehaviour:
   f_flatRangeAttackDamage: 10
   f_flatRangeAttackMotionSpeed: 1
   f_flatRangeAttackMotionCoolTime: 1
-  f_flatRangeAttackRange: 10
+  f_flatRangeAttackRange: 50
   f_distanceToPlayerMax: 10
+  f_attackCooltime: 1
+  f_projectileSpeed: 10

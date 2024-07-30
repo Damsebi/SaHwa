@@ -19,24 +19,25 @@ public class CalliSystem : MonoBehaviour
     {
         // 적의 종류에 따라 maxPaintOver를 설정. 사실상 EnemyData에서 정해짐
         Enemy enemy = GetComponent<Enemy>();
-        if (enemy != null)
-        {
-            switch (enemy.enemyData)
-            {
-                case EnemyDataMelee meleeData:
-                    maxPaintOver = 3;
-                    break;
-                case EnemyDataRange rangeData:
-                    maxPaintOver = 5;
-                    break;
-                case EnemyDataHybird hybridData:
-                    maxPaintOver = 5;
-                    break;
-                case EnemyDataBuffer bufferData:
-                    maxPaintOver = 5;
-                    break;
-            }
-        }
+        //수정
+        //if (enemy != null)
+        //{
+        //    switch (enemy.enemyData)
+        //    {
+        //        case EnemyDataMelee meleeData:
+        //            maxPaintOver = 3;
+        //            break;
+        //        case EnemyDataRange rangeData:
+        //            maxPaintOver = 5;
+        //            break;
+        //        case EnemyDataHybird hybridData:
+        //            maxPaintOver = 5;
+        //            break;
+        //        case EnemyDataBuffer bufferData:
+        //            maxPaintOver = 5;
+        //            break;
+        //    }
+        //}
         /* 수정전
         Enemy enemy = GetComponent<Enemy>();
         if (enemy != null)
