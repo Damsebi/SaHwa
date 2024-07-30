@@ -310,6 +310,7 @@ public class Enemy : MonoBehaviour, IDamageable
                 {
                     enemyState = eState.Tracking;
                     navAgent.speed = trackingSpeed;
+                    animator.SetBool("BattleMode", true);
                 }
                 navAgent.SetDestination(target.transform.position);
 
@@ -321,6 +322,7 @@ public class Enemy : MonoBehaviour, IDamageable
                         target = null;
                         enemyState = eState.Patrol;
                         navAgent.speed = patrolSpeed;
+                        animator.SetBool("BattleMode", false);
                     }
                 }
                 else
