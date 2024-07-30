@@ -22,7 +22,10 @@ public class SpawnPosition : MonoBehaviour
     {
         Instantiate(enemyType, transform.position, transform.rotation);
     }
-    private void OnValidate()
+
+    #region 시야, 공격 범위 그리기
+
+    private void OnValidate() //scene 창에 보여지도록
     {
         viewAngle = enemyData.f_viewAngle;
         viewDistance = enemyData.f_viewDistance;
@@ -54,7 +57,7 @@ public class SpawnPosition : MonoBehaviour
         }
     }
 
-    #region 시야 그리기
+
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {

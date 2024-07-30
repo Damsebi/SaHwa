@@ -6,49 +6,32 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-public class SpawnEnemy : MonoBehaviour
+public class SpawnEnemy : MonoBehaviour,IEvent
 {
-    public static SpawnEnemy Instance { get; private set; }
-    private SpawnPosition spawnPosition;
-
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
+    private List<SpawnPosition> spawnPositions;
 
     void Start()
     {
-        spawnPosition = GetComponentInChildren<SpawnPosition>();
+        spawnPositions = new List<SpawnPosition>(GetComponentsInChildren<SpawnPosition>());
 
-        if (spawnPosition != null)
+        //statue 비활성화
+        if (spawnPositions != null)
         {
-            foreach (Transform child in transform)
+            foreach (SpawnPosition spawnPosition in spawnPositions)
             {
-                child.gameObject.SetActive(false);
+                foreach (Transform child in spawnPosition.transform)
+                {
+                    Destroy(child.gameObject);
+                }
             }
         }
-
     }
 
-    public void TriggerSpawn()
+    public void TriggerEvent()
     {
-        spawnPosition.SpawnEnemy();
-    }
-
-    private void OnTriggerEnter(Collider player)
-    {
-        Debug.Log("ontrigger");
-        if (player.CompareTag("Player"))
+        foreach (SpawnPosition spawnPosition in spawnPositions)
         {
-            TriggerSpawn();
+            spawnPosition.SpawnEnemy();
         }
     }
-
 }

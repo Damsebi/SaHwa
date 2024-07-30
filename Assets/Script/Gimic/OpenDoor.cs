@@ -2,34 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OpenDoor : MonoBehaviour
+public class OpenDoor : MonoBehaviour, IEvent
 {
     public Transform leftDoor; // 왼쪽 문 큐브
     public Transform rightDoor; // 오른쪽 문 큐브
-    public float openAngle = 90f; // 열릴 때 회전할 각도
-    public float closeAngle = 0f; // 닫힐 때 회전할 각도
-    public float rotationSpeed = 2f; // 회전 속도
-
+    public float openAngle; // 열릴 때 회전할 각도
+    public float closeAngle; // 닫힐 때 회전할 각도
+    public float rotationSpeed; // 회전 속도
     private bool isOpening;
-    public bool isOpenAgain;
-    private bool hasOpened = false;
 
-    private void OnTriggerEnter(Collider other)
+    public void TriggerEvent()
     {
-        if (other.CompareTag("Player") && (!hasOpened || isOpenAgain))
+        if (!isOpening)
         {
             isOpening = true;
-            hasOpened = true;
-            StopAllCoroutines();
             StartCoroutine(RotateDoor(leftDoor, rightDoor, openAngle));
-
-            GameManager.Instance.TriggerSpawnEnemy();
         }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
+        else
         {
             isOpening = false;
             StopAllCoroutines();

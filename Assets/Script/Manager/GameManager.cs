@@ -17,9 +17,4 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
-    public void TriggerSpawnEnemy()
-    {
-        SpawnEnemy.Instance.TriggerSpawn();
-    }
 }
