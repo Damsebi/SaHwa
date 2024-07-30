@@ -24,6 +24,9 @@ public class SpawnPosition : MonoBehaviour
     }
     private void OnValidate()
     {
+        viewAngle = enemyData.f_viewAngle;
+        viewDistance = enemyData.f_viewDistance;
+
         if (enemyData is EnemyDataMelee meleeData)
         {
             flatRange = meleeData.f_flatMeleeAttackRange;
@@ -86,7 +89,6 @@ public class SpawnPosition : MonoBehaviour
 
         if (viewTransform != null) //단순히 반경 표시
         {
-            Debug.Log("1");
             var leftViewRotation = Quaternion.AngleAxis(-viewAngle * 0.5f, Vector3.up); //정면~왼쪽 각도
             var leftRayDirection = leftViewRotation * transform.forward;
 
