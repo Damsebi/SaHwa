@@ -13,7 +13,7 @@ using UnityEngine.XR;
 public class Enemy : MonoBehaviour, IDamageable
 {
     #region 열거
-    private enum eState
+    protected enum eState
     {
         Patrol, //순찰
         Tracking, //추적
@@ -22,19 +22,18 @@ public class Enemy : MonoBehaviour, IDamageable
         Idle, // 대기 상태
         BatIdle //공격 대기상태
     }
-    [SerializeField] private eState enemyState;
+    [SerializeField] protected eState enemyState;
     #endregion
 
     #region 선언
-    public EnemyData enemyData;
-    private Animator animator;
-    private NavMeshAgent navAgent;
+    protected Animator animator;
+    protected NavMeshAgent navAgent;
     public LayerMask LayerTarget;
     public Transform attackRoot; //공격이 시작되는 피벗, 이 피벗 해당 반경 내에 있는 플레이어가 공격당함
     public Transform viewTransform; //눈 위치
     public Player target;
-    private RaycastHit[] hits = new RaycastHit[10];
-    private List<Player> lastAttackedTarget = new List<Player>();
+    protected RaycastHit[] hits = new RaycastHit[10];
+    protected List<Player> lastAttackedTarget = new List<Player>();
 
     #region SO 데이터(공통)
     [HideInInspector] public float hp; //체력
@@ -44,8 +43,8 @@ public class Enemy : MonoBehaviour, IDamageable
     [HideInInspector] public float viewAngle; // 시야 각
     [HideInInspector] public float viewDistance; // 시야 범위
     [HideInInspector] public float paintOver; // 덧칠 횟수
-    private float turnSmoothVelocity; //몬스터의 회전 속도
-    private float patrolRange; // 순찰 범위
+    protected float turnSmoothVelocity; //몬스터의 회전 속도
+    protected float patrolRange; // 순찰 범위
     [HideInInspector] public bool plusAttackDamage; // 플레이어 평타에 추가 데미지 추가
     [HideInInspector] public bool plusSkillDamage; // 플레이어 스킬에 추가 데미지 추가
     [HideInInspector] public bool magicGroup; // 마법 세력   
@@ -53,18 +52,10 @@ public class Enemy : MonoBehaviour, IDamageable
     [HideInInspector] public float flatMotionSpeed; // 평타 모션 속도
     [HideInInspector] public float flatMotionCoolTime; // 평타 모션 쿨타임
     [HideInInspector] public float flatRange; // 평타 범위
-    #endregion
-
-    #region SO 데이터(밀리)
     [HideInInspector] public float patrolWaitingTimeMin; // 순찰 최소 대기 시간
     [HideInInspector] public float patrolWaitingTimeMax; // 순찰 최대 대기 시간
     #endregion
 
-    #region SO 데이터(레인지 & 버퍼)
-    [HideInInspector] public float distanceToPlayerMax; // 플레이어와의 최대 거리
-    [HideInInspector] public bool isRanged; // 근거리 원거리 공격 체크
-    [HideInInspector] public bool isBuffer; // 버퍼인지 체크
-    #endregion
 
     #region SO 데이터(하이브리드)
     [HideInInspector] public float flatHybridDamage; // 하이브리드 원거리 평타 데미지
@@ -81,27 +72,27 @@ public class Enemy : MonoBehaviour, IDamageable
     #endregion
 
     #region 내부 변수
-    private float attackDistance; //사정거리
-    private float turnSmoothTime = 0.1f; //몬스터 회전 시 지연시간
-    private float lastDamagedTime; //마지막으로 공격 받았던 시간
-    private const float MIN_TIME_BET_DAMAGE = 0.1f; //데미지를 주었을 때, 데미지 사이의 최소 간격
-    private float lostSightTime = 1.0f; //타이머가 도달하는 시간
-    private float lostSightTimer = 0.0f; //0초 부터 시작하는 타이머
-    private bool isDead; // 사망 체크
-    private bool canTriggerHitAnimation = true; // hit 과 hit 사이에 텀
+    protected float attackDistance; //사정거리
+    protected float turnSmoothTime = 0.1f; //몬스터 회전 시 지연시간
+    protected float lastDamagedTime; //마지막으로 공격 받았던 시간
+    protected const float MIN_TIME_BET_DAMAGE = 0.1f; //데미지를 주었을 때, 데미지 사이의 최소 간격
+    protected float lostSightTime = 1.0f; //타이머가 도달하는 시간
+    protected float lostSightTimer = 0.0f; //0초 부터 시작하는 타이머
+    protected bool isDead; // 사망 체크
+    protected bool canTriggerHitAnimation = true; // hit 과 hit 사이에 텀
     #endregion
 
     #region 덧칠 시스템 관련
-    private CalliSystem calliSystem;
-    [SerializeField] private GameObject[] paintOverStacks;
-    [SerializeField] private GameObject stackUI;
-    private bool paintOverMax;
+    protected CalliSystem calliSystem;
+    [SerializeField] protected GameObject[] paintOverStacks;
+    [SerializeField] protected GameObject stackUI;
+    protected bool paintOverMax;
     #endregion
 
     #endregion
 
     #region 플레이어 체크
-    private bool hasTarget => target != null && !target.IsDead;
+    protected bool hasTarget => target != null && !target.IsDead;
     #endregion
 
     #region Awake()

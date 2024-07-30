@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5587ab065822c54898dbb6355840987, type: 3}
+  m_Name: Enemy Data Range
+  m_EditorClassIdentifier: 
+  f_hp: 50
+  f_trackingSpeed: 6
+  f_patrolSpeed: 3
+  f_patrolRange: 7
+  f_turnSmoothVelocity: 0.2
+  f_viewDistance: 30
+  f_viewAngle: 60
+  i_paintOver: 3
+  i_hpBarCount: 3
+  b_plusAttackDamage: 0
+  b_plusSkillDamage: 0
+  b_magicGroup: 0
+  f_flatRangeAttackDamage: 10
+  f_flatRangeAttackMotionSpeed: 1
+  f_flatRangeAttackMotionCoolTime: 1
+  f_flatRangeAttackRange: 10
+  f_distanceToPlayerMax: 10
