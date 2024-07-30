@@ -263,5 +263,6 @@ public class PlayerFollowCamera : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Alpha5)) playerMaskChange.ActiveCharacter.transform.position = pointers[4].transform.position;
         else if (Input.GetKeyDown(KeyCode.Alpha6)) playerMaskChange.ActiveCharacter.transform.position = pointers[5].transform.position;
         else if (Input.GetKeyDown(KeyCode.Alpha7)) playerMaskChange.ActiveCharacter.transform.position = pointers[6].transform.position;
+        else if (Input.GetKeyDown(KeyCode.Alpha8)) playerMaskChange.ActiveCharacter.transform.position = pointers[7].transform.position;
     }
 }
