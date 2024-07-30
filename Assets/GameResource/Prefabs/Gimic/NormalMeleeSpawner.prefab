@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 3292445025665258713}
   - component: {fileID: 3118605972049454851}
   - component: {fileID: 7139694068036921354}
-  - component: {fileID: 5584995166043756111}
   - component: {fileID: 1827519760697659667}
   m_Layer: 0
   m_Name: NormalMeleeSpawner
@@ -86,27 +85,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &5584995166043756111
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3431797631536574528}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1827519760697659667
 MonoBehaviour:
   m_ObjectHideFlags: 0
