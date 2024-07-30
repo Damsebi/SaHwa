@@ -25,11 +25,11 @@ public class EnemyData : ScriptableObject
     [Header("시야 각")]
     [Range(1f, 359f)] public float f_viewAngle;
 
-    [Header("덧칠 당하는 총 횟수(현재는 최대 5회)")]
-    [Range(1, 5)] public int f_paintOver;
+    [Header("덧칠 당하는 총 횟수")]
+    [Range(1, 5)] public int i_paintOver;
 
     [Header("라이프 갯수")]
-    [Range(1, 3)] public int f_hpBarCount;
+    [Range(1, 3)] public int i_hpBarCount;
 
     [Header("플레이어 평타에 추가 데미지 추가")]
     public bool b_plusAttackDamage;

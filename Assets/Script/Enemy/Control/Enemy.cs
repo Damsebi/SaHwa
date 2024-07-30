@@ -7,10 +7,7 @@ using UnityEngine.UI;
 using System.Linq.Expressions;
 using UnityEngine.AI;
 using Unity.XR.Oculus.Input;
-
-#if UNITY_EDITOR
 using UnityEditor;
-#endif
 
 public class Enemy : MonoBehaviour, IDamageable
 {
@@ -26,81 +23,91 @@ public class Enemy : MonoBehaviour, IDamageable
     }
     [SerializeField] private eState enemyState;
     #endregion
+
     #region 선언
     public EnemyData enemyData;
-
-    [HideInInspector] public float hp; //체력
-    [HideInInspector] public float hpBarCount; //체력바 갯수
-    [HideInInspector] public float trackingSpeed; //추적 속도
-    [HideInInspector] public float patrolSpeed; //순찰 속도
-    [HideInInspector] public float viewDistance; // 시야 범위
-    [HideInInspector] public float viewAngle; // 시야 각
-    [HideInInspector] public float distanceToPlayerMax; // 플레이어와의 최대 거리
-    [HideInInspector] public float paintOver; // 덧칠 횟수
-
-    [HideInInspector] public float flatDamage; // 평타 데미지
-    [HideInInspector] public float flatMotionSpeed; // 평타 모션 속도
-    [HideInInspector] public float flatMotionCoolTime; // 평타 모션 쿨타임
-    [HideInInspector] public float flatRange; // 평타 범위
-
-    [HideInInspector] public float flatHybridDamage; // 하이브리드 원거리 평타 데미지
-    [HideInInspector] public float flatHybridMotionSpeed; // 하이브리드 원거리 평타 모션 속도
-    [HideInInspector] public float flatHybridMotionCoolTime; // 하이브리드 원거리 평타 모션 쿨타임
-    [HideInInspector] public float flatHybridRange; // 하이브리드 원거리 평타 범위
-
-    [HideInInspector] public float skillDamage; // 스킬 데미지
-    [HideInInspector] public float skillMotionSpeed; // 스킬 모션 속도
-    [HideInInspector] public float skillMotionCoolTime; // 스킬 모션 쿨타임
-    [HideInInspector] public float skillRange; // 스킬 범위
-
     private Animator animator;
     private NavMeshAgent navAgent;
-
-    private float attackDistance;
-
-    private float turnSmoothVelocity; //몬스터의 회전 속도
-    private float turnSmoothTime = 0.1f; //몬스터 회전 시 지연시간
-
-    private float lastDamagedTime; //마지막으로 공격 받았던 시간
-    private const float MIN_TIME_BET_DAMAGE = 0.1f;
-
-    [HideInInspector] public bool plusAttackDamage; // 플레이어 평타에 추가 데미지 추가
-    [HideInInspector] public bool plusSkillDamage; // 플레이어 스킬에 추가 데미지 추가
-    [HideInInspector] public bool magicGroup; // 마법 세력
-    private float patrolRange; // 순찰 범위
-    private bool isRanged; // 근거리 원거리 공격 체크
-    private bool isBuffer; // 버퍼인지 체크
-
     public LayerMask LayerTarget;
-
-    private float lostSightTime = 1.0f;
-    private float lostSightTimer = 0.0f;
-
-    private bool isDead; // 사망 체크
-
     public Transform attackRoot; //공격이 시작되는 피벗, 이 피벗 해당 반경 내에 있는 플레이어가 공격당함
     public Transform viewTransform; //눈 위치
-
     public Player target;
     private RaycastHit[] hits = new RaycastHit[10];
     private List<Player> lastAttackedTarget = new List<Player>();
 
-    private bool hasTarget => target != null && !target.IsDead; 
+    #region SO 데이터(공통)
+    [HideInInspector] public float hp; //체력
+    [HideInInspector] public float hpBarCount; //체력바 갯수
+    [HideInInspector] public float trackingSpeed; //추적 속도
+    [HideInInspector] public float patrolSpeed; //순찰 속도
+    [HideInInspector] public float viewAngle; // 시야 각
+    [HideInInspector] public float viewDistance; // 시야 범위
+    [HideInInspector] public float paintOver; // 덧칠 횟수
+    private float turnSmoothVelocity; //몬스터의 회전 속도
+    private float patrolRange; // 순찰 범위
+    [HideInInspector] public bool plusAttackDamage; // 플레이어 평타에 추가 데미지 추가
+    [HideInInspector] public bool plusSkillDamage; // 플레이어 스킬에 추가 데미지 추가
+    [HideInInspector] public bool magicGroup; // 마법 세력   
+    [HideInInspector] public float flatDamage; // 평타 데미지
+    [HideInInspector] public float flatMotionSpeed; // 평타 모션 속도
+    [HideInInspector] public float flatMotionCoolTime; // 평타 모션 쿨타임
+    [HideInInspector] public float flatRange; // 평타 범위
+    #endregion
 
-    //추가(대원)
+    #region SO 데이터(밀리)
+    [HideInInspector] public float patrolWaitingTimeMin; // 순찰 최소 대기 시간
+    [HideInInspector] public float patrolWaitingTimeMax; // 순찰 최대 대기 시간
+    #endregion
+
+    #region SO 데이터(레인지 & 버퍼)
+    [HideInInspector] public float distanceToPlayerMax; // 플레이어와의 최대 거리
+    [HideInInspector] public bool isRanged; // 근거리 원거리 공격 체크
+    [HideInInspector] public bool isBuffer; // 버퍼인지 체크
+    #endregion
+
+    #region SO 데이터(하이브리드)
+    [HideInInspector] public float flatHybridDamage; // 하이브리드 원거리 평타 데미지
+    [HideInInspector] public float flatHybridMotionSpeed; // 하이브리드 원거리 평타 모션 속도
+    [HideInInspector] public float flatHybridMotionCoolTime; // 하이브리드 원거리 평타 모션 쿨타임
+    [HideInInspector] public float flatHybridRange; // 하이브리드 원거리 평타 범위
+    #endregion
+
+    #region SO 데이터(엘리트 & 에픽)
+    [HideInInspector] public float skillDamage; // 스킬 데미지
+    [HideInInspector] public float skillMotionSpeed; // 스킬 모션 속도
+    [HideInInspector] public float skillMotionCoolTime; // 스킬 모션 쿨타임
+    [HideInInspector] public float skillRange; // 스킬 범위
+    #endregion
+
+    #region 내부 변수
+    private float attackDistance; //사정거리
+    private float turnSmoothTime = 0.1f; //몬스터 회전 시 지연시간
+    private float lastDamagedTime; //마지막으로 공격 받았던 시간
+    private const float MIN_TIME_BET_DAMAGE = 0.1f; //데미지를 주었을 때, 데미지 사이의 최소 간격
+    private float lostSightTime = 1.0f; //타이머가 도달하는 시간
+    private float lostSightTimer = 0.0f; //0초 부터 시작하는 타이머
+    private bool isDead; // 사망 체크
+    private bool canTriggerHitAnimation = true; // hit 과 hit 사이에 텀
+    #endregion
+
+    #region 덧칠 시스템 관련
     private CalliSystem calliSystem;
     [SerializeField] private GameObject[] paintOverStacks;
     [SerializeField] private GameObject stackUI;
     private bool paintOverMax;
     #endregion
 
+    #endregion
+
+    #region 플레이어 체크
+    private bool hasTarget => target != null && !target.IsDead;
+    #endregion
+
     #region Awake()
     private void Awake()
     {
         animator = GetComponent<Animator>();
-        navAgent = GetComponent<NavMeshAgent>();
-        
-        //추가(대원)
+        navAgent = GetComponent<NavMeshAgent>();   
         calliSystem = GetComponent<CalliSystem>();
 
         var attackPivot = attackRoot.position;
@@ -236,6 +243,8 @@ public class Enemy : MonoBehaviour, IDamageable
             flatRange = meleeData.f_flatMeleeAttackRange;
             isRanged = false;
             isBuffer = false;
+            patrolWaitingTimeMin = meleeData.i_patrolWaitingTimeMin;
+            patrolWaitingTimeMax = meleeData.i_patrolWaitingTimeMax;
         }
         else if (enemyData is EnemyDataRange rangeData)
         {
@@ -273,12 +282,12 @@ public class Enemy : MonoBehaviour, IDamageable
     void SetUp()
     {
         hp = enemyData.f_hp;
-        hpBarCount = enemyData.f_hpBarCount;
+        hpBarCount = enemyData.i_hpBarCount;
         trackingSpeed = enemyData.f_trackingSpeed;
         patrolSpeed = enemyData.f_patrolSpeed;
         viewAngle = enemyData.f_viewAngle;
         viewDistance = enemyData.f_viewDistance;
-        paintOver = enemyData.f_paintOver;
+        paintOver = enemyData.i_paintOver;
         turnSmoothVelocity = enemyData.f_turnSmoothVelocity;
         plusAttackDamage = enemyData.b_plusAttackDamage;
         plusSkillDamage = enemyData.b_plusSkillDamage;
@@ -288,54 +297,10 @@ public class Enemy : MonoBehaviour, IDamageable
         enemyState = eState.Idle;
     }
     #endregion
+    
+    #region 플레이어 찾기
 
-    #region 시야 그리기
-#if UNITY_EDITOR
-    private void OnDrawGizmos()
-    {
-        if (attackRoot != null && !isBuffer && !isRanged)
-        {
-            Gizmos.color = new Color(1f, 0f, 0f, 0.5f);//붉은색
-            Gizmos.DrawSphere(attackRoot.position, flatRange);
-            //원형 모양의 근거리 공격 범위
-        }
-        else if (attackRoot != null && !isBuffer && isRanged)
-        {
-            //Gizmos.color = new Color(1f, 0f, 0f, 0.5f);//붉은색
-            //Vector3 cubeSize = new Vector3(0.3f, 0.3f, flatRange); // width, height, depth
-            //Vector3 cubeCenter = attackRoot.position + attackRoot.forward * (flatRange / 2);
-            //Gizmos.DrawCube(cubeCenter, cubeSize);
-            ////긴 직사각형모양의 원거리 공격 범위
-
-            Gizmos.color = new Color(1f, 0f, 0f, 0.5f); // 붉은색
-            Vector3 cubeSize = new Vector3(0.3f, 0.3f, flatRange); // width, height, depth
-            Matrix4x4 oldMatrix = Gizmos.matrix;
-            Gizmos.matrix = Matrix4x4.TRS(attackRoot.position, attackRoot.rotation, attackRoot.lossyScale);
-            Gizmos.DrawCube(-Vector3.forward * (flatRange / 2), cubeSize);
-            Gizmos.matrix = oldMatrix;
-
-        }
-        else if (attackRoot != null && isBuffer && !isRanged)
-        {
-            Gizmos.color = new Color(1f, 0f, 0f, 0.5f);//붉은색
-            Gizmos.DrawWireSphere(attackRoot.position, flatRange);
-            //선모양의 원거리 공격 범위
-        }
-
-        if (viewTransform != null) //단순히 반경 표시
-        {
-            var leftViewRotation = Quaternion.AngleAxis(-viewAngle * 0.5f, Vector3.up); //정면~왼쪽 각도
-            var leftRayDirection = leftViewRotation * transform.forward;
-
-            Handles.color = new Color(1f, 1f, 1f, 0.2f);//흰색
-            Handles.DrawSolidArc(viewTransform.position, Vector3.up, leftRayDirection, viewAngle, viewDistance);
-            //(중심, 위에서 아래를 보이게, 아크를 그리기 시작하는 시작 벡터 , 전체 시야각 /2 , 부채꼴의 반지름
-            //부채꼴 모양의 시야각 만들기(gui)
-        }
-    }
-#endif
-    #endregion
-
+    #region 경로 업데이트
     private IEnumerator UpdatePath()
     {
         while (!isDead)
@@ -346,6 +311,7 @@ public class Enemy : MonoBehaviour, IDamageable
                 {
                     enemyState = eState.Tracking;
                     navAgent.speed = trackingSpeed;
+                    animator.SetBool("BattleMode", true);
                 }
                 navAgent.SetDestination(target.transform.position);
 
@@ -355,8 +321,9 @@ public class Enemy : MonoBehaviour, IDamageable
                     if (lostSightTimer >= lostSightTime)
                     {
                         target = null;
-                        enemyState = eState.Patrol;
+                        enemyState = eState.Idle;
                         navAgent.speed = patrolSpeed;
+                        animator.SetBool("BattleMode", false);
                     }
                 }
                 else
@@ -370,46 +337,63 @@ public class Enemy : MonoBehaviour, IDamageable
                 {
                     enemyState = eState.Patrol;
                     navAgent.speed = patrolSpeed;
+                    animator.SetBool("BattleMode", false);
                 }
+
+                var colliders = Physics.OverlapSphere(viewTransform.position, viewDistance, LayerTarget);
 
                 if (!navAgent.pathPending && navAgent.remainingDistance <= navAgent.stoppingDistance)
                 {
                     enemyState = eState.Idle;
                     navAgent.isStopped = true;
-                    float idleTime = UnityEngine.Random.Range(1f, 5f); // 1~5초 랜덤 대기 시간]
+                    var idleTime = UnityEngine.Random.Range(patrolWaitingTimeMin, patrolWaitingTimeMax);
+                    var waitingTime = 1f;
 
-                    yield return new WaitForSeconds(idleTime);
+                    while (waitingTime < idleTime)
+                    {
+                        if (!isDead && navAgent.isOnNavMesh)
+                        {
+                            // 레이어를 통해 몬스터를 중심으로 범위 내 플레이어를 인식
+
+                            foreach (var collider in colliders)
+                            {
+                                if (!IsTargetOnSight(collider.transform))
+                                {
+                                    continue;
+                                }
+
+                                var Player = collider.GetComponent<Player>();
+
+                                if (Player != null && !Player.IsDead)
+                                {
+                                    target = Player;
+                                    break;
+                                }
+                            }
+                            if (hasTarget)
+                            {
+                                break;
+                            }
+
+                        }
+
+                        waitingTime += 0.1f;
+                        yield return new WaitForSeconds(0.1f);
+                    }
+
                     if (!isDead && navAgent.isOnNavMesh)
                     {
                         navAgent.isStopped = false;
                         SetRandomPatrolPoint(); // 새로운 정찰 지점을 설정
                     }
                 }
-
-                var colliders = Physics.OverlapSphere(viewTransform.position,
-                    viewDistance, LayerTarget);
-                // 레이어를 통해 몬스터를 중심으로 범위 내 플레이어를 인식
-
-                foreach (var collider in colliders)
-                {
-                    if (!IsTargetOnSight(collider.transform))
-                    {
-                        continue;
-                    }
-
-                    var Player = collider.GetComponent<Player>();
-
-                    if (Player != null && !Player.IsDead)
-                    {
-                        target = Player;
-                        break;
-                    }
-                }
             }
             yield return new WaitForSeconds(.05f);
         }
     }
+    #endregion
 
+    #region 타겟 찾기
     private bool IsTargetOnSight(Transform target)
     {
         var direction = target.position - viewTransform.position;
@@ -425,13 +409,16 @@ public class Enemy : MonoBehaviour, IDamageable
         if (Physics.Raycast(viewTransform.position, direction, out hit, viewDistance, LayerTarget))
         {
             if (hit.transform == target)
-            {              
+            {
                 return true;
             }
         }
 
         return false;
     }
+    #endregion
+
+    #region 랜덤 순찰지점 찍기
     private void SetRandomPatrolPoint()
     {
         Vector3 randomDirection = UnityEngine.Random.insideUnitSphere * patrolRange;
@@ -443,8 +430,11 @@ public class Enemy : MonoBehaviour, IDamageable
         }
         animator.SetFloat("Speed", navAgent.desiredVelocity.magnitude);
     }
+    #endregion
 
-    #region 덧칠확인, 행동 제한시키기(대원)
+    #endregion
+
+    #region 덧칠확인, 행동 제한시키기
     private void CheckPaintOver()
     {
         if (stackUI.activeSelf)
@@ -481,31 +471,38 @@ public class Enemy : MonoBehaviour, IDamageable
     }
     #endregion
 
-    #region 공격
+    #region 데미지 관련
+
+    #region 공격 시작
     private void BeginAttack()
     {
         enemyState = eState.AttackBegin;
+
+        navAgent.isStopped = true;
+        animator.SetTrigger("Attack");
     }
-    private void Attack()
+    #endregion
+
+    #region 공격 들어가는 지점
+    public void EnableAttack()
     {
         enemyState = eState.Attacking;
 
-        if (hasTarget)
-        {
-            // 플레이어에게 데미지를 줌
-            var message = new DamageMessage();
-            message.amount = flatDamage;
-            message.damager = this.gameObject;
-            message.hitPoint = target.transform.position;
-            message.hitNormal = (target.transform.position - transform.position).normalized;
+        lastAttackedTarget.Clear();
+    }
+    #endregion
 
-            target.ApplyDamage(message);
-        }
-    }     
+    #region 공격 나오는 지점
+    public void DisableAttack()
+    {
+        enemyState = eState.Tracking;
+        navAgent.isStopped = false;
+    }
+    #endregion
 
+    #region 데미지 받음
     public bool ApplyDamage(DamageMessage damageMessage)
     {
-
         if (Time.time < lastDamagedTime + MIN_TIME_BET_DAMAGE || damageMessage.damager == gameObject || isDead)
         {
             return false;
@@ -514,42 +511,47 @@ public class Enemy : MonoBehaviour, IDamageable
         lastDamagedTime = Time.time;
         hp -= damageMessage.amount;
 
-        if (damageMessage.amount != 0)
-        {
-            animator.CrossFade("hit", .2f);
-        }
-
         if (hp <= 0)
         {
             Die();
         }
         else if (hp > 0 && damageMessage.amount != 0)
         {
-            animator.SetTrigger("hit");
-        }
+            if (canTriggerHitAnimation)
+            {
+                StartCoroutine(HandleHitReaction());
+            }
 
-        if (target == null)
-        {
-            target = damageMessage.damager.GetComponent<Player>();
+            if (target == null)
+            {
+                target = damageMessage.damager.GetComponent<Player>();
+            }
         }
-
-        //추가(대원)
-        if (calliSystem != null)
-        {
-            if(!stackUI.activeSelf) stackUI.SetActive(true);
-            calliSystem.Painting(damageMessage.color, damageMessage.value);
-        }
-
         return true;
     }
     #endregion
 
+    #region 공격 받는 도중 행동 멈춤
+    private IEnumerator HandleHitReaction()
+    {
+        canTriggerHitAnimation = false;
+        navAgent.isStopped = true;
+        yield return new WaitForSeconds(1f); // 1초 동안 모든 행동 멈춤
+
+        navAgent.isStopped = false;
+        yield return new WaitForSeconds(2f); // 2초 동안 피격 애니메이션 작동하지 않음
+
+        canTriggerHitAnimation = true; // 2초 후에 다시 피격 애니메이션 가능
+    }
+    #endregion
+
+    #region 사망 처리
     public void Die()
     {
         isDead = true;
 
         hp = 0;
-        animator.SetTrigger("die");
+        animator.SetTrigger("Die");
 
         if (navAgent.isOnNavMesh)
         {
@@ -558,8 +560,9 @@ public class Enemy : MonoBehaviour, IDamageable
         }
         navAgent.enabled = false;
 
-        //추가(대원)
         stackUI.SetActive(false);
-
     }
+    #endregion
+
+    #endregion
 }
