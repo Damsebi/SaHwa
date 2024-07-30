@@ -38,16 +38,24 @@ public class SpawnEnemy : MonoBehaviour
                 isBuffer = enemy.isBuffer;
             }
         }
+
+        if (spawnPosition != null)
+        {
+            foreach (Transform child in transform)
+            {
+                child.gameObject.SetActive(false);
+            }
+        }
+
     }
     private void OnTriggerEnter(Collider player)
     {
+        Debug.Log("ontrigger");
         if (player.CompareTag("Player"))
         {
             spawnPosition.SpawnEnemy();
         }
     }
-
-
 
     #region 시야 그리기
 #if UNITY_EDITOR
