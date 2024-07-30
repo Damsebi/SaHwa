@@ -8,6 +8,7 @@ using System.Linq.Expressions;
 using UnityEngine.AI;
 using Unity.XR.Oculus.Input;
 using UnityEditor;
+using UnityEngine.XR;
 
 public class Enemy : MonoBehaviour, IDamageable
 {
@@ -107,16 +108,9 @@ public class Enemy : MonoBehaviour, IDamageable
     private void Awake()
     {
         animator = GetComponent<Animator>();
-        navAgent = GetComponent<NavMeshAgent>();   
+        navAgent = GetComponent<NavMeshAgent>();
         calliSystem = GetComponent<CalliSystem>();
-        InitializeStats();
-        SetUp();
-        var attackPivot = attackRoot.position;
-        attackPivot.y = transform.position.y;
-        //높이를 무시하고 평면상의 거리만 고려
 
-        attackDistance = Vector3.Distance(transform.position, attackPivot) + flatRange;
-        navAgent.stoppingDistance = attackDistance;
         navAgent.speed = patrolSpeed;
     }
     #endregion
@@ -124,7 +118,16 @@ public class Enemy : MonoBehaviour, IDamageable
     #region Start()
     void Start()
     {
+        SetUp();
+        InitializeStats();
         StartCoroutine(UpdatePath());
+
+        var attackPivot = attackRoot.position;
+        attackPivot.y = transform.position.y;
+        //높이를 무시하고 평면상의 거리만 고려
+
+        attackDistance = Vector3.Distance(transform.position, attackPivot) + flatRange;
+        navAgent.stoppingDistance = attackDistance;
     }
     #endregion
 
@@ -135,23 +138,21 @@ public class Enemy : MonoBehaviour, IDamageable
         {
             return;
         }
-        switch (enemyState)
+        if (enemyState == eState.Tracking)
         {
-            case eState.Patrol:
-                break;
-            case eState.Idle:
-                break;
-            case eState.Tracking:
-                var distance = Vector3.Distance(target.transform.position, transform.position);
-                if (distance <= attackDistance)
-                {
-                    BeginAttack();
-                }
-                
-                break;
+            var distance = Vector3.Distance(target.transform.position, transform.position);
+            if (distance <= attackDistance)
+            {
+                BeginAttack();
+            }
         }
 
-        //추가(대원)
+        //navmash의 desiredVelocity는 현재 속도값이 아니라 의도한 만큼 지정되는 값이다. 
+        //벽 앞에서 적이 걷는다면 실제 속도는 0이기 때문에
+        //애니메이션이 나오지 않는것을 방지하기 위함(애니메이터의 조건을 speed > 0.1로 걸어두었음)
+        animator.SetFloat("Speed", navAgent.desiredVelocity.magnitude);
+
+        //덧칠 체크
         CheckPaintOver();
     }
     #endregion
@@ -159,7 +160,6 @@ public class Enemy : MonoBehaviour, IDamageable
     #region FixedUpdate()
     private void FixedUpdate()
     {
-        //예외처리
         if (isDead)
         {
             return;
@@ -296,7 +296,7 @@ public class Enemy : MonoBehaviour, IDamageable
         enemyState = eState.Idle;
     }
     #endregion
-    
+
     #region 플레이어 찾기
 
     #region 경로 업데이트
@@ -310,7 +310,6 @@ public class Enemy : MonoBehaviour, IDamageable
                 {
                     enemyState = eState.Tracking;
                     navAgent.speed = trackingSpeed;
-                    animator.SetBool("BattleMode", true);
                 }
                 navAgent.SetDestination(target.transform.position);
 
@@ -320,9 +319,8 @@ public class Enemy : MonoBehaviour, IDamageable
                     if (lostSightTimer >= lostSightTime)
                     {
                         target = null;
-                        enemyState = eState.Idle;
+                        enemyState = eState.Patrol;
                         navAgent.speed = patrolSpeed;
-                        animator.SetBool("BattleMode", false);
                     }
                 }
                 else
@@ -332,58 +330,60 @@ public class Enemy : MonoBehaviour, IDamageable
             }
             else
             {
+                //직전까지의 몹의 상태가 정찰상태가 아니라면 정찰 상태로 변경
                 if (enemyState != eState.Patrol)
                 {
                     enemyState = eState.Patrol;
                     navAgent.speed = patrolSpeed;
-                    animator.SetBool("BattleMode", false);
                 }
-
-                var colliders = Physics.OverlapSphere(viewTransform.position, viewDistance, LayerTarget);
 
                 if (!navAgent.pathPending && navAgent.remainingDistance <= navAgent.stoppingDistance)
                 {
                     enemyState = eState.Idle;
                     navAgent.isStopped = true;
-                    var idleTime = UnityEngine.Random.Range(patrolWaitingTimeMin, patrolWaitingTimeMax);
-                    var waitingTime = 1f;
+                    float idleTime = UnityEngine.Random.Range(1f, 5f); // 1~5초 랜덤 대기 시간]
 
-                    while (waitingTime < idleTime)
-                    {
-                        if (!isDead && navAgent.isOnNavMesh)
-                        {
-                            // 레이어를 통해 몬스터를 중심으로 범위 내 플레이어를 인식
-
-                            foreach (var collider in colliders)
-                            {
-                                if (!IsTargetOnSight(collider.transform))
-                                {
-                                    continue;
-                                }
-
-                                var Player = collider.GetComponent<Player>();
-
-                                if (Player != null && !Player.IsDead)
-                                {
-                                    target = Player;
-                                    break;
-                                }
-                            }
-                            if (hasTarget)
-                            {
-                                break;
-                            }
-
-                        }
-
-                        waitingTime += 0.1f;
-                        yield return new WaitForSeconds(0.1f);
-                    }
-
+                    yield return new WaitForSeconds(idleTime);
                     if (!isDead && navAgent.isOnNavMesh)
                     {
                         navAgent.isStopped = false;
                         SetRandomPatrolPoint(); // 새로운 정찰 지점을 설정
+                    }
+                }
+
+                //if (navAgent.remainingDistance <= 0)
+                //{
+
+
+                //Todo
+                //yield return StartCoroutine(PlayLookArounAnimation());
+                //그 자리 근처까지 왔을 때 두리번 거리게 만들기
+                //}
+
+                var colliders = Physics.OverlapSphere(viewTransform.position,
+                    viewDistance, LayerTarget);
+                // 레이어를 통해 몬스터를 중심으로 범위 내 플레이어를 인식
+
+                foreach (var collider in colliders)
+                {
+                    /*
+                     * TODO
+                        플레이어가 공격해서 주변의 다른 몬스터를타격
+                        그 몬스터가 주변 일정 거리 안에 있다면 타겟팅
+                     */
+
+                    //해당 transform을 가진 객체가 시야 내에 존재하는지
+                    if (!IsTargetOnSight(collider.transform))
+                    {
+                        continue;
+                    }
+
+                    var Player = collider.GetComponent<Player>();
+
+                    if (Player != null && !Player.IsDead    )
+                    {
+                        target = Player;
+                        break;
                     }
                 }
             }
@@ -439,7 +439,7 @@ public class Enemy : MonoBehaviour, IDamageable
         if (stackUI.activeSelf)
         {
             stackUI.transform.rotation
-                = PlayerFollowCamera.instance.MainCamera.transform.rotation ; 
+                = PlayerFollowCamera.instance.MainCamera.transform.rotation;
         }
 
         if (paintOverMax || calliSystem.paintOver == 0) return;

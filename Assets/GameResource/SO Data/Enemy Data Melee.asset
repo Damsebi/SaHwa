@@ -15,7 +15,7 @@ MonoBehaviour:
   f_hp: 80
   f_trackingSpeed: 10
   f_patrolSpeed: 5
-  f_patrolRange: 30
+  f_patrolRange: 3.5
   f_turnSmoothVelocity: 0.1804
   f_viewDistance: 10
   f_viewAngle: 30
