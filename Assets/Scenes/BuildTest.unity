@@ -1978,6 +1978,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: NormalMeleeSpawner (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 7139694068036921354, guid: fe4d5cb63334f004286f1e719be13387,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4200,6 +4205,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: NormalMeleeSpawner (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7139694068036921354, guid: fe4d5cb63334f004286f1e719be13387,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -24957,6 +24967,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: NormalMeleeSpawner (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 7139694068036921354, guid: fe4d5cb63334f004286f1e719be13387,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -29909,6 +29924,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: NormalMeleeSpawner (8)
       objectReference: {fileID: 0}
+    - target: {fileID: 7139694068036921354, guid: fe4d5cb63334f004286f1e719be13387,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -30091,7 +30111,7 @@ PrefabInstance:
     - target: {fileID: 7139694068036921354, guid: fe4d5cb63334f004286f1e719be13387,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -31491,6 +31511,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: NormalMeleeSpawner (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 7139694068036921354, guid: fe4d5cb63334f004286f1e719be13387,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -31674,6 +31699,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: NormalMeleeSpawner (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7139694068036921354, guid: fe4d5cb63334f004286f1e719be13387,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -31962,7 +31992,7 @@ PrefabInstance:
     - target: {fileID: 7139694068036921354, guid: fe4d5cb63334f004286f1e719be13387,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -41134,7 +41164,7 @@ PrefabInstance:
     - target: {fileID: 5580267060670254200, guid: e16dccdbc78c54e489a8ee709f0fba3b,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7198367651076403773, guid: e16dccdbc78c54e489a8ee709f0fba3b,
         type: 3}
@@ -41210,15 +41240,15 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8617855853668758593, guid: e16dccdbc78c54e489a8ee709f0fba3b,
         type: 3}
       insertIndex: -1
+      addedObject: {fileID: 911221764}
+    - targetCorrespondingSourceObject: {fileID: 8617855853668758593, guid: e16dccdbc78c54e489a8ee709f0fba3b,
+        type: 3}
+      insertIndex: -1
       addedObject: {fileID: 1635975373}
     - targetCorrespondingSourceObject: {fileID: 8617855853668758593, guid: e16dccdbc78c54e489a8ee709f0fba3b,
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1286594405}
-    - targetCorrespondingSourceObject: {fileID: 8617855853668758593, guid: e16dccdbc78c54e489a8ee709f0fba3b,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 911221764}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e16dccdbc78c54e489a8ee709f0fba3b, type: 3}
 --- !u!4 &909675523 stripped
@@ -41306,6 +41336,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: NormalMeleeSpawner (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7139694068036921354, guid: fe4d5cb63334f004286f1e719be13387,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -43949,6 +43984,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: NormalMeleeSpawner (9)
       objectReference: {fileID: 0}
+    - target: {fileID: 7139694068036921354, guid: fe4d5cb63334f004286f1e719be13387,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -45282,6 +45322,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: NormalMeleeSpawner (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 7139694068036921354, guid: fe4d5cb63334f004286f1e719be13387,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -46482,6 +46527,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: NormalMeleeSpawner (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7139694068036921354, guid: fe4d5cb63334f004286f1e719be13387,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -50573,6 +50623,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: NormalMeleeSpawner (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 7139694068036921354, guid: fe4d5cb63334f004286f1e719be13387,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -51004,37 +51059,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1190738031}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1192632864
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1192632865}
-  m_Layer: 0
-  m_Name: Enemies
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1192632865
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1192632864}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.1, y: -1.08, z: 139.96997}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1194450057
 GameObject:
   m_ObjectHideFlags: 0
@@ -54107,6 +54131,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: NormalMeleeSpawner (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 7139694068036921354, guid: fe4d5cb63334f004286f1e719be13387,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -55183,6 +55212,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: NormalMeleeSpawner (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 7139694068036921354, guid: fe4d5cb63334f004286f1e719be13387,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -55434,6 +55468,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: NormalMeleeSpawner (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 7139694068036921354, guid: fe4d5cb63334f004286f1e719be13387,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -55512,6 +55551,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: NormalMeleeSpawner (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7139694068036921354, guid: fe4d5cb63334f004286f1e719be13387,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -56147,7 +56191,7 @@ PrefabInstance:
     - target: {fileID: 7139694068036921354, guid: fe4d5cb63334f004286f1e719be13387,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -57231,6 +57275,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: NormalMeleeSpawner (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 7139694068036921354, guid: fe4d5cb63334f004286f1e719be13387,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -57693,7 +57742,7 @@ PrefabInstance:
     - target: {fileID: 5580267060670254200, guid: e16dccdbc78c54e489a8ee709f0fba3b,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7198367651076403773, guid: e16dccdbc78c54e489a8ee709f0fba3b,
         type: 3}
@@ -57983,6 +58032,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: NormalMeleeSpawner (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 7139694068036921354, guid: fe4d5cb63334f004286f1e719be13387,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -58061,6 +58115,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: NormalMeleeSpawner (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7139694068036921354, guid: fe4d5cb63334f004286f1e719be13387,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -61074,7 +61133,7 @@ PrefabInstance:
     - target: {fileID: 7139694068036921354, guid: fe4d5cb63334f004286f1e719be13387,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -61828,7 +61887,7 @@ PrefabInstance:
     - target: {fileID: 7139694068036921354, guid: fe4d5cb63334f004286f1e719be13387,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -67339,6 +67398,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: NormalMeleeSpawner (8)
       objectReference: {fileID: 0}
+    - target: {fileID: 7139694068036921354, guid: fe4d5cb63334f004286f1e719be13387,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -69800,6 +69864,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: NormalMeleeSpawner (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 7139694068036921354, guid: fe4d5cb63334f004286f1e719be13387,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -69842,7 +69911,7 @@ PrefabInstance:
     - target: {fileID: 5580267060670254200, guid: e16dccdbc78c54e489a8ee709f0fba3b,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7198367651076403773, guid: e16dccdbc78c54e489a8ee709f0fba3b,
         type: 3}
@@ -70994,7 +71063,7 @@ PrefabInstance:
     - target: {fileID: 5580267060670254200, guid: e16dccdbc78c54e489a8ee709f0fba3b,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7198367651076403773, guid: e16dccdbc78c54e489a8ee709f0fba3b,
         type: 3}
@@ -71058,6 +71127,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8617855853668758593, guid: e16dccdbc78c54e489a8ee709f0fba3b,
         type: 3}
       insertIndex: -1
+      addedObject: {fileID: 1867787014}
+    - targetCorrespondingSourceObject: {fileID: 8617855853668758593, guid: e16dccdbc78c54e489a8ee709f0fba3b,
+        type: 3}
+      insertIndex: -1
       addedObject: {fileID: 1082609750}
     - targetCorrespondingSourceObject: {fileID: 8617855853668758593, guid: e16dccdbc78c54e489a8ee709f0fba3b,
         type: 3}
@@ -71070,6 +71143,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8617855853668758593, guid: e16dccdbc78c54e489a8ee709f0fba3b,
         type: 3}
       insertIndex: -1
+      addedObject: {fileID: 1184803283}
+    - targetCorrespondingSourceObject: {fileID: 8617855853668758593, guid: e16dccdbc78c54e489a8ee709f0fba3b,
+        type: 3}
+      insertIndex: -1
       addedObject: {fileID: 1341807557}
     - targetCorrespondingSourceObject: {fileID: 8617855853668758593, guid: e16dccdbc78c54e489a8ee709f0fba3b,
         type: 3}
@@ -71079,14 +71156,6 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 569105103}
-    - targetCorrespondingSourceObject: {fileID: 8617855853668758593, guid: e16dccdbc78c54e489a8ee709f0fba3b,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1184803283}
-    - targetCorrespondingSourceObject: {fileID: 8617855853668758593, guid: e16dccdbc78c54e489a8ee709f0fba3b,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1867787014}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e16dccdbc78c54e489a8ee709f0fba3b, type: 3}
 --- !u!4 &1572739067 stripped
@@ -73686,7 +73755,7 @@ PrefabInstance:
     - target: {fileID: 7139694068036921354, guid: fe4d5cb63334f004286f1e719be13387,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -74871,6 +74940,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: NormalMeleeSpawner (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7139694068036921354, guid: fe4d5cb63334f004286f1e719be13387,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -78427,6 +78501,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: NormalMeleeSpawner (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7139694068036921354, guid: fe4d5cb63334f004286f1e719be13387,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -83133,6 +83212,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: NormalMeleeSpawner (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 7139694068036921354, guid: fe4d5cb63334f004286f1e719be13387,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -84420,7 +84504,7 @@ PrefabInstance:
     - target: {fileID: 7139694068036921354, guid: fe4d5cb63334f004286f1e719be13387,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -87702,7 +87786,7 @@ PrefabInstance:
     - target: {fileID: 7139694068036921354, guid: fe4d5cb63334f004286f1e719be13387,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -87991,7 +88075,7 @@ PrefabInstance:
     - target: {fileID: 7139694068036921354, guid: fe4d5cb63334f004286f1e719be13387,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -89800,6 +89884,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: NormalMeleeSpawner (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 7139694068036921354, guid: fe4d5cb63334f004286f1e719be13387,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -90358,6 +90447,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: NormalMeleeSpawner (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7139694068036921354, guid: fe4d5cb63334f004286f1e719be13387,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -99284,7 +99378,7 @@ PrefabInstance:
     - target: {fileID: 5580267060670254200, guid: e16dccdbc78c54e489a8ee709f0fba3b,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7198367651076403773, guid: e16dccdbc78c54e489a8ee709f0fba3b,
         type: 3}
@@ -117973,7 +118067,6 @@ SceneRoots:
   - {fileID: 932645941}
   - {fileID: 410087041}
   - {fileID: 7271366991031894803}
-  - {fileID: 1192632865}
   - {fileID: 1304303932}
   - {fileID: 1210479090}
   - {fileID: 26626741}
