@@ -23,10 +23,6 @@ public class PlayerControllerDW : MonoBehaviour
         playerMaskChange.InitializeCharacterSetting();
     }
 
-    private void Start()
-    {
-    }
-
     private void Update()
     {
         #region 상태 체크

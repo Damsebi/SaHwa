@@ -560,6 +560,6 @@ public class Enemy : MonoBehaviour, IDamageable
 
         //추가(대원)
         stackUI.SetActive(false);
-
+        Destroy(this.gameObject, 4); //나중에 대체
     }
 }
