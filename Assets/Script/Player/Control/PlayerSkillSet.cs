@@ -35,8 +35,10 @@ public class PlayerSkillSet : MonoBehaviour
     #endregion
 
     #region ¸Ô ½º¸Å½¬
-    [SerializeField] GameObject inkSmashPrefab;
+    [SerializeField] private GameObject inkSmashPrefab;
+    [SerializeField] private GameObject inkSmashEffectPrefab;
     private GameObject inkSmashArea;
+    private GameObject inkSmashEffect;
     private bool canUseInkSmash;
     #endregion
 
@@ -358,20 +360,23 @@ public class PlayerSkillSet : MonoBehaviour
             canUseInkSmash = false;
 
             playerMaskChange.ActiveAnimator.CrossFade("SecondSkill", .1f);
-            for (int i = 0; i < 45; i++)
+            for (int i = 0; i < 40; i++)
             {
                 yield return new WaitForSeconds(.02f);
                 playerMaskChange.ActiveRigidbody.MovePosition
                     (playerMaskChange.ActiveCharacter.transform.position + playerMaskChange.ActiveCharacter.transform.forward * 10 * Time.deltaTime);
             }
+            inkSmashEffect = Instantiate(inkSmashEffectPrefab, playerMaskChange.ActiveCharacter.transform.position + playerMaskChange.ActiveCharacter.transform.forward * 1, playerMaskChange.ActiveCharacter.transform.rotation);
+            yield return new WaitForSeconds(.1f);
 
             inkSmashArea = Instantiate(inkSmashPrefab,playerMaskChange.ActiveCharacter.transform.position + playerMaskChange.ActiveCharacter.transform.forward * 1, playerMaskChange.ActiveCharacter.transform.rotation);
 
-            yield return new WaitForSeconds(.5f);
+            yield return new WaitForSeconds(.4f);
             playerMaskChange.ActiveAnimator.SetBool("restrict", restrictForSkill = false);
 
             yield return new WaitForSeconds(playerData.humanSecondSkillDuration);
             Destroy(inkSmashArea);
+            Destroy(inkSmashEffect);
 
             yield return new WaitForSeconds(playerData.humanSecondSkillCooldown - 1.6f - playerData.humanSecondSkillDuration);
             canUseInkSmash = true;
@@ -449,7 +454,7 @@ public class PlayerSkillSet : MonoBehaviour
             {
                 yield return new WaitForSeconds(.01f);
                 playerMaskChange.ActiveRigidbody.MovePosition
-                    (playerMaskChange.ActiveCharacter.transform.position + playerMaskChange.ActiveCharacter.transform.forward * 25 * Time.deltaTime);
+                    (playerMaskChange.ActiveCharacter.transform.position + playerMaskChange.ActiveCharacter.transform.forward * 10 * Time.deltaTime);
             }
             yield return new WaitForSeconds(.3f);
             playerMaskChange.ActiveAnimator.SetBool("restrict", restrictForSkill = false);
