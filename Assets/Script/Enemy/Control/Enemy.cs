@@ -109,7 +109,8 @@ public class Enemy : MonoBehaviour, IDamageable
         animator = GetComponent<Animator>();
         navAgent = GetComponent<NavMeshAgent>();   
         calliSystem = GetComponent<CalliSystem>();
-
+        InitializeStats();
+        SetUp();
         var attackPivot = attackRoot.position;
         attackPivot.y = transform.position.y;
         //높이를 무시하고 평면상의 거리만 고려
@@ -123,8 +124,6 @@ public class Enemy : MonoBehaviour, IDamageable
     #region Start()
     void Start()
     {
-        InitializeStats();
-        SetUp();
         StartCoroutine(UpdatePath());
     }
     #endregion
