@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: Enemy Data Melee
   m_EditorClassIdentifier: 
   f_hp: 80
-  f_trackingSpeed: 5
-  f_patrolSpeed: 5
+  f_trackingSpeed: 3
+  f_patrolSpeed: 3
   f_patrolRange: 6.7
-  f_turnSmoothVelocity: 0.1804
-  f_viewDistance: 1
-  f_viewAngle: 1
+  f_turnSmoothVelocity: 0.3
+  f_viewDistance: 10
+  f_viewAngle: 70
   f_paintOver: 1
   f_hpBarCount: 2
   b_plusAttackDamage: 0
