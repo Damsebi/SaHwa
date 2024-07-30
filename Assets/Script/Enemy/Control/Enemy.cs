@@ -299,7 +299,7 @@ public class Enemy : MonoBehaviour, IDamageable
 
     #region 플레이어 찾기
 
-    #region 경로 업데이트
+    #region 경로 업데이트  
     private IEnumerator UpdatePath()
     {
         while (!isDead)
@@ -343,38 +343,57 @@ public class Enemy : MonoBehaviour, IDamageable
                 {
                     enemyState = eState.Idle;
                     navAgent.isStopped = true;
-                    float idleTime = UnityEngine.Random.Range(1f, 5f); // 1~5초 랜덤 대기 시간]
+                    float idleTime = UnityEngine.Random.Range(1f, 5f); // 1~5초 랜덤 대기 시간
 
-                    yield return new WaitForSeconds(idleTime);
-                    if (!isDead && navAgent.isOnNavMesh)
+                    float timer = 0f;
+                    while (timer < idleTime)
+                    {
+                        timer += Time.deltaTime;
+
+                        // Idle 상태에서도 플레이어 감지
+                        var colliders = Physics.OverlapSphere(viewTransform.position,
+                            viewDistance, LayerTarget);
+
+                        foreach (var collider in colliders)
+                        {
+                            //해당 transform을 가진 객체가 시야 내에 존재하는지
+                            if (!IsTargetOnSight(collider.transform))
+                            {
+                                continue;
+                            }
+
+                            var Player = collider.GetComponent<Player>();
+
+                            if (Player != null && !Player.IsDead)
+                            {
+                                target = Player;
+                                enemyState = eState.Tracking;
+                                navAgent.speed = trackingSpeed;
+                                animator.SetBool("BattleMode", true);
+                                navAgent.isStopped = false;
+                                break;
+                            }
+                        }
+
+                        if (hasTarget)
+                            break;
+
+                        yield return null;
+                    }
+
+                    if (!isDead && navAgent.isOnNavMesh && !hasTarget)
                     {
                         navAgent.isStopped = false;
                         SetRandomPatrolPoint(); // 새로운 정찰 지점을 설정
                     }
                 }
 
-                //if (navAgent.remainingDistance <= 0)
-                //{
-
-
-                //Todo
-                //yield return StartCoroutine(PlayLookArounAnimation());
-                //그 자리 근처까지 왔을 때 두리번 거리게 만들기
-                //}
-
-                var colliders = Physics.OverlapSphere(viewTransform.position,
+                var patrolColliders = Physics.OverlapSphere(viewTransform.position,
                     viewDistance, LayerTarget);
-                // 레이어를 통해 몬스터를 중심으로 범위 내 플레이어를 인식
 
-                foreach (var collider in colliders)
+                foreach (var collider in patrolColliders)
                 {
-                    /*
-                     * TODO
-                        플레이어가 공격해서 주변의 다른 몬스터를타격
-                        그 몬스터가 주변 일정 거리 안에 있다면 타겟팅
-                     */
-
-                    //해당 transform을 가진 객체가 시야 내에 존재하는지
+                    // 해당 transform을 가진 객체가 시야 내에 존재하는지
                     if (!IsTargetOnSight(collider.transform))
                     {
                         continue;
@@ -382,7 +401,7 @@ public class Enemy : MonoBehaviour, IDamageable
 
                     var Player = collider.GetComponent<Player>();
 
-                    if (Player != null && !Player.IsDead    )
+                    if (Player != null && !Player.IsDead)
                     {
                         target = Player;
                         break;
@@ -392,6 +411,7 @@ public class Enemy : MonoBehaviour, IDamageable
             yield return new WaitForSeconds(.05f);
         }
     }
+
     #endregion
 
     #region 타겟 찾기
