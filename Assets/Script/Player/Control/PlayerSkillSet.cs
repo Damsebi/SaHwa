@@ -126,8 +126,8 @@ public class PlayerSkillSet : MonoBehaviour
             restrictForSkill = true;
             if (currentAnimation.normalizedTime > 0.95f)
             {
-                player[0].isDamaged = false;
-                player[1].isDamaged = false;
+                if (player[0]) player[0].isDamaged = false;
+                else player[1].isDamaged = false;
             }
             StopAllCoroutines();
             ResetAttackArea();

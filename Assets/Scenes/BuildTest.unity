@@ -36859,7 +36859,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &756111293
 Transform:
   m_ObjectHideFlags: 0
@@ -51655,7 +51655,9 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 64
-  player: []
+  player:
+  - {fileID: 80014036}
+  - {fileID: 126677963}
   restrictForSkill: 0
   humanNormalAttackArea: {fileID: 1822533378}
   humanWeaponTrail: {fileID: 256392221}

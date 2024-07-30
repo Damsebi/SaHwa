@@ -55,7 +55,7 @@ public class AttackArea : MonoBehaviour
 
                 atkTarget.ApplyDamage(message);
             }
-            Debug.Log("atkTarget.name" + atkTarget.name);
+            //Debug.Log("atkTarget.name" + atkTarget.name);
         }
     }
 
