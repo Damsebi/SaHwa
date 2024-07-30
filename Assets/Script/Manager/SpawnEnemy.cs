@@ -8,7 +8,20 @@ using UnityEditor;
 
 public class SpawnEnemy : MonoBehaviour
 {
+    public static SpawnEnemy Instance { get; private set; }
     private SpawnPosition spawnPosition;
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     void Start()
     {
@@ -23,12 +36,18 @@ public class SpawnEnemy : MonoBehaviour
         }
 
     }
+
+    public void TriggerSpawn()
+    {
+        spawnPosition.SpawnEnemy();
+    }
+
     private void OnTriggerEnter(Collider player)
     {
         Debug.Log("ontrigger");
         if (player.CompareTag("Player"))
         {
-            spawnPosition.SpawnEnemy();
+            TriggerSpawn();
         }
     }
 

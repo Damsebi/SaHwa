@@ -22,6 +22,8 @@ public class OpenDoor : MonoBehaviour
             hasOpened = true;
             StopAllCoroutines();
             StartCoroutine(RotateDoor(leftDoor, rightDoor, openAngle));
+
+            GameManager.Instance.TriggerSpawnEnemy();
         }
     }
 
