@@ -1103,7 +1103,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyState: 0
-  enemyData: {fileID: 11400000, guid: 06fc4967468996444bdaa51f967e9bd4, type: 2}
+  enemyData: {fileID: 11400000, guid: f038766e52ae7a544af37c6ee37e2c67, type: 2}
   LayerTarget:
     serializedVersion: 2
     m_Bits: 256
@@ -1138,7 +1138,7 @@ MonoBehaviour:
   skillMotionCoolTime: 0
   skillRange: 0
   paintOverStacks: []
-  stackUI: {fileID: 0}
+  stackUI: {fileID: 7366285520565417450}
 --- !u!114 &-8792715374373850754
 MonoBehaviour:
   m_ObjectHideFlags: 0

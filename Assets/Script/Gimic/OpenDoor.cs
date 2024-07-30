@@ -6,19 +6,22 @@ public class OpenDoor : MonoBehaviour, IEvent
 {
     public Transform leftDoor; // 왼쪽 문 큐브
     public Transform rightDoor; // 오른쪽 문 큐브
-    public float openAngle; // 열릴 때 회전할 각도
-    public float closeAngle; // 닫힐 때 회전할 각도
-    public float rotationSpeed; // 회전 속도
-    private bool isOpening;
+    [SerializeField] private float openAngle; // 열릴 때 회전할 각도
+    [SerializeField] private float closeAngle; // 닫힐 때 회전할 각도
+    [SerializeField] private float rotationSpeed; // 회전 속도
+    [SerializeField] private bool isOpenAgain;
+    private bool isOpening = false;
+    private bool hasOpened = false;
 
     public void TriggerEvent()
     {
-        if (!isOpening)
+        if (!isOpening && (!hasOpened||isOpenAgain))
         {
             isOpening = true;
+            hasOpened = true;
             StartCoroutine(RotateDoor(leftDoor, rightDoor, openAngle));
         }
-        else
+        else if(isOpening)
         {
             isOpening = false;
             StopAllCoroutines();
