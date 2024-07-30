@@ -10,13 +10,16 @@ public class OpenDoor : MonoBehaviour
     public float closeAngle = 0f; // 닫힐 때 회전할 각도
     public float rotationSpeed = 2f; // 회전 속도
 
-    private bool isOpening = false;
+    private bool isOpening;
+    public bool isOpenAgain;
+    private bool hasOpened = false;
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && (!hasOpened || isOpenAgain))
         {
             isOpening = true;
+            hasOpened = true;
             StopAllCoroutines();
             StartCoroutine(RotateDoor(leftDoor, rightDoor, openAngle));
         }
