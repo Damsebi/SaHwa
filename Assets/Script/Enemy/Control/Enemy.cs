@@ -458,16 +458,23 @@ public class Enemy : MonoBehaviour, IDamageable
     #region 덧칠확인, 행동 제한시키기
     private void CheckPaintOver()
     {
+        Debug.Log("1");
         if (stackUI.activeSelf)
         {
             stackUI.transform.rotation
                 = PlayerFollowCamera.instance.MainCamera.transform.rotation;
+            Debug.Log("2");
         }
 
-        if (paintOverMax || calliSystem.paintOver == 0) return;
+        if (paintOverMax || calliSystem.paintOver == 0)
+        {
+            Debug.Log("3");
+            return; 
+        }
 
         if (calliSystem.paintOver < calliSystem.MaxPaintOver)
         {
+            Debug.Log("4");
             for (int i = 0; i < calliSystem.paintOver + 1; i++)
             {
                 paintOverStacks[i].SetActive(true);
@@ -475,6 +482,7 @@ public class Enemy : MonoBehaviour, IDamageable
         }
         else
         {
+            Debug.Log("5");
             for (int i = 0; i < calliSystem.MaxPaintOver + 1; i++)
             {
                 paintOverStacks[i].SetActive(true);

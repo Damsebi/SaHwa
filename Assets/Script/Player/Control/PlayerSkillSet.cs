@@ -364,7 +364,7 @@ public class PlayerSkillSet : MonoBehaviour
             {
                 yield return new WaitForSeconds(.02f);
                 playerMaskChange.ActiveRigidbody.MovePosition
-                    (playerMaskChange.ActiveCharacter.transform.position + playerMaskChange.ActiveCharacter.transform.forward * 30 * Time.deltaTime);
+                    (playerMaskChange.ActiveCharacter.transform.position + playerMaskChange.ActiveCharacter.transform.forward * 10 * Time.deltaTime);
             }
             inkSmashEffect = Instantiate(inkSmashEffectPrefab, playerMaskChange.ActiveCharacter.transform.position + playerMaskChange.ActiveCharacter.transform.forward * 1, playerMaskChange.ActiveCharacter.transform.rotation);
             yield return new WaitForSeconds(.1f);
@@ -395,7 +395,7 @@ public class PlayerSkillSet : MonoBehaviour
             {
                 yield return new WaitForSeconds(.01f);
                 playerMaskChange.ActiveRigidbody.MovePosition
-                    (playerMaskChange.ActiveCharacter.transform.position - playerMaskChange.ActiveCharacter.transform.forward * 20 * Time.deltaTime);
+                    (playerMaskChange.ActiveCharacter.transform.position - playerMaskChange.ActiveCharacter.transform.forward * 5 * Time.deltaTime);
             }
 
             playerMaskChange.ActiveAnimator.SetBool("restrict", restrictForSkill = false);
@@ -454,7 +454,7 @@ public class PlayerSkillSet : MonoBehaviour
             {
                 yield return new WaitForSeconds(.01f);
                 playerMaskChange.ActiveRigidbody.MovePosition
-                    (playerMaskChange.ActiveCharacter.transform.position + playerMaskChange.ActiveCharacter.transform.forward * 30 * Time.deltaTime);
+                    (playerMaskChange.ActiveCharacter.transform.position + playerMaskChange.ActiveCharacter.transform.forward * 10 * Time.deltaTime);
             }
             yield return new WaitForSeconds(.3f);
             playerMaskChange.ActiveAnimator.SetBool("restrict", restrictForSkill = false);

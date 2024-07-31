@@ -48,7 +48,7 @@ public class Player : MonoBehaviour, IDamageable
         }
         else if (damageMessage.amount > 0 || !playerSkillSet.IgnoreStun) //스킬 사용 중에는 슈퍼아머 느낌(임시)
         {
-            playerMaskChange.ActiveAnimator.CrossFade("Hit", .2f);
+            //playerMaskChange.ActiveAnimator.CrossFade("Hit", .2f);
         }
 
         return true;
