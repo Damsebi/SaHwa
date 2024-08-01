@@ -103,10 +103,6 @@ public class PlayerControllerDW : MonoBehaviour
         }
         #endregion
 
-        #region 테스트용
-        PlayerFollowCamera.instance.MoveToPoint();
-        #endregion
-
     }
 
     private void FixedUpdate()
