@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74595a0381700c84bbc01ec06dfcfcb6, type: 3}
   m_Name: Enemy Data Melee
   m_EditorClassIdentifier: 
-  f_hp: 80
+  f_hp: 50
   f_trackingSpeed: 10
   f_patrolSpeed: 5
   f_patrolRange: 3.5

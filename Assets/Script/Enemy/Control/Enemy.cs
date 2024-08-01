@@ -458,23 +458,19 @@ public class Enemy : MonoBehaviour, IDamageable
     #region 덧칠확인, 행동 제한시키기
     private void CheckPaintOver()
     {
-        Debug.Log("1");
         if (stackUI.activeSelf)
         {
             stackUI.transform.rotation
                 = PlayerFollowCamera.instance.MainCamera.transform.rotation;
-            Debug.Log("2");
         }
 
         if (paintOverMax || calliSystem.paintOver == 0)
         {
-            Debug.Log("3");
             return; 
         }
 
         if (calliSystem.paintOver < calliSystem.MaxPaintOver)
         {
-            Debug.Log("4");
             for (int i = 0; i < calliSystem.paintOver + 1; i++)
             {
                 paintOverStacks[i].SetActive(true);
@@ -482,14 +478,12 @@ public class Enemy : MonoBehaviour, IDamageable
         }
         else
         {
-            Debug.Log("5");
             for (int i = 0; i < calliSystem.MaxPaintOver + 1; i++)
             {
                 paintOverStacks[i].SetActive(true);
                 paintOverStacks[i].GetComponent<Image>().color = Color.white;
             }
             paintOverMax = true;
-
         }
     }
     public void StopAction() //처형시에 움짐임 봉쇄. 
@@ -506,6 +500,7 @@ public class Enemy : MonoBehaviour, IDamageable
     private void BeginAttack()
     {
         enemyState = eState.AttackBegin;
+        Debug.Log("BeginAttack");
 
         navAgent.isStopped = true;
         animator.SetTrigger("Attack");
@@ -515,6 +510,7 @@ public class Enemy : MonoBehaviour, IDamageable
     #region 공격 들어가는 지점
     public void EnableAttack()
     {
+        Debug.Log("EnableAttack");
         enemyState = eState.Attacking;
 
         lastAttackedTarget.Clear();
@@ -555,6 +551,12 @@ public class Enemy : MonoBehaviour, IDamageable
             {
                 target = damageMessage.damager.GetComponent<Player>();
             }
+
+            if (calliSystem != null)
+            {
+                if (!stackUI.activeSelf) stackUI.SetActive(true);
+                calliSystem.Painting(damageMessage.color, damageMessage.value);
+            }
         }
         return true;
     }
@@ -565,6 +567,9 @@ public class Enemy : MonoBehaviour, IDamageable
     {
         canTriggerHitAnimation = false;
         navAgent.isStopped = true;
+
+        animator.SetTrigger("Hit");
+
         yield return new WaitForSeconds(1f); // 1초 동안 모든 행동 멈춤
 
         navAgent.isStopped = false;
