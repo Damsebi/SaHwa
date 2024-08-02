@@ -36,10 +36,10 @@ MonoBehaviour:
   animalSecondCooldown: 4
   animalAvoidStepCooldown: 2
   finishSkillCooldown: 5
-  cameraFollowSpeed: 0.093
+  cameraFollowSpeed: 0
   originCameraOrbitAxisPosition: {x: 0, y: -0.15, z: 0}
   smoothVerticalRotationRate: 0.015
-  smoothHorizontalRotationRate: 0.093
+  smoothHorizontalRotationRate: 0
   turnForwardDuration: 0.0098
   turnForwardSmoothRate: 0.077
   turnToTargetSmoothRate: 0.067
