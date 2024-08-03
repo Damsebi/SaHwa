@@ -118,7 +118,6 @@ public class Enemy : MonoBehaviour, IDamageable
 
         attackDistance = Vector3.Distance(transform.position, attackPivot) + flatRange;
         navAgent.stoppingDistance = attackDistance;
-        Debug.Log(navAgent.stoppingDistance);
     }
     #endregion
 
